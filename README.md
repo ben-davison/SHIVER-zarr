@@ -1,6 +1,6 @@
 # Code to generate Unified Dataset from: "The Sheffield Ice Velocity ExploreR (SHIVER): an online tool for low latency exploration, analysis and sub-setting of unified satellite-derived ice velocity data for Earth's ice sheets"
 
-[![DOI](https://zenodo.org/badge/DOI/10.5281/zenodo.XXXXXXX.svg)](https://doi.org/10.5281/zenodo.XXXXXXX)
+[![DOI](https://zenodo.org/badge/1301557133.svg)](https://doi.org/10.5281/zenodo.21375859)
 
 **NOTE:** This code and the associated manuscript are in preparation and may be subject to change.
 
