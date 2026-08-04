@@ -9,7 +9,7 @@ import random
 
 # --- 1. CONFIGURATION ---
 PROMICE_DIR = "/mnt/parscratch/users/gg1bjd/Data/Velocity/Greenland/PROMICE_edition5"
-OUTPUT_ZARR = "/mnt/parscratch/users/gg1bjd/Data/Velocity/Greenland/multisource_zarr/Greenland_multisource_speed_spatial.zarr"
+OUTPUT_ZARR = "/mnt/parscratch/users/gg1bjd/Data/Velocity/Greenland/multisource_zarr/greenland_multisource_velocity_spatial.zarr"
 CATALOG_FILE = "/mnt/parscratch/users/gg1bjd/Data/Velocity/Greenland/multisource_zarr/master_epoch_catalog_spatial.pkl"
 
 # --- HELPERS ---
@@ -23,33 +23,42 @@ def preprocess_promice(file_path):
     """Opens, formats, and converts units for a single PROMICE NetCDF file."""
     ds = xr.open_dataset(file_path, decode_times=True)
     
+    # 1. Keep relevant variables
     vars_to_keep = [
         'land_ice_surface_velocity_magnitude',
         'land_ice_surface_velocity_magnitude_std',
+        'land_ice_surface_easting_velocity',
+        'land_ice_surface_northing_velocity',
+        'land_ice_surface_easting_velocity_std',
+        'land_ice_surface_northing_velocity_std',
         'crs',
         'time_bnds'
     ]
     ds = ds[vars_to_keep]
     
+    # 2. Rename to match our schema
     ds = ds.rename({
         'land_ice_surface_velocity_magnitude': 'speed',
-        'land_ice_surface_velocity_magnitude_std': 'error',
+        'land_ice_surface_velocity_magnitude_std': 'speed_error',
+        'land_ice_surface_easting_velocity': 'vx',
+        'land_ice_surface_northing_velocity': 'vy',
+        'land_ice_surface_easting_velocity_std': 'vx_error',
+        'land_ice_surface_northing_velocity_std': 'vy_error',
         'crs': 'spatial_ref'
     })
     
-    # Convert m/day to m/year
-    ds['speed'] = ds['speed'] * 365.25
-    ds['error'] = ds['error'] * 365.25
+    # 3. Process all velocity/error variables (convert m/day to m/year, round to 1 decimal place, set attributes)
+    vel_vars = ['speed', 'speed_error', 'vx', 'vy', 'vx_error', 'vy_error']
+    for var in vel_vars:
+        ds[var] = np.round(ds[var] * 365.25, 1)
+        ds[var].attrs['units'] = 'm/year'
+        ds[var].attrs['grid_mapping'] = 'spatial_ref'
     
-    # Update metadata
-    ds['speed'].attrs['units'] = 'm/year'
-    ds['error'].attrs['units'] = 'm/year'
-    ds['speed'].attrs['grid_mapping'] = 'spatial_ref'
-    ds['error'].attrs['grid_mapping'] = 'spatial_ref'
-    
+    # 4. Add data_source identifier
     ds['data_source'] = xr.DataArray(np.array(["PROMICE"], dtype="<U50"), dims=["time"])
     
-    if ds['time_bnds'].dims == ('bnds', 'time'):
+    # 5. Fix time bounds dimensions and clean encoding
+    if 'time_bnds' in ds and ds['time_bnds'].dims == ('bnds', 'time'):
         ds['time_bnds'] = ds['time_bnds'].transpose('time', 'bnds')
         
     for var in ['time', 'time_bnds']:
@@ -57,6 +66,7 @@ def preprocess_promice(file_path):
             ds[var].encoding.clear()
             
     return ds
+
 
 # --- 3. IDENTIFY NEW FILES ---
 def get_new_promice_files_from_pyramid():
@@ -105,10 +115,11 @@ def append_new_data_to_pyramid(new_files):
         with open(CATALOG_FILE, 'rb') as f:
             existing_epochs = pickle.load(f)
             
+    # --- STEP A: Pre-process all new files into a single Level 0 batch ---
+    batch_datasets = []
+    
     for i, f in enumerate(new_files):
-        print(f"  [{i+1}/{len(new_files)}] Appending {os.path.basename(f)} across all pyramid tiers")
-        
-        # Base full-resolution slice for Level 0
+        print(f"  [{i+1}/{len(new_files)}] Pre-processing {os.path.basename(f)}")
         ds_slice = preprocess_promice(f)
         
         # Replicate unique noise logic
@@ -121,36 +132,12 @@ def append_new_data_to_pyramid(new_files):
             
         t_n, tb_n = apply_noise(t, tb)
         
-        # 2. Iterate strictly through the levels that actually exist on disk
-        for level in existing_levels:
-            
-            # If we are past Level 0, coarsen the slice from the previous level
-            if level > 0:
-                ds_next = xr.Dataset()
-                for var in ['speed', 'error']:
-                    if 'y' in ds_slice[var].dims and 'x' in ds_slice[var].dims:
-                        ds_next[var] = ds_slice[var].coarsen(x=2, y=2, boundary='pad').mean(keep_attrs=True)
-                    else:
-                        ds_next[var] = ds_slice[var]
-                        
-                ds_next['data_source'] = ds_slice['data_source']
-                ds_next['time_bnds'] = ds_slice['time_bnds']
-                ds_next = ds_next.assign_coords({
-                    'x': ds_slice['x'].coarsen(x=2, boundary='pad').mean(keep_attrs=True),
-                    'y': ds_slice['y'].coarsen(y=2, boundary='pad').mean(keep_attrs=True)
-                })
-                ds_slice = ds_next  # Update the pointer for the next iteration
-            
-            # Prep the current level slice for writing
-            ds_level_write = ds_slice.assign_coords(time=[t_n])
-            ds_level_write['time_bnds'].values = [tb_n] if ds_level_write['time_bnds'].ndim == 2 else tb_n
-            
-            # Drop fixed spatial variables so we don't overwrite/conflict with the target group
-            ds_level_write = ds_level_write.drop_vars(['x', 'y', 'spatial_ref'], errors='ignore')
-            
-            # Append directly to the group
-            ds_level_write.to_zarr(OUTPUT_ZARR, group=str(level), append_dim='time', mode='a')
-            
+        # Prep the slice with new coordinates
+        ds_slice = ds_slice.assign_coords(time=[t_n])
+        ds_slice['time_bnds'].values = [tb_n] if ds_slice['time_bnds'].ndim == 2 else tb_n
+        
+        batch_datasets.append(ds_slice)
+        
         # Track epoch history
         existing_epochs.append({
             'time': t_n, 
@@ -158,7 +145,69 @@ def append_new_data_to_pyramid(new_files):
             'source': 'PROMICE', 
             'path': f
         })
+        
+    # Combine all individual files into one single Xarray Dataset
+    print(f"Concatenating {len(new_files)} files into a single batch for appending...", flush=True)
+    ds_batch = xr.concat(batch_datasets, dim='time')
+            
+    
+    # --- STEP B: Iterate through levels, coarsen the batch, and append once per level ---
+    for level in existing_levels:
+        print(f"Appending batch to Group '{level}'...", flush=True)
+        
+        # If we are past Level 0, coarsen the entire batch from the previous level
+        if level > 0:
+            ds_next = xr.Dataset()
+            for var in ['speed', 'vx', 'vy', 'speed_error', 'vx_error', 'vy_error']:
+                if var in ds_batch and 'y' in ds_batch[var].dims and 'x' in ds_batch[var].dims:
+                    ds_next[var] = ds_batch[var].coarsen(x=2, y=2, boundary='pad').mean(keep_attrs=True)
+                elif var in ds_batch:
+                    ds_next[var] = ds_batch[var]
+                    
+            if 'data_source' in ds_batch: ds_next['data_source'] = ds_batch['data_source']
+            if 'time_bnds' in ds_batch: ds_next['time_bnds'] = ds_batch['time_bnds']
+            
+            ds_next = ds_next.assign_coords({
+                'x': ds_batch['x'].coarsen(x=2, boundary='pad').mean(keep_attrs=True),
+                'y': ds_batch['y'].coarsen(y=2, boundary='pad').mean(keep_attrs=True)
+            })
+            ds_batch = ds_next  # Update the pointer for the next iteration
+            
+        # Drop fixed spatial variables so we don't overwrite/conflict with the target group
+        ds_level_write = ds_batch.drop_vars(['x', 'y', 'spatial_ref'], errors='ignore')
+        
+        # Clear any lingering file encoding on the batch before writing
+        for var in ds_level_write.variables:
+            ds_level_write[var].encoding.clear()
+        
+        # Append the ENTIRE batch at once to the group
+        ds_level_write.to_zarr(OUTPUT_ZARR, group=str(level), append_dim='time', mode='a')
+        
+        
+    # --- STEP C: Re-consolidate 1D metadata arrays into single chunks (Zarr v3) ---
+    print("Re-consolidating 1D metadata arrays into single chunks...", flush=True)
+    z_root = zarr.open(OUTPUT_ZARR, mode='a')
 
+    for level in existing_levels:
+        grp = z_root[str(level)]
+        
+        for var_name in ['time', 'time_bnds', 'data_source']:
+            if var_name in grp:
+                arr = grp[var_name]
+                
+                # 1. Read data and preserve attributes
+                full_data = arr[:]
+                saved_attrs = dict(arr.attrs)
+                
+                # 2. Overwrite using the Zarr v3 create_array API
+                grp.create_array(
+                    name=var_name,
+                    data=full_data,
+                    chunks=full_data.shape,  # Forces a single chunk spanning full length
+                    attributes=saved_attrs,
+                    overwrite=True
+                )
+    
     # Save the updated pickle catalog
     with open(CATALOG_FILE, 'wb') as f:
         pickle.dump(existing_epochs, f)

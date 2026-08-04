@@ -18,7 +18,7 @@ def safe_p2p_rechunk(mode):
     )
     client = Client(cluster)
     
-    # CRITICAL: Enable Dask's P2P shuffling for constant-memory rechunking
+    # Enable Dask's P2P shuffling for constant-memory rechunking
     dask.config.set({"array.rechunk.method": "p2p"})
     
     print(f"Dask cluster started with {slurm_cpus} workers.")
@@ -26,12 +26,12 @@ def safe_p2p_rechunk(mode):
 
     # --- 2. PATH DEFINITIONS ---
     base_dir = "/mnt/parscratch/users/gg1bjd/Data/Velocity/Greenland/multisource_zarr"
-    source_path = os.path.join(base_dir, "Greenland_multisource_speed_spatial_200.zarr")
+    source_path = os.path.join(base_dir, "greenland_multisource_velocity_spatial_200.zarr")
     
     if mode == "cubed":
-        final_path = os.path.join(base_dir, "Greenland_multisource_speed_cubed.zarr")
+        final_path = os.path.join(base_dir, "greenland_multisource_velocity_cubed.zarr")
     elif mode == "timeseries":
-        final_path = os.path.join(base_dir, "Greenland_multisource_speed_timeseries.zarr")
+        final_path = os.path.join(base_dir, "greenland_multisource_velocity_timeseries.zarr")
     else:
         raise ValueError(f"Unknown mode: {mode}")
 
@@ -69,6 +69,13 @@ def safe_p2p_rechunk(mode):
     # Write to a temporary path to ensure crash-safety
     # Explicitly set zarr_format=3 if you want to ensure the output is V3
     ds_rechunked.to_zarr(temp_target_path, zarr_format=3)
+    
+    # Explicitly override chunking for 1D/2D metadata variables
+    # Passing -1 forces Dask to use exactly 1 chunk for the entire dimension(s)
+    print("Enforcing single-chunk format for metadata arrays...")
+    for var in ['time', 'time_bnds', 'data_source']:
+        if var in ds_rechunked:
+            ds_rechunked[var] = ds_rechunked[var].chunk(-1)
 
     # --- 5. ATOMIC SWAP ---
     print("Rechunking complete! Performing safe swap...")

@@ -1,0 +1,24 @@
+title: "SHeffield Ice Velocity ExploreR (SHIVER) - Cloud access to a unified dataset of satellite-derived ice surface velocity measurements for the Antarctica Ice Sheet and Greenland Ice Sheet"
+author: Benjamin Davison
+logo: _static/SHIVER_logo_stacked_v1_black_on_transparent_background_simplified.png
+
+# Top-level repository settings
+repository:
+  url: https://github.com/ben-davison/SHIVER-build-zarr
+  path_to_book: docs
+  branch: main
+
+# HTML settings (adds sidebar buttons)
+html:
+  use_repository_button: true
+  use_issues_button: true
+  use_edit_page_button: true
+
+# Control execution of Jupyter notebooks when building
+execute:
+  execute_notebooks: "off"
+
+# Enable standard Sphinx extensions
+sphinx:
+  extra_extensions:
+    - sphinx_copybutton

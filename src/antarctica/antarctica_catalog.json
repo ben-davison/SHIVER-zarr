@@ -1,0 +1,176 @@
+{
+    "dataset_name": "SHIVER Multi-Source Antarctica Ice Velocity",
+    "spatial_extent": {
+        "xmin": -2867900.0,
+        "xmax": 2867900.0,
+        "ymin": -2457900.0,
+        "ymax": 2457900.0,
+        "crs": "EPSG:3413"
+    },
+    "global_citations": [
+        "SHIVER tool: Davison, B. J. (2026). SHeffield Ice Velocity ExploreR (SHIVER): initial release (Version v1.0.0) [Computer software]. Zenodo. https://doi.org/10.5281/zenodo.21378057",
+        "SHIVER zarr compilation method: Davison, B. J. (2026). SHeffield Ice Velocity ExploreR (SHIVER): initial release of Zarr creation code (Version [specify version number]) [Computer software]. Zenodo. https://doi.org/10.5281/zenodo.21375859",
+        "SHIVER method paper: Davison, B. J. et al. (in prep). The SHeffield Ice Velocity ExploreR (SHIVER): an online tool for low latency exploration, analysis and sub-setting of unified satellite-derived ice velocity data for Earth's ice sheets. [specify journal]. https://doi.org/10.xxxx/xxxx.XXXXXXX"
+    ],
+    "sources": {
+        "ENVEO_ALOS": {
+            "start_date": "2009-09-29",
+            "end_date": "2011-02-17",
+            "epochs": 2,
+            "mode_time_separation_days": 46,
+            "citations": [
+                "ENVEO ALOS PALSAR method: Rott, H., Abdel Jaber, W., Wuite, J., Scheiblauer, S., Floricioiu, D., Van Wessem, J.M., Nagler, T., Miranda, N. and Van Den Broeke, M.R., 2018. Changing pattern of ice flow and mass balance for glaciers discharging into the Larsen A and B embayments, Antarctic Peninsula, 2011 to 2016. The Cryosphere, 12(4), pp.1273-1291. DOI: https://doi.org/10.5194/tc-12-1273-2018."
+            ]
+        },
+        "ENVEO_ERS": {
+            "start_date": "1992-01-11",
+            "end_date": "1999-11-10",
+            "epochs": 13,
+            "mode_time_separation_days": 1,
+            "citations": [
+                "ENVEO ERS method: Rott, H., M\u00fcller, F., Nagler, T. and Floricioiu, D., 2011. The imbalance of glaciers after disintegration of Larsen-B ice shelf, Antarctic Peninsula. The Cryosphere, 5(1), pp.125-134. DOI: https://doi.org/10.5194/tc-5-125-2011. ",
+                "ENVEO ERS method: Wuite, J., Rott, H., Hetzenecker, M., Floricioiu, D., De Rydt, J., Gudmundsson, G.H., Nagler, T. and Kern, M., 2015. Evolution of surface velocities and ice discharge of Larsen B outlet glaciers from 1995 to 2013. The Cryosphere, 9(3), pp.957-969. DOI: https://doi.org/10.5194/tc-9-957-2015. "
+            ]
+        },
+        "ENVEO_Sentinel-1_PIG": {
+            "start_date": "2014-10-10",
+            "end_date": "2019-08-21",
+            "epochs": 402,
+            "mode_time_separation_days": 12,
+            "citations": [
+                "ENVEO Sentinel-1 (PIG) method: Wuite, J., Nagler, T., Hetzenecker, M. and Rott, H., 2026. Ten years of polar ice velocity mapping using Copernicus Sentinel-1. Remote Sensing of Environment, 332, p.115092. DOI: https://doi.org/10.1016/j.rse.2025.115092."
+            ]
+        },
+        "ENVEO_TSX": {
+            "start_date": "2007-06-26",
+            "end_date": "2016-12-11",
+            "epochs": 125,
+            "mode_time_separation_days": 11,
+            "citations": [
+                "ENVEO TSX method: Rott, H., Abdel Jaber, W., Wuite, J., Scheiblauer, S., Floricioiu, D., Van Wessem, J.M., Nagler, T., Miranda, N. and Van Den Broeke, M.R., 2018. Changing pattern of ice flow and mass balance for glaciers discharging into the Larsen A and B embayments, Antarctic Peninsula, 2011 to 2016. The Cryosphere, 12(4), pp.1273-1291. DOI: https://doi.org/10.5194/tc-12-1273-2018."
+            ]
+        },
+        "ENVEO_TSX_PALSAR": {
+            "start_date": "2010-07-02",
+            "end_date": "2012-03-09",
+            "epochs": 1,
+            "mode_time_separation_days": 616,
+            "citations": [
+                "ENVEO TSX & PALSAR method: Rott, H., Abdel Jaber, W., Wuite, J., Scheiblauer, S., Floricioiu, D., Van Wessem, J.M., Nagler, T., Miranda, N. and Van Den Broeke, M.R., 2018. Changing pattern of ice flow and mass balance for glaciers discharging into the Larsen A and B embayments, Antarctic Peninsula, 2011 to 2016. The Cryosphere, 12(4), pp.1273-1291. DOI: https://doi.org/10.5194/tc-12-1273-2018."
+            ]
+        },
+        "ENVEO_TSX_Sentinel-1": {
+            "start_date": "2015-10-31",
+            "end_date": "2016-12-11",
+            "epochs": 1,
+            "mode_time_separation_days": 407,
+            "citations": [
+                "ENVEO TSX & Sentinel-1 method: Rott, H., Abdel Jaber, W., Wuite, J., Scheiblauer, S., Floricioiu, D., Van Wessem, J.M., Nagler, T., Miranda, N. and Van Den Broeke, M.R., 2018. Changing pattern of ice flow and mass balance for glaciers discharging into the Larsen A and B embayments, Antarctic Peninsula, 2011 to 2016. The Cryosphere, 12(4), pp.1273-1291. DOI: https://doi.org/10.5194/tc-12-1273-2018."
+            ]
+        },
+        "ENVEO_monthly": {
+            "start_date": "2014-10-01",
+            "end_date": "2021-12-31",
+            "epochs": 87,
+            "mode_time_separation_days": 30,
+            "citations": [
+                "ENVEO monthly method: Wuite, J., Nagler, T., Hetzenecker, M. and Rott, H., 2026. Ten years of polar ice velocity mapping using Copernicus Sentinel-1. Remote Sensing of Environment, 332, p.115092. DOI: https://doi.org/10.1016/j.rse.2025.115092."
+            ]
+        },
+        "ESA_CCI_annual": {
+            "start_date": "2021-04-01",
+            "end_date": "2024-03-31",
+            "epochs": 3,
+            "mode_time_separation_days": 364,
+            "citations": [
+                "ESA CCI annual data: Wuite, J., (2026): Ice sheet velocity for Antarctica and Greenland derived from satellite observations. Copernicus Climate Change Service (C3S) Climate Data Store (CDS), DOI: 10.24381/cds.0b96b838 (Accessed on 26-Apr-2026)."
+            ]
+        },
+        "ITS_LIVE_annual": {
+            "start_date": "1985-01-01",
+            "end_date": "2024-12-31",
+            "epochs": 40,
+            "mode_time_separation_days": 364,
+            "citations": [
+                "ITS_LIVE observations: Gardner, A.S., Greene, C.A., Kennedy, J.H., Fahnestock, M.A., Liukis, M., L\u00f3pez, L.A., Lei, Y., Scambos, T.A. and Dehecq, A., 2025. ITS_LIVE global glacier velocity data in near-real time. The Cryosphere, 19(9), pp.3517-3533. DOI: https://doi.org/10.5194/tc-19-3517-2025."
+            ]
+        },
+        "Joughin_Sentinel-1": {
+            "start_date": "2015-04-01",
+            "end_date": "2020-09-29",
+            "epochs": 22,
+            "mode_time_separation_days": 90,
+            "citations": [
+                "Joughin Sentinel-1 (quarterly) method: Joughin, I., Shapero, D., Smith, B., Dutrieux, P. and Barham, M., 2021. Ice-shelf retreat drives recent Pine Island Glacier speedup. Science Advances, 7(24), p.eabg3080. DOI: 10.1126/sciadv.abg3080."
+            ]
+        },
+        "Joughin_TSX": {
+            "start_date": "2009-01-15",
+            "end_date": "2016-01-15",
+            "epochs": 13,
+            "mode_time_separation_days": 150,
+            "citations": [
+                "Joughin TSX method: Joughin, I., Shapero, D., Smith, B., Dutrieux, P. and Barham, M., 2021. Ice-shelf retreat drives recent Pine Island Glacier speedup. Science Advances, 7(24), p.eabg3080. DOI: 10.1126/sciadv.abg3080."
+            ]
+        },
+        "Li_Totten": {
+            "start_date": "1963-01-01",
+            "end_date": "1989-12-31",
+            "epochs": 3,
+            "mode_time_separation_days": 364,
+            "citations": [
+                "Li et al. (Totten) method: Li, R., Cheng, Y., Chang, T., Gwyther, D.E., Forbes, M., An, L., Xia, M., Yuan, X., Qiao, G., Tong, X. and Ye, W., 2023. Satellite record reveals 1960s acceleration of Totten ice shelf in East Antarctica. Nature Communications, 14(1), p.4061. DOI: https://doi.org/10.1038/s41467-023-39588-x."
+            ]
+        },
+        "MEaSUREs_ASE": {
+            "start_date": "1996-01-01",
+            "end_date": "2012-12-31",
+            "epochs": 10,
+            "mode_time_separation_days": 364,
+            "citations": [
+                "MEaSUREs ASE data: Rignot, E., Mouginot, J. & Scheuchl, B. (2014). MEaSUREs InSAR-Based Ice Velocity of the Amundsen Sea Embayment, Antarctica. (NSIDC-0545, Version 1). [Data Set]. Boulder, Colorado USA. NASA National Snow and Ice Data Center Distributed Active Archive Center. https://doi.org/10.5067/MEASURES/CRYOSPHERE/nsidc-0545.001. Date Accessed 04-16-2026.",
+                "MEaSUREs ASE Method: Mouginot, J., Rignot, E. and Scheuchl, B., 2014. Sustained increase in ice discharge from the Amundsen Sea Embayment, West Antarctica, from 1973 to 2013. Geophysical Research Letters, 41(5), pp.1576-1584. DOI: https://doi.org/10.1002/2013GL059069."
+            ]
+        },
+        "MEaSUREs_annual": {
+            "start_date": "2000-07-01",
+            "end_date": "2025-06-30",
+            "epochs": 21,
+            "mode_time_separation_days": 364,
+            "citations": [
+                "MEaSUREs annual data: Mouginot, J., Scheuchl, B. & Rignot, E. (2017). MEaSUREs Annual Antarctic Ice Velocity Maps. (NSIDC-0720, Version 1). [Data Set]. Boulder, Colorado USA. NASA National Snow and Ice Data Center Distributed Active Archive Center. https://doi.org/10.5067/9T4EPQXTJYW9. Date Accessed 04-16-2026.",
+                "Method Paper: Mouginot, J., Rignot, E., Scheuchl, B. and Millan, R., 2017. Comprehensive annual ice sheet velocity mapping using Landsat-8, Sentinel-1, and RADARSAT-2 data. Remote Sensing, 9(4), p.364. DOI: https://doi.org/10.3390/rs9040364."
+            ]
+        },
+        "MEaSUREs_multiyear": {
+            "start_date": "1995-07-01",
+            "end_date": "2022-06-30",
+            "epochs": 4,
+            "mode_time_separation_days": 729,
+            "citations": [
+                "MEaSUREs multiyear data: Rignot, E., Scheuchl, B., Mouginot, J. & Jeong, S. (2022). MEaSUREs Multi-year Reference Velocity Maps of the Antarctic Ice Sheet. (NSIDC-0761, Version 1). [Data Set]. Boulder, Colorado USA. NASA National Snow and Ice Data Center Distributed Active Archive Center. https://doi.org/10.5067/FB851ZIZYX5O. Date Accessed 04-16-2026.",
+                "Method: Rignot, E., Mouginot, J., Scheuchl, B. and Jeong, S., 2022. Changes in Antarctic ice sheet motion derived from satellite radar interferometry between 1995 and 2022. Geophysical Research Letters, 49(23), p.e2022GL100141. DOI: https://doi.org/10.1029/2022GL100141. "
+            ]
+        },
+        "SHIFT": {
+            "start_date": "2014-11-25",
+            "end_date": "2026-01-20",
+            "epochs": 2033,
+            "mode_time_separation_days": 12,
+            "citations": [
+                "SHIFT data: Davison, B. J. and Sole, A. J. 2026. SHeffield Ice Flow Tracker (SHIFT) velocity data: Antarctic Peninsula ice surface velocity fields derived from intensity tracking of Sentinel-1 Synthetic Aperture Radar image pairs. The University of Sheffield. doi: 10.15131/shef.data.33113111.v1.",
+                "SHIFT method: Davison, B.J., Sole, A.J., Cowton, T.R., Lea, J.M., Slater, D.A., Fahrner, D. and Nienow, P.W., 2020. Subglacial drainage evolution modulates seasonal ice flow variability of three tidewater glaciers in southwest Greenland. Journal of Geophysical Research: Earth Surface, 125(9), p.e2019JF005492. DOI: https://doi.org/10.1029/2019JF005492."
+            ]
+        },
+        "SID_annual": {
+            "start_date": "2015-01-01",
+            "end_date": "2024-12-31",
+            "epochs": 10,
+            "mode_time_separation_days": 364,
+            "citations": [
+                "SID data: Hogg, A.E.; Davison, B.J.; Rigby, R.; Wallis, B.J.; Slater, R.A.W. (2025): EOCIS: Ice Sheet Velocity, V1. NERC EDS Centre for Environmental Data Analysis, 17 April 2025. doi:10.5285/c0b464b3da9845758cd33591e57c4abf. https://dx.doi.org/10.5285/c0b464b3da9845758cd33591e57c4abf",
+                "SID method: Davison, B.J., Hogg, A.E., Rigby, R., Veldhuijsen, S., van Wessem, J.M., van den Broeke, M.R., Holland, P.R., Selley, H.L. and Dutrieux, P., 2023. Sea level rise from West Antarctic mass loss significantly modified by large snowfall anomalies. Nature Communications, 14(1), p.1479. DOI: https://doi.org/10.1038/s41467-023-36990-3."
+            ]
+        }
+    }
+}

@@ -17,9 +17,9 @@ except ImportError:
 
 # --- 1. CONFIGURATION ---
 PROMICE_DIR = "/mnt/parscratch/users/gg1bjd/Data/Velocity/Greenland/PROMICE_edition5"
-OUTPUT_ZARR = "/mnt/parscratch/users/gg1bjd/Data/Velocity/Greenland/multisource_zarr/Greenland_multisource_speed_spatial_200.zarr"
+OUTPUT_ZARR = "/mnt/parscratch/users/gg1bjd/Data/Velocity/Greenland/multisource_zarr/greenland_multisource_velocity_spatial_200.zarr"
 PKL_CATALOG = "/mnt/parscratch/users/gg1bjd/Data/Velocity/Greenland/multisource_zarr/master_epoch_catalog.pkl"
-JSON_CATALOG = "/mnt/parscratch/users/gg1bjd/Data/Velocity/Greenland/multisource_zarr/Greenland_multisource_speed_catalog.json"
+JSON_CATALOG = "/mnt/parscratch/users/gg1bjd/Data/Velocity/Greenland/multisource_zarr/greenland_multisource_velocity_catalog.json"
 
 # --- HELPERS ---
 def apply_noise(t, tb):
@@ -32,31 +32,42 @@ def preprocess_promice(file_path):
     """Opens, formats, and converts units for a single PROMICE NetCDF file."""
     ds = xr.open_dataset(file_path, decode_times=True)
     
+    # 1. Keep relevant variables
     vars_to_keep = [
         'land_ice_surface_velocity_magnitude',
         'land_ice_surface_velocity_magnitude_std',
+        'land_ice_surface_easting_velocity',
+        'land_ice_surface_northing_velocity',
+        'land_ice_surface_easting_velocity_std',
+        'land_ice_surface_northing_velocity_std',
         'crs',
         'time_bnds'
     ]
     ds = ds[vars_to_keep]
     
+    # 2. Rename to match our schema
     ds = ds.rename({
         'land_ice_surface_velocity_magnitude': 'speed',
-        'land_ice_surface_velocity_magnitude_std': 'error',
+        'land_ice_surface_velocity_magnitude_std': 'speed_error',
+        'land_ice_surface_easting_velocity': 'vx',
+        'land_ice_surface_northing_velocity': 'vy',
+        'land_ice_surface_easting_velocity_std': 'vx_error',
+        'land_ice_surface_northing_velocity_std': 'vy_error',
         'crs': 'spatial_ref'
     })
     
-    ds['speed'] = ds['speed'] * 365.25
-    ds['error'] = ds['error'] * 365.25
+    # 3. Process all velocity/error variables (convert m/day to m/year, round to 1 decimal place, set attributes)
+    vel_vars = ['speed', 'speed_error', 'vx', 'vy', 'vx_error', 'vy_error']
+    for var in vel_vars:
+        ds[var] = np.round(ds[var] * 365.25, 1)
+        ds[var].attrs['units'] = 'm/year'
+        ds[var].attrs['grid_mapping'] = 'spatial_ref'
     
-    ds['speed'].attrs['units'] = 'm/year'
-    ds['error'].attrs['units'] = 'm/year'
-    ds['speed'].attrs['grid_mapping'] = 'spatial_ref'
-    ds['error'].attrs['grid_mapping'] = 'spatial_ref'
-    
+    # 4. Add data_source identifier
     ds['data_source'] = xr.DataArray(np.array(["PROMICE"], dtype="<U50"), dims=["time"])
     
-    if ds['time_bnds'].dims == ('bnds', 'time'):
+    # 5. Fix time bounds dimensions and clean encoding
+    if 'time_bnds' in ds and ds['time_bnds'].dims == ('bnds', 'time'):
         ds['time_bnds'] = ds['time_bnds'].transpose('time', 'bnds')
         
     for var in ['time', 'time_bnds']:
@@ -64,6 +75,7 @@ def preprocess_promice(file_path):
             ds[var].encoding.clear()
             
     return ds
+
 
 # --- 3. IDENTIFY NEW FILES ---
 def get_new_promice_files_from_zarr():
@@ -177,22 +189,25 @@ def build_json_catalog(zarr_path, region):
 
 # --- 5. APPEND AND UPDATE ---
 def append_new_data(new_files):
-    """Processes, applies noise, appends to Zarr, and updates catalogs."""
+    """Processes, applies noise, appends batch to Zarr, and updates catalogs."""
     if not new_files:
         print("No new PROMICE files detected. Gracefully exiting.")
         sys.exit(0)
         
-    print(f"Detected {len(new_files)} new PROMICE files. Beginning append...")
+    print(f"Detected {len(new_files)} new PROMICE files. Beginning batch append...")
     
-    # Load the pickle file if it exists (Optional, for downstream compatibility)
+    # Load catalog if it exists
     existing_epochs = []
     if os.path.exists(PKL_CATALOG):
         with open(PKL_CATALOG, 'rb') as f:
             existing_epochs = pickle.load(f)
+            
+    batch_datasets = []
+    processed_epochs = []
     
+    # --- STEP 1: Pre-process all files into a batch list ---
     for i, f in enumerate(new_files):
-        print(f"  [{i+1}/{len(new_files)}] Appending {os.path.basename(f)}")
-        
+        print(f"  [{i+1}/{len(new_files)}] Pre-processing {os.path.basename(f)}")
         try:
             ds_new = preprocess_promice(f)
             
@@ -205,27 +220,66 @@ def append_new_data(new_files):
                 
             t_n, tb_n = apply_noise(t, tb)
             
+            # Format time coordinates
             ds_new = ds_new.assign_coords(time=[t_n])
             ds_new['time_bnds'].values = [tb_n] if ds_new['time_bnds'].ndim == 2 else tb_n
             
-            ds_to_write = ds_new.drop_vars(['x', 'y', 'spatial_ref'], errors='ignore')
-            ds_to_write.to_zarr(OUTPUT_ZARR, append_dim='time', mode='a')
-            
-            existing_epochs.append({
+            batch_datasets.append(ds_new)
+            processed_epochs.append({
                 'time': t_n, 
                 'time_bnds': tb_n, 
                 'source': 'PROMICE', 
                 'path': f
             })
             
-            # Save the pickle catalog iteratively to maintain sync
-            with open(PKL_CATALOG, 'wb') as pkl_file:
-                pickle.dump(existing_epochs, pkl_file)
-                
         except Exception as e:
-            print(f"Error appending {f}: {e}")
-            print("Stopping execution to prevent further corruption.")
-            break # Exit the loop, but proceed to rebuild JSON metadata with what succeeded
+            print(f"Error pre-processing {f}: {e}")
+            print("Halting batch processing to prevent further store corruption.")
+            break
+
+    if not batch_datasets:
+        print("No valid datasets were prepared for appending. Exiting.")
+        sys.exit(1)
+
+    # --- STEP 2: Concatenate and append batch to Zarr ---
+    print(f"Concatenating {len(batch_datasets)} files into a single batch dataset...", flush=True)
+    ds_batch = xr.concat(batch_datasets, dim='time')
+    
+    # Drop fixed spatial variables so we don't conflict with target dataset
+    ds_batch = ds_batch.drop_vars(['x', 'y', 'spatial_ref'], errors='ignore')
+    
+    # Clear lingering encodings from input NetCDF/GeoTIFF files
+    for var in ds_batch.variables:
+        ds_batch[var].encoding.clear()
+        
+    print("Writing batch append to Zarr store...", flush=True)
+    ds_batch.to_zarr(OUTPUT_ZARR, append_dim='time', mode='a')
+    
+    # Update and save the catalog for successfully processed files
+    existing_epochs.extend(processed_epochs)
+    with open(PKL_CATALOG, 'wb') as pkl_file:
+        pickle.dump(existing_epochs, pkl_file)
+
+    # --- STEP 3: Re-consolidate 1D metadata arrays into single chunks (Zarr v3 API) ---
+    print("Re-consolidating 1D metadata arrays into single chunks...", flush=True)
+    z_root = zarr.open(OUTPUT_ZARR, mode='a')
+
+    for var_name in ['time', 'time_bnds', 'data_source']:
+        if var_name in z_root:
+            arr = z_root[var_name]
+            
+            # Read full updated array into memory and preserve attributes
+            full_data = arr[:]
+            saved_attrs = dict(arr.attrs)
+            
+            # Overwrite array as a single chunk covering full length
+            z_root.create_array(
+                name=var_name,
+                data=full_data,
+                chunks=full_data.shape,
+                attributes=saved_attrs,
+                overwrite=True
+            )
 
     # Consolidate the metadata
     zarr.consolidate_metadata(OUTPUT_ZARR)

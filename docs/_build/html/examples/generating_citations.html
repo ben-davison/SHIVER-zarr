@@ -1,0 +1,804 @@
+
+
+<!DOCTYPE html>
+
+
+<html lang="en" data-content_root="" >
+
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" /><meta name="generator" content="Docutils 0.18.1: http://docutils.sourceforge.net/" />
+
+    <title>Generating citations for Contributing Datasets &#8212; SHeffield Ice Velocity ExploreR (SHIVER) - Cloud access to a unified dataset of satellite-derived ice surface velocity measurements for the Antarctica Ice Sheet and Greenland Ice Sheet</title>
+  
+  
+  
+  <script data-cfasync="false">
+    document.documentElement.dataset.mode = localStorage.getItem("mode") || "";
+    document.documentElement.dataset.theme = localStorage.getItem("theme") || "";
+  </script>
+  
+  <!-- Loaded before other Sphinx assets -->
+  <link href="../_static/styles/theme.css?digest=dfe6caa3a7d634c4db9b" rel="stylesheet" />
+<link href="../_static/styles/bootstrap.css?digest=dfe6caa3a7d634c4db9b" rel="stylesheet" />
+<link href="../_static/styles/pydata-sphinx-theme.css?digest=dfe6caa3a7d634c4db9b" rel="stylesheet" />
+
+  
+  <link href="../_static/vendor/fontawesome/6.5.2/css/all.min.css?digest=dfe6caa3a7d634c4db9b" rel="stylesheet" />
+  <link rel="preload" as="font" type="font/woff2" crossorigin href="../_static/vendor/fontawesome/6.5.2/webfonts/fa-solid-900.woff2" />
+<link rel="preload" as="font" type="font/woff2" crossorigin href="../_static/vendor/fontawesome/6.5.2/webfonts/fa-brands-400.woff2" />
+<link rel="preload" as="font" type="font/woff2" crossorigin href="../_static/vendor/fontawesome/6.5.2/webfonts/fa-regular-400.woff2" />
+
+    <link rel="stylesheet" type="text/css" href="../_static/pygments.css" />
+    <link rel="stylesheet" href="../_static/styles/sphinx-book-theme.css?digest=14f4ca6b54d191a8c7657f6c759bf11a5fb86285" type="text/css" />
+    <link rel="stylesheet" type="text/css" href="../_static/togglebutton.css" />
+    <link rel="stylesheet" type="text/css" href="../_static/copybutton.css" />
+    <link rel="stylesheet" type="text/css" href="../_static/mystnb.4510f1fc1dee50b3e5859aac5469c37c29e427902b24a333a5f9fcb2f0b3ac41.css" />
+    <link rel="stylesheet" type="text/css" href="../_static/sphinx-thebe.css" />
+    <link rel="stylesheet" type="text/css" href="../_static/design-style.4045f2051d55cab465a707391d5b2007.min.css" />
+  
+  <!-- Pre-loaded scripts that we'll load fully later -->
+  <link rel="preload" as="script" href="../_static/scripts/bootstrap.js?digest=dfe6caa3a7d634c4db9b" />
+<link rel="preload" as="script" href="../_static/scripts/pydata-sphinx-theme.js?digest=dfe6caa3a7d634c4db9b" />
+  <script src="../_static/vendor/fontawesome/6.5.2/js/all.min.js?digest=dfe6caa3a7d634c4db9b"></script>
+
+    <script data-url_root="../" id="documentation_options" src="../_static/documentation_options.js"></script>
+    <script src="../_static/jquery.js"></script>
+    <script src="../_static/underscore.js"></script>
+    <script src="../_static/_sphinx_javascript_frameworks_compat.js"></script>
+    <script src="../_static/doctools.js"></script>
+    <script src="../_static/clipboard.min.js"></script>
+    <script src="../_static/copybutton.js"></script>
+    <script src="../_static/scripts/sphinx-book-theme.js?digest=5a5c038af52cf7bc1a1ec88eea08e6366ee68824"></script>
+    <script>let toggleHintShow = 'Click to show';</script>
+    <script>let toggleHintHide = 'Click to hide';</script>
+    <script>let toggleOpenOnPrint = 'true';</script>
+    <script src="../_static/togglebutton.js"></script>
+    <script>var togglebuttonSelector = '.toggle, .admonition.dropdown';</script>
+    <script src="../_static/design-tabs.js"></script>
+    <script>const THEBE_JS_URL = "https://unpkg.com/thebe@0.8.2/lib/index.js"
+const thebe_selector = ".thebe,.cell"
+const thebe_selector_input = "pre"
+const thebe_selector_output = ".output, .cell_output"
+</script>
+    <script async="async" src="../_static/sphinx-thebe.js"></script>
+    <script>DOCUMENTATION_OPTIONS.pagename = 'examples/generating_citations';</script>
+    <link rel="index" title="Index" href="../genindex.html" />
+    <link rel="search" title="Search" href="../search.html" />
+    <link rel="next" title="Large spatial scale extraction of velocity fields" href="simple_layers.html" />
+    <link rel="prev" title="Timeseries extraction" href="simple_timeseries.html" />
+  <meta name="viewport" content="width=device-width, initial-scale=1"/>
+  <meta name="docsearch:language" content="en"/>
+  </head>
+  
+  
+  <body data-bs-spy="scroll" data-bs-target=".bd-toc-nav" data-offset="180" data-bs-root-margin="0px 0px -60%" data-default-mode="">
+
+  
+  
+  <div id="pst-skip-link" class="skip-link d-print-none"><a href="#main-content">Skip to main content</a></div>
+  
+  <div id="pst-scroll-pixel-helper"></div>
+  
+  <button type="button" class="btn rounded-pill" id="pst-back-to-top">
+    <i class="fa-solid fa-arrow-up"></i>Back to top</button>
+
+  
+  <input type="checkbox"
+          class="sidebar-toggle"
+          id="pst-primary-sidebar-checkbox"/>
+  <label class="overlay overlay-primary" for="pst-primary-sidebar-checkbox"></label>
+  
+  <input type="checkbox"
+          class="sidebar-toggle"
+          id="pst-secondary-sidebar-checkbox"/>
+  <label class="overlay overlay-secondary" for="pst-secondary-sidebar-checkbox"></label>
+  
+  <div class="search-button__wrapper">
+    <div class="search-button__overlay"></div>
+    <div class="search-button__search-container">
+<form class="bd-search d-flex align-items-center"
+      action="../search.html"
+      method="get">
+  <i class="fa-solid fa-magnifying-glass"></i>
+  <input type="search"
+         class="form-control"
+         name="q"
+         id="search-input"
+         placeholder="Search this book..."
+         aria-label="Search this book..."
+         autocomplete="off"
+         autocorrect="off"
+         autocapitalize="off"
+         spellcheck="false"/>
+  <span class="search-button__kbd-shortcut"><kbd class="kbd-shortcut__modifier">Ctrl</kbd>+<kbd>K</kbd></span>
+</form></div>
+  </div>
+
+  <div class="pst-async-banner-revealer d-none">
+  <aside id="bd-header-version-warning" class="d-none d-print-none" aria-label="Version warning"></aside>
+</div>
+
+  
+    <header class="bd-header navbar navbar-expand-lg bd-navbar d-print-none">
+    </header>
+  
+
+  <div class="bd-container">
+    <div class="bd-container__inner bd-page-width">
+      
+      
+      
+      <div class="bd-sidebar-primary bd-sidebar">
+        
+
+  
+  <div class="sidebar-header-items sidebar-primary__section">
+    
+    
+    
+    
+  </div>
+  
+    <div class="sidebar-primary-items__start sidebar-primary__section">
+        <div class="sidebar-primary-item">
+
+  
+    
+  
+
+<a class="navbar-brand logo" href="../index.html">
+  
+  
+  
+  
+  
+    
+    
+      
+    
+    
+    <img src="../_static/SHIVER_logo_stacked_v1_black_on_transparent_background_simplified.png" class="logo__image only-light" alt="SHeffield Ice Velocity ExploreR (SHIVER) - Cloud access to a unified dataset of satellite-derived ice surface velocity measurements for the Antarctica Ice Sheet and Greenland Ice Sheet - Home"/>
+    <script>document.write(`<img src="../_static/SHIVER_logo_stacked_v1_black_on_transparent_background_simplified.png" class="logo__image only-dark" alt="SHeffield Ice Velocity ExploreR (SHIVER) - Cloud access to a unified dataset of satellite-derived ice surface velocity measurements for the Antarctica Ice Sheet and Greenland Ice Sheet - Home"/>`);</script>
+  
+  
+</a></div>
+        <div class="sidebar-primary-item"><nav class="bd-links" id="bd-docs-nav" aria-label="Main">
+    <div class="bd-toc-item navbar-nav active">
+        
+        <ul class="nav bd-sidenav bd-sidenav__home-link">
+            <li class="toctree-l1">
+                <a class="reference internal" href="../index.html">
+                    SHeffield Ice Velocity ExploreR
+                </a>
+            </li>
+        </ul>
+        <p aria-level="2" class="caption" role="heading"><span class="caption-text">Getting Started</span></p>
+<ul class="nav bd-sidenav">
+<li class="toctree-l1"><a class="reference internal" href="../getting_started/why.html">Why SHIVER?</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../getting_started/contributing_data.html">Contributing Datasets</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../getting_started/unified_data.html">Unified Datasets</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../getting_started/comparison.html">Comparison of Contributing Datasets</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../getting_started/cite.html">Cite</a></li>
+</ul>
+<p aria-level="2" class="caption" role="heading"><span class="caption-text">Examples</span></p>
+<ul class="current nav bd-sidenav">
+<li class="toctree-l1"><a class="reference internal" href="zarr_structure.html">Inspecting the Zarr Structure</a></li>
+<li class="toctree-l1"><a class="reference internal" href="simple_timeseries.html">Timeseries extraction</a></li>
+<li class="toctree-l1 current active"><a class="current reference internal" href="#">Generating citations for Contributing Datasets</a></li>
+<li class="toctree-l1"><a class="reference internal" href="simple_layers.html">Large spatial scale extraction of velocity fields</a></li>
+<li class="toctree-l1"><a class="reference internal" href="simple_subset.html">Datacube subsetting</a></li>
+<li class="toctree-l1"><a class="reference internal" href="temporal_statistics.html">Calculating temporal statistics (advanced)</a></li>
+</ul>
+<p aria-level="2" class="caption" role="heading"><span class="caption-text">Appendix</span></p>
+<ul class="nav bd-sidenav">
+<li class="toctree-l1"><a class="reference internal" href="../appendix/faq.html">FAQ</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../appendix/versions.html">Version Updates</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../appendix/references.html">References</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../appendix/acknowledgements.html">Acknowledgements</a></li>
+</ul>
+
+    </div>
+</nav></div>
+    </div>
+  
+  
+  <div class="sidebar-primary-items__end sidebar-primary__section">
+  </div>
+  
+  <div id="rtd-footer-container"></div>
+
+
+      </div>
+      
+      <main id="main-content" class="bd-main" role="main">
+        
+        
+
+<div class="sbt-scroll-pixel-helper"></div>
+
+          <div class="bd-content">
+            <div class="bd-article-container">
+              
+              <div class="bd-header-article d-print-none">
+<div class="header-article-items header-article__inner">
+  
+    <div class="header-article-items__start">
+      
+        <div class="header-article-item"><label class="sidebar-toggle primary-toggle btn btn-sm" for="__primary" title="Toggle primary sidebar" data-bs-placement="bottom" data-bs-toggle="tooltip">
+  <span class="fa-solid fa-bars"></span>
+</label></div>
+      
+    </div>
+  
+  
+    <div class="header-article-items__end">
+      
+        <div class="header-article-item">
+
+<div class="article-header-buttons">
+
+
+
+
+
+<div class="dropdown dropdown-source-buttons">
+  <button class="btn dropdown-toggle" type="button" data-bs-toggle="dropdown" aria-expanded="false" aria-label="Source repositories">
+    <i class="fab fa-github"></i>
+  </button>
+  <ul class="dropdown-menu">
+      
+      
+      
+      <li><a href="https://github.com/ben-davison/SHIVER-build-zarr" target="_blank"
+   class="btn btn-sm btn-source-repository-button dropdown-item"
+   title="Source repository"
+   data-bs-placement="left" data-bs-toggle="tooltip"
+>
+  
+
+<span class="btn__icon-container">
+  <i class="fab fa-github"></i>
+  </span>
+<span class="btn__text-container">Repository</span>
+</a>
+</li>
+      
+      
+      
+      
+      <li><a href="https://github.com/ben-davison/SHIVER-build-zarr/edit/main/docs/examples/generating_citations.ipynb" target="_blank"
+   class="btn btn-sm btn-source-edit-button dropdown-item"
+   title="Suggest edit"
+   data-bs-placement="left" data-bs-toggle="tooltip"
+>
+  
+
+<span class="btn__icon-container">
+  <i class="fas fa-pencil-alt"></i>
+  </span>
+<span class="btn__text-container">Suggest edit</span>
+</a>
+</li>
+      
+      
+      
+      
+      <li><a href="https://github.com/ben-davison/SHIVER-build-zarr/issues/new?title=Issue%20on%20page%20%2Fexamples/generating_citations.html&body=Your%20issue%20content%20here." target="_blank"
+   class="btn btn-sm btn-source-issues-button dropdown-item"
+   title="Open an issue"
+   data-bs-placement="left" data-bs-toggle="tooltip"
+>
+  
+
+<span class="btn__icon-container">
+  <i class="fas fa-lightbulb"></i>
+  </span>
+<span class="btn__text-container">Open issue</span>
+</a>
+</li>
+      
+  </ul>
+</div>
+
+
+
+
+
+
+<div class="dropdown dropdown-download-buttons">
+  <button class="btn dropdown-toggle" type="button" data-bs-toggle="dropdown" aria-expanded="false" aria-label="Download this page">
+    <i class="fas fa-download"></i>
+  </button>
+  <ul class="dropdown-menu">
+      
+      
+      
+      <li><a href="../_sources/examples/generating_citations.ipynb" target="_blank"
+   class="btn btn-sm btn-download-source-button dropdown-item"
+   title="Download source file"
+   data-bs-placement="left" data-bs-toggle="tooltip"
+>
+  
+
+<span class="btn__icon-container">
+  <i class="fas fa-file"></i>
+  </span>
+<span class="btn__text-container">.ipynb</span>
+</a>
+</li>
+      
+      
+      
+      
+      <li>
+<button onclick="window.print()"
+  class="btn btn-sm btn-download-pdf-button dropdown-item"
+  title="Print to PDF"
+  data-bs-placement="left" data-bs-toggle="tooltip"
+>
+  
+
+<span class="btn__icon-container">
+  <i class="fas fa-file-pdf"></i>
+  </span>
+<span class="btn__text-container">.pdf</span>
+</button>
+</li>
+      
+  </ul>
+</div>
+
+
+
+
+<button onclick="toggleFullScreen()"
+  class="btn btn-sm btn-fullscreen-button"
+  title="Fullscreen mode"
+  data-bs-placement="bottom" data-bs-toggle="tooltip"
+>
+  
+
+<span class="btn__icon-container">
+  <i class="fas fa-expand"></i>
+  </span>
+
+</button>
+
+
+
+<script>
+document.write(`
+  <button class="btn btn-sm nav-link pst-navbar-icon theme-switch-button" title="light/dark" aria-label="light/dark" data-bs-placement="bottom" data-bs-toggle="tooltip">
+    <i class="theme-switch fa-solid fa-sun fa-lg" data-mode="light"></i>
+    <i class="theme-switch fa-solid fa-moon fa-lg" data-mode="dark"></i>
+    <i class="theme-switch fa-solid fa-circle-half-stroke fa-lg" data-mode="auto"></i>
+  </button>
+`);
+</script>
+
+
+<script>
+document.write(`
+  <button class="btn btn-sm pst-navbar-icon search-button search-button__button" title="Search" aria-label="Search" data-bs-placement="bottom" data-bs-toggle="tooltip">
+    <i class="fa-solid fa-magnifying-glass fa-lg"></i>
+  </button>
+`);
+</script>
+
+</div></div>
+      
+    </div>
+  
+</div>
+</div>
+              
+              
+
+<div id="jb-print-docs-body" class="onlyprint">
+    <h1>Generating citations for Contributing Datasets</h1>
+    <!-- Table of contents -->
+    <div id="print-main-content">
+        <div id="jb-print-toc">
+            
+        </div>
+    </div>
+</div>
+
+              
+                
+<div id="searchbox"></div>
+                <article class="bd-article">
+                  
+  <section class="tex2jax_ignore mathjax_ignore" id="generating-citations-for-contributing-datasets">
+<h1>Generating citations for Contributing Datasets<a class="headerlink" href="#generating-citations-for-contributing-datasets" title="Permalink to this heading">#</a></h1>
+<p>The SHIVER unified datasets are a compilation of many published ice velocity datasets. Anytime you use output from SHIVER, you should cite the contributing datasets that your query intersected, as well as the unified dataset.</p>
+<p>If you extract a timeseries of ice velocity from a given location, your query could intersect up to 17 contributing datasets. This notebook describes how to automatically generate citations for those datasets.</p>
+<p>To begin with, let’s repeat the timeseries extraction shown in the previous notebook and pull the data sources for that timeseries.</p>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="kn">import</span><span class="w"> </span><span class="nn">xarray</span><span class="w"> </span><span class="k">as</span><span class="w"> </span><span class="nn">xr</span>
+<span class="kn">import</span><span class="w"> </span><span class="nn">pandas</span><span class="w"> </span><span class="k">as</span><span class="w"> </span><span class="nn">pd</span>
+<span class="kn">import</span><span class="w"> </span><span class="nn">numpy</span><span class="w"> </span><span class="k">as</span><span class="w"> </span><span class="nn">np</span>
+<span class="kn">import</span><span class="w"> </span><span class="nn">matplotlib.pyplot</span><span class="w"> </span><span class="k">as</span><span class="w"> </span><span class="nn">plt</span>
+<span class="kn">from</span><span class="w"> </span><span class="nn">pyproj</span><span class="w"> </span><span class="kn">import</span> <span class="n">Transformer</span>
+
+<span class="n">greenland_url</span> <span class="o">=</span> <span class="s2">&quot;https://data.source.coop/uos-shiver/greenland/greenland_multisource_velocity_timeseries.zarr&quot;</span>
+
+<span class="c1"># Convert geographic coordinates (Lon/Lat) to EPSG:3413 (X/Y)</span>
+<span class="n">transformer</span> <span class="o">=</span> <span class="n">Transformer</span><span class="o">.</span><span class="n">from_crs</span><span class="p">(</span><span class="s2">&quot;EPSG:4326&quot;</span><span class="p">,</span> <span class="s2">&quot;EPSG:3413&quot;</span><span class="p">,</span> <span class="n">always_xy</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span>
+<span class="n">lon</span><span class="p">,</span> <span class="n">lat</span> <span class="o">=</span> <span class="o">-</span><span class="mf">50.1874</span><span class="p">,</span> <span class="mf">68.8267</span>
+<span class="n">x_center</span><span class="p">,</span> <span class="n">y_center</span> <span class="o">=</span> <span class="n">transformer</span><span class="o">.</span><span class="n">transform</span><span class="p">(</span><span class="n">lon</span><span class="p">,</span> <span class="n">lat</span><span class="p">)</span>
+
+<span class="c1"># Create a 500m spatial buffer bounding box</span>
+<span class="n">buffer</span> <span class="o">=</span> <span class="mi">500</span>
+<span class="n">xmin</span><span class="p">,</span> <span class="n">xmax</span> <span class="o">=</span> <span class="n">x_center</span> <span class="o">-</span> <span class="n">buffer</span><span class="p">,</span> <span class="n">x_center</span> <span class="o">+</span> <span class="n">buffer</span>
+<span class="n">ymin</span><span class="p">,</span> <span class="n">ymax</span> <span class="o">=</span> <span class="n">y_center</span> <span class="o">-</span> <span class="n">buffer</span><span class="p">,</span> <span class="n">y_center</span> <span class="o">+</span> <span class="n">buffer</span>
+
+<span class="c1"># Load the timeseries-optimized Zarr store lazily</span>
+<span class="n">ds</span> <span class="o">=</span> <span class="n">xr</span><span class="o">.</span><span class="n">open_zarr</span><span class="p">(</span><span class="n">greenland_url</span><span class="p">,</span> <span class="n">consolidated</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span><span class="o">.</span><span class="n">sortby</span><span class="p">(</span><span class="s1">&#39;time&#39;</span><span class="p">)</span>
+
+<span class="c1"># Handle Y-axis orientation for slicing</span>
+<span class="n">y_slice</span> <span class="o">=</span> <span class="nb">slice</span><span class="p">(</span><span class="n">ymax</span><span class="p">,</span> <span class="n">ymin</span><span class="p">)</span> <span class="k">if</span> <span class="n">ds</span><span class="o">.</span><span class="n">y</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span> <span class="o">&gt;</span> <span class="n">ds</span><span class="o">.</span><span class="n">y</span><span class="p">[</span><span class="o">-</span><span class="mi">1</span><span class="p">]</span> <span class="k">else</span> <span class="nb">slice</span><span class="p">(</span><span class="n">ymin</span><span class="p">,</span> <span class="n">ymax</span><span class="p">)</span>
+
+<span class="c1"># Extract data lazily and compute the spatial median</span>
+<span class="n">subset</span> <span class="o">=</span> <span class="n">ds</span><span class="o">.</span><span class="n">sel</span><span class="p">(</span><span class="n">x</span><span class="o">=</span><span class="nb">slice</span><span class="p">(</span><span class="n">xmin</span><span class="p">,</span> <span class="n">xmax</span><span class="p">),</span> <span class="n">y</span><span class="o">=</span><span class="n">y_slice</span><span class="p">)</span>
+
+<span class="c1"># Compute the &#39;speed&#39; variable</span>
+<span class="n">spatial_median</span> <span class="o">=</span> <span class="n">subset</span><span class="p">[</span><span class="s1">&#39;speed&#39;</span><span class="p">]</span><span class="o">.</span><span class="n">median</span><span class="p">(</span><span class="n">dim</span><span class="o">=</span><span class="p">[</span><span class="s1">&#39;x&#39;</span><span class="p">,</span> <span class="s1">&#39;y&#39;</span><span class="p">])</span><span class="o">.</span><span class="n">compute</span><span class="p">()</span>
+
+<span class="c1"># Convert the in-memory array to a Pandas DataFrame</span>
+<span class="n">df</span> <span class="o">=</span> <span class="n">spatial_median</span><span class="o">.</span><span class="n">to_dataframe</span><span class="p">()</span>
+<span class="n">df</span> <span class="o">=</span> <span class="n">df</span><span class="o">.</span><span class="n">dropna</span><span class="p">(</span><span class="n">subset</span><span class="o">=</span><span class="p">[</span><span class="s1">&#39;speed&#39;</span><span class="p">])</span><span class="o">.</span><span class="n">sort_index</span><span class="p">()</span>
+
+<span class="c1"># Calculate a 24-day rolling mean</span>
+<span class="n">df</span><span class="p">[</span><span class="s1">&#39;rolling_mean&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="n">df</span><span class="p">[</span><span class="s1">&#39;speed&#39;</span><span class="p">]</span><span class="o">.</span><span class="n">rolling</span><span class="p">(</span><span class="s1">&#39;24D&#39;</span><span class="p">)</span><span class="o">.</span><span class="n">mean</span><span class="p">()</span>
+
+<span class="c1"># Filter for plotting (2016 onwards)</span>
+<span class="n">df_plot</span> <span class="o">=</span> <span class="n">df</span><span class="p">[</span><span class="n">df</span><span class="o">.</span><span class="n">index</span> <span class="o">&gt;=</span> <span class="s1">&#39;2016-01-01&#39;</span><span class="p">]</span>
+
+<span class="c1"># Make and apply a mask of the times that fall in the plot window</span>
+<span class="n">valid_times</span> <span class="o">=</span> <span class="n">df_plot</span><span class="o">.</span><span class="n">index</span>
+<span class="n">time_mask</span> <span class="o">=</span> <span class="n">subset</span><span class="p">[</span><span class="s1">&#39;time&#39;</span><span class="p">]</span><span class="o">.</span><span class="n">isin</span><span class="p">(</span><span class="n">valid_times</span><span class="p">)</span>
+<span class="n">raw_sources</span> <span class="o">=</span> <span class="n">subset</span><span class="p">[</span><span class="s1">&#39;data_source&#39;</span><span class="p">]</span><span class="o">.</span><span class="n">where</span><span class="p">(</span><span class="n">time_mask</span><span class="p">,</span> <span class="n">drop</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span><span class="o">.</span><span class="n">values</span><span class="o">.</span><span class="n">flatten</span><span class="p">()</span>
+
+<span class="c1"># Create unique list of data sources that we need to cite</span>
+<span class="n">unique_sources</span> <span class="o">=</span> <span class="nb">list</span><span class="p">(</span><span class="n">np</span><span class="o">.</span><span class="n">unique</span><span class="p">([</span><span class="nb">str</span><span class="p">(</span><span class="n">s</span><span class="p">)</span> <span class="k">for</span> <span class="n">s</span> <span class="ow">in</span> <span class="n">raw_sources</span> <span class="k">if</span> <span class="n">pd</span><span class="o">.</span><span class="n">notna</span><span class="p">(</span><span class="n">s</span><span class="p">)</span> <span class="ow">and</span> <span class="nb">str</span><span class="p">(</span><span class="n">s</span><span class="p">)</span><span class="o">.</span><span class="n">lower</span><span class="p">()</span> <span class="ow">not</span> <span class="ow">in</span> <span class="p">[</span><span class="s1">&#39;nan&#39;</span><span class="p">,</span> <span class="s1">&#39;none&#39;</span><span class="p">,</span> <span class="s1">&#39;&#39;</span><span class="p">]]))</span>
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<div class="output stderr highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>C:\Users\gg1bjd\AppData\Local\anaconda3\envs\shiver_env\Lib\site-packages\dask\_task_spec.py:767: RuntimeWarning: All-NaN slice encountered
+  return self.func(*new_argspec, **kwargs)
+</pre></div>
+</div>
+</div>
+</div>
+<p>Now we use a citation generation function, <code class="docutils literal notranslate"><span class="pre">generate_citation_table</span></code>, that accepts this list of sources.</p>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="kn">from</span><span class="w"> </span><span class="nn">IPython.display</span><span class="w"> </span><span class="kn">import</span> <span class="n">display</span>
+<span class="kn">from</span><span class="w"> </span><span class="nn">utils.citations</span><span class="w"> </span><span class="kn">import</span> <span class="n">CITATIONS_CONFIG</span>
+
+<span class="k">def</span><span class="w"> </span><span class="nf">generate_citation_table</span><span class="p">(</span><span class="n">sources_list</span><span class="p">:</span> <span class="nb">list</span><span class="p">,</span> <span class="n">region</span><span class="p">:</span> <span class="nb">str</span><span class="p">):</span>
+<span class="w">    </span><span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">    Takes a list of data sources and returns a styled Pandas DataFrame</span>
+<span class="sd">    containing the relevant citations.</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+    <span class="n">table_data</span> <span class="o">=</span> <span class="p">[]</span>
+    
+    <span class="c1"># 1. Always append the SHIVER foundational citations</span>
+    <span class="k">for</span> <span class="n">cit</span> <span class="ow">in</span> <span class="n">CITATIONS_CONFIG</span><span class="p">[</span><span class="s2">&quot;common&quot;</span><span class="p">]</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s2">&quot;SHIVER&quot;</span><span class="p">,</span> <span class="p">[]):</span>
+        <span class="n">table_data</span><span class="o">.</span><span class="n">append</span><span class="p">({</span><span class="s2">&quot;Data Source&quot;</span><span class="p">:</span> <span class="s2">&quot;SHIVER (Tool/Method)&quot;</span><span class="p">,</span> <span class="s2">&quot;Citation&quot;</span><span class="p">:</span> <span class="n">cit</span><span class="p">})</span>
+        
+    <span class="c1"># 2. Add the dynamic data citations</span>
+    <span class="n">region_key</span> <span class="o">=</span> <span class="n">region</span><span class="o">.</span><span class="n">lower</span><span class="p">()</span>
+    <span class="n">region_citations</span> <span class="o">=</span> <span class="n">CITATIONS_CONFIG</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="n">region_key</span><span class="p">,</span> <span class="p">{})</span>
+    
+    <span class="k">for</span> <span class="n">source</span> <span class="ow">in</span> <span class="n">sources_list</span><span class="p">:</span>
+        <span class="k">if</span> <span class="n">source</span> <span class="ow">in</span> <span class="n">region_citations</span><span class="p">:</span>
+            <span class="n">citations</span> <span class="o">=</span> <span class="n">region_citations</span><span class="p">[</span><span class="n">source</span><span class="p">]</span>
+            <span class="k">if</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">citations</span><span class="p">,</span> <span class="nb">str</span><span class="p">):</span>
+                <span class="n">citations</span> <span class="o">=</span> <span class="p">[</span><span class="n">citations</span><span class="p">]</span>
+            <span class="k">for</span> <span class="n">cit</span> <span class="ow">in</span> <span class="n">citations</span><span class="p">:</span>
+                <span class="n">table_data</span><span class="o">.</span><span class="n">append</span><span class="p">({</span><span class="s2">&quot;Data Source&quot;</span><span class="p">:</span> <span class="n">source</span><span class="p">,</span> <span class="s2">&quot;Citation&quot;</span><span class="p">:</span> <span class="n">cit</span><span class="p">})</span>
+        <span class="k">else</span><span class="p">:</span>
+            <span class="n">table_data</span><span class="o">.</span><span class="n">append</span><span class="p">({</span>
+                <span class="s2">&quot;Data Source&quot;</span><span class="p">:</span> <span class="n">source</span><span class="p">,</span> 
+                <span class="s2">&quot;Citation&quot;</span><span class="p">:</span> <span class="sa">f</span><span class="s2">&quot;WARNING: Missing citation for source &#39;</span><span class="si">{</span><span class="n">source</span><span class="si">}</span><span class="s2">&#39; in region &#39;</span><span class="si">{</span><span class="n">region</span><span class="si">}</span><span class="s2">&#39;&quot;</span>
+            <span class="p">})</span>
+            
+    <span class="c1"># 3. Format as a readable table</span>
+    <span class="n">df_citations</span> <span class="o">=</span> <span class="n">pd</span><span class="o">.</span><span class="n">DataFrame</span><span class="p">(</span><span class="n">table_data</span><span class="p">)</span>
+    <span class="n">styled_df</span> <span class="o">=</span> <span class="n">df_citations</span><span class="o">.</span><span class="n">style</span><span class="o">.</span><span class="n">set_properties</span><span class="p">(</span><span class="o">**</span><span class="p">{</span>
+        <span class="s1">&#39;text-align&#39;</span><span class="p">:</span> <span class="s1">&#39;left&#39;</span><span class="p">,</span>
+        <span class="s1">&#39;white-space&#39;</span><span class="p">:</span> <span class="s1">&#39;pre-wrap&#39;</span><span class="p">,</span> 
+        <span class="s1">&#39;vertical-align&#39;</span><span class="p">:</span> <span class="s1">&#39;top&#39;</span><span class="p">,</span>
+        <span class="s1">&#39;padding&#39;</span><span class="p">:</span> <span class="s1">&#39;10px&#39;</span>
+    <span class="p">})</span><span class="o">.</span><span class="n">set_table_styles</span><span class="p">([</span>
+        <span class="p">{</span><span class="s1">&#39;selector&#39;</span><span class="p">:</span> <span class="s1">&#39;th&#39;</span><span class="p">,</span> <span class="s1">&#39;props&#39;</span><span class="p">:</span> <span class="p">[(</span><span class="s1">&#39;text-align&#39;</span><span class="p">,</span> <span class="s1">&#39;left&#39;</span><span class="p">),</span> <span class="p">(</span><span class="s1">&#39;font-size&#39;</span><span class="p">,</span> <span class="s1">&#39;14px&#39;</span><span class="p">)]}</span>
+    <span class="p">])</span><span class="o">.</span><span class="n">hide</span><span class="p">(</span><span class="n">axis</span><span class="o">=</span><span class="s2">&quot;index&quot;</span><span class="p">)</span>
+    
+    <span class="k">return</span> <span class="n">styled_df</span>
+</pre></div>
+</div>
+</div>
+</div>
+<p>And we simply pass our list of <code class="docutils literal notranslate"><span class="pre">unique_sources</span></code> to <code class="docutils literal notranslate"><span class="pre">generate_citation_table</span></code></p>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">region</span> <span class="o">=</span> <span class="s2">&quot;greenland&quot;</span>
+
+<span class="c1"># Display the unique sources found for a quick sanity check</span>
+<span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;Data sources found from 2016 onwards: </span><span class="si">{</span><span class="s1">&#39;, &#39;</span><span class="o">.</span><span class="n">join</span><span class="p">(</span><span class="n">unique_sources</span><span class="p">)</span><span class="si">}</span><span class="se">\n</span><span class="s2">&quot;</span><span class="p">)</span>
+
+<span class="c1"># Generate and display the table</span>
+<span class="n">citation_table</span> <span class="o">=</span> <span class="n">generate_citation_table</span><span class="p">(</span><span class="n">unique_sources</span><span class="p">,</span> <span class="n">region</span><span class="p">)</span>
+<span class="n">display</span><span class="p">(</span><span class="n">citation_table</span><span class="p">)</span>
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>Data sources found from 2016 onwards: ENVEO_annual, ESA_CCI_Sentinel-2, ESA_CCI_winter, ITS_LIVE_annual, MEaSUREs_annual, MEaSUREs_monthly, MEaSUREs_quarterly, MEaSUREs_winter, Mouginot_annual, PROMICE, SHIFT
+</pre></div>
+</div>
+<div class="output text_html"><style type="text/css">
+#T_5421b th {
+  text-align: left;
+  font-size: 14px;
+}
+#T_5421b_row0_col0, #T_5421b_row0_col1, #T_5421b_row1_col0, #T_5421b_row1_col1, #T_5421b_row2_col0, #T_5421b_row2_col1, #T_5421b_row3_col0, #T_5421b_row3_col1, #T_5421b_row4_col0, #T_5421b_row4_col1, #T_5421b_row5_col0, #T_5421b_row5_col1, #T_5421b_row6_col0, #T_5421b_row6_col1, #T_5421b_row7_col0, #T_5421b_row7_col1, #T_5421b_row8_col0, #T_5421b_row8_col1, #T_5421b_row9_col0, #T_5421b_row9_col1, #T_5421b_row10_col0, #T_5421b_row10_col1, #T_5421b_row11_col0, #T_5421b_row11_col1, #T_5421b_row12_col0, #T_5421b_row12_col1, #T_5421b_row13_col0, #T_5421b_row13_col1, #T_5421b_row14_col0, #T_5421b_row14_col1, #T_5421b_row15_col0, #T_5421b_row15_col1, #T_5421b_row16_col0, #T_5421b_row16_col1, #T_5421b_row17_col0, #T_5421b_row17_col1, #T_5421b_row18_col0, #T_5421b_row18_col1, #T_5421b_row19_col0, #T_5421b_row19_col1, #T_5421b_row20_col0, #T_5421b_row20_col1, #T_5421b_row21_col0, #T_5421b_row21_col1, #T_5421b_row22_col0, #T_5421b_row22_col1, #T_5421b_row23_col0, #T_5421b_row23_col1, #T_5421b_row24_col0, #T_5421b_row24_col1, #T_5421b_row25_col0, #T_5421b_row25_col1, #T_5421b_row26_col0, #T_5421b_row26_col1, #T_5421b_row27_col0, #T_5421b_row27_col1, #T_5421b_row28_col0, #T_5421b_row28_col1, #T_5421b_row29_col0, #T_5421b_row29_col1, #T_5421b_row30_col0, #T_5421b_row30_col1, #T_5421b_row31_col0, #T_5421b_row31_col1 {
+  text-align: left;
+  white-space: pre-wrap;
+  vertical-align: top;
+  padding: 10px;
+}
+</style>
+<table id="T_5421b">
+  <thead>
+    <tr>
+      <th id="T_5421b_level0_col0" class="col_heading level0 col0" >Data Source</th>
+      <th id="T_5421b_level0_col1" class="col_heading level0 col1" >Citation</th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr>
+      <td id="T_5421b_row0_col0" class="data row0 col0" >SHIVER (Tool/Method)</td>
+      <td id="T_5421b_row0_col1" class="data row0 col1" >SHIVER tool: Davison, B. J. (2026). SHeffield Ice Velocity ExploreR (SHIVER): initial release (Version v1.0.0) [Computer software]. Zenodo. https://doi.org/10.5281/zenodo.21378057</td>
+    </tr>
+    <tr>
+      <td id="T_5421b_row1_col0" class="data row1 col0" >SHIVER (Tool/Method)</td>
+      <td id="T_5421b_row1_col1" class="data row1 col1" >SHIVER zarr compilation method: Davison, B. J. (2026). SHeffield Ice Velocity ExploreR (SHIVER): initial release of Zarr creation code (Version [specify version number]) [Computer software]. Zenodo. https://doi.org/10.5281/zenodo.21375859</td>
+    </tr>
+    <tr>
+      <td id="T_5421b_row2_col0" class="data row2 col0" >SHIVER (Tool/Method)</td>
+      <td id="T_5421b_row2_col1" class="data row2 col1" >SHIVER method paper: Davison, B. J. et al. (in prep). The SHeffield Ice Velocity ExploreR (SHIVER): an online tool for low latency exploration, analysis and sub-setting of unified satellite-derived ice velocity data for Earth's ice sheets. [specify journal]. https://doi.org/10.xxxx/XXXXXXX</td>
+    </tr>
+    <tr>
+      <td id="T_5421b_row3_col0" class="data row3 col0" >ENVEO_annual</td>
+      <td id="T_5421b_row3_col1" class="data row3 col1" >ENVEO annual method: Wuite, J., (2026): Ice sheet velocity for Antarctica and Greenland derived from satellite observations. Copernicus Climate Change Service (C3S) Climate Data Store (CDS), DOI: 10.24381/cds.0b96b838 (Accessed on 26-Apr-2026).</td>
+    </tr>
+    <tr>
+      <td id="T_5421b_row4_col0" class="data row4 col0" >ESA_CCI_Sentinel-2</td>
+      <td id="T_5421b_row4_col1" class="data row4 col1" >ESA CCI Sentinel-2 (Petermann Glacier): ESA Greenland Ice Sheet CCI project team (2019): ESA Greenland Ice Sheet Climate Change Initiative (Greenland_Ice_Sheet_cci): Optical ice velocity of the Petermann Glacier between 2017-05-01 and 2017-09-14, generated using Sentinel-2 data, v1.1. Centre for Environmental Data Analysis, 16/04/2026. https://catalogue.ceda.ac.uk/uuid/94f3670150de4bac90773806e26646f2.</td>
+    </tr>
+    <tr>
+      <td id="T_5421b_row5_col0" class="data row5 col0" >ESA_CCI_Sentinel-2</td>
+      <td id="T_5421b_row5_col1" class="data row5 col1" >ESA CCI Sentinel-2 (Kangerlussuaq Glacier): ESA Greenland Ice Sheet CCI project team (2018): ESA Greenland Ice Sheet Climate Change Initiative (Greenland_Ice_Sheet_cci): Optical ice velocity of the Kangerlussuaq Glacier between 2017-07-21 and 2017-08-20, generated using Sentinel-2 data, v1.1. Centre for Environmental Data Analysis, 16/04/2026. https://catalogue.ceda.ac.uk/uuid/aae643e1a7614c24b6b604dea82cad93.</td>
+    </tr>
+    <tr>
+      <td id="T_5421b_row6_col0" class="data row6 col0" >ESA_CCI_Sentinel-2</td>
+      <td id="T_5421b_row6_col1" class="data row6 col1" >ESA CCI Sentinel-2 (Jakobshavn Isbrae): ESA Greenland Ice Sheet CCI project team (2018): ESA Greenland Ice Sheet Climate Change Initiative (Greenland_Ice_Sheet_cci): Optical ice velocity of the Jakobshavn Glacier between 2017-06-03 and 2017-09-08, generated using Sentinel-2 data, v1.1. Centre for Environmental Data Analysis, 16/04/2026. https://catalogue.ceda.ac.uk/uuid/cfe3102659f34d33b123b2a0043e4068.</td>
+    </tr>
+    <tr>
+      <td id="T_5421b_row7_col0" class="data row7 col0" >ESA_CCI_Sentinel-2</td>
+      <td id="T_5421b_row7_col1" class="data row7 col1" >ESA CCI Sentinel-2 (Helheim Glacier): ESA Greenland Ice Sheet CCI project team (2019): ESA Greenland Ice Sheet Climate Change Initiative (Greenland_Ice_Sheet_cci): Optical ice velocity of the Helheim Glacier between 2017-05-01 and 2017-08-29, generated using Sentinel-2 data, v1.1. Centre for Environmental Data Analysis, 16/04/2026. https://catalogue.ceda.ac.uk/uuid/1e3fcdc14e2246c69fc54f0e1fe7a6ca.</td>
+    </tr>
+    <tr>
+      <td id="T_5421b_row8_col0" class="data row8 col0" >ESA_CCI_Sentinel-2</td>
+      <td id="T_5421b_row8_col1" class="data row8 col1" >ESA CCI Sentinel-2 (Zachariae Isstrom): ESA Greenland Ice Sheet CCI project team (2019): ESA Greenland Ice Sheet Climate Change Initiative (Greenland_Ice_Sheet_cci): Optical ice velocity of the Zachariae Glacier between 2017-06-25 and 2017-08-10, generated using Sentinel-2 data, v1.1. Centre for Environmental Data Analysis, 16/04/2026. https://catalogue.ceda.ac.uk/uuid/ada968fd392d49fbbb07ac84eeb23ac6.</td>
+    </tr>
+    <tr>
+      <td id="T_5421b_row9_col0" class="data row9 col0" >ESA_CCI_Sentinel-2</td>
+      <td id="T_5421b_row9_col1" class="data row9 col1" >ESA CCI Sentinel-2 (Hagen Brae): ESA Greenland Ice Sheet CCI project team (2018): ESA Greenland Ice Sheet Climate Change Initiative (Greenland_Ice_Sheet_cci): Optical ice velocity of the Hagen Glacier between 2017-06-30 and 2017-08-14, generated using Sentinel-2 data, v1.1. Centre for Environmental Data Analysis, 16/04/2026. https://catalogue.ceda.ac.uk/uuid/e7fa45e785a64481960c3b140038c948.</td>
+    </tr>
+    <tr>
+      <td id="T_5421b_row10_col0" class="data row10 col0" >ESA_CCI_Sentinel-2</td>
+      <td id="T_5421b_row10_col1" class="data row10 col1" >ESA CCI Sentinel-2 (Docker Smith): ESA Greenland Ice Sheet CCI project team (2019): ESA Greenland Ice Sheet Climate Change Initiative (Greenland_Ice_Sheet_cci): Optical ice velocity of the Døcker Smith Glacier between 2016-05-08 and 2016-05-18, generated using Sentinel-2 data, v1.0. Centre for Environmental Data Analysis, 16/04/2026 https://catalogue.ceda.ac.uk/uuid/88d02eb5a6c14952aa88028894d8a69c.</td>
+    </tr>
+    <tr>
+      <td id="T_5421b_row11_col0" class="data row11 col0" >ESA_CCI_Sentinel-2</td>
+      <td id="T_5421b_row11_col1" class="data row11 col1" >ESA CCI Sentinel-2 (79N): ESA Greenland Ice Sheet CCI project team (2018): ESA Greenland Ice Sheet Climate Change Initiative (Greenland_Ice_Sheet_cci): Optical ice velocity of the 79Fjord Glacier between 2017-06-25 and 2017-08-10, generated using Sentinel-2 data, v1.1. Centre for Environmental Data Analysis, 16/04/2026. https://catalogue.ceda.ac.uk/uuid/f31e8e988c4144bebe13892b53d08e42.</td>
+    </tr>
+    <tr>
+      <td id="T_5421b_row12_col0" class="data row12 col0" >ESA_CCI_Sentinel-2</td>
+      <td id="T_5421b_row12_col1" class="data row12 col1" >ESA CCI Sentinel-2 (Upernavik Isstrom): ESA Greenland Ice Sheet CCI project team (2018): ESA Greenland Ice Sheet Climate Change Initiative (Greenland_Ice_Sheet_cci): Optical ice velocity of the Upernavik Glacier between 2017-07-15 and 2017-08-14, generated using Sentinel-2 data, v1.1. Centre for Environmental Data Analysis, 16/04/2026. https://catalogue.ceda.ac.uk/uuid/84faf575c8e841a3a16476b05cbd657d.</td>
+    </tr>
+    <tr>
+      <td id="T_5421b_row13_col0" class="data row13 col0" >ESA_CCI_winter</td>
+      <td id="T_5421b_row13_col1" class="data row13 col1" >ESA CCI winter data: ESA Greenland Ice Sheet CCI project team (2018): ESA Greenland Ice Sheet Climate Change Initiative (Greenland_Ice_Sheet_cci): Greenland Ice Velocity Map, Winter 2017-2018, v1.0. Centre for Environmental Data Analysis, 16/04/2026. https://catalogue.ceda.ac.uk/uuid/eaed9fba86c44e9c854dfbdec9d16b99.</td>
+    </tr>
+    <tr>
+      <td id="T_5421b_row14_col0" class="data row14 col0" >ITS_LIVE_annual</td>
+      <td id="T_5421b_row14_col1" class="data row14 col1" >ITS_LIVE observations: Gardner, A.S., Greene, C.A., Kennedy, J.H., Fahnestock, M.A., Liukis, M., López, L.A., Lei, Y., Scambos, T.A. and Dehecq, A., 2025. ITS_LIVE global glacier velocity data in near-real time. The Cryosphere, 19(9), pp.3517-3533. DOI: https://doi.org/10.5194/tc-19-3517-2025. </td>
+    </tr>
+    <tr>
+      <td id="T_5421b_row15_col0" class="data row15 col0" >MEaSUREs_annual</td>
+      <td id="T_5421b_row15_col1" class="data row15 col1" >MEaSUREs annual data: Joughin, I. (2023). MEaSUREs Greenland Annual Ice Sheet Velocity Mosaics from SAR and Landsat. (NSIDC-0725, Version 5). [Data Set]. Boulder, Colorado USA. NASA National Snow and Ice Data Center Distributed Active Archive Center. https://doi.org/10.5067/USBL3Z8KF9C3. Date Accessed 04-21-2026.</td>
+    </tr>
+    <tr>
+      <td id="T_5421b_row16_col0" class="data row16 col0" >MEaSUREs_annual</td>
+      <td id="T_5421b_row16_col1" class="data row16 col1" >MEaSUREs annual method: Joughin, I., B. Smith, I. Howat, T. Scambos, and T. Moon. 2010. Greenland flow variability from icesheet-wide velocity mapping, Journal of Glaciology. 56. 415-430. https://doi.org/10.3189/002214310792447734</td>
+    </tr>
+    <tr>
+      <td id="T_5421b_row17_col0" class="data row17 col0" >MEaSUREs_annual</td>
+      <td id="T_5421b_row17_col1" class="data row17 col1" >MEaSUREs annual method: Joughin, I., B. Smith, and I. Howat. 2018. Greenland Ice Mapping Project: ice flow velocity variation at sub-monthly to decadal timescales, The Cryosphere. 12. 2211-2227. https://doi.org/10.5194/tc-12-2211-2018.</td>
+    </tr>
+    <tr>
+      <td id="T_5421b_row18_col0" class="data row18 col0" >MEaSUREs_monthly</td>
+      <td id="T_5421b_row18_col1" class="data row18 col1" >MEaSUREs monthly data: Joughin, I. (2023). MEaSUREs Greenland Monthly Ice Sheet Velocity Mosaics from SAR and Landsat. (NSIDC-0731, Version 5). [Data Set]. Boulder, Colorado USA. NASA National Snow and Ice Data Center Distributed Active Archive Center. https://doi.org/10.5067/EGKZX6FXXM4P. Date Accessed 04-21-2026.</td>
+    </tr>
+    <tr>
+      <td id="T_5421b_row19_col0" class="data row19 col0" >MEaSUREs_monthly</td>
+      <td id="T_5421b_row19_col1" class="data row19 col1" >MEaSUREs monthly method: Joughin, I., B. Smith, I. Howat, T. Scambos, and T. Moon. 2010. Greenland flow variability from icesheet-wide velocity mapping, Journal of Glaciology. 56. 415-430. https://doi.org/10.3189/002214310792447734</td>
+    </tr>
+    <tr>
+      <td id="T_5421b_row20_col0" class="data row20 col0" >MEaSUREs_monthly</td>
+      <td id="T_5421b_row20_col1" class="data row20 col1" >MEaSUREs monthly method: Joughin, I., B. Smith, and I. Howat. 2018. Greenland Ice Mapping Project: ice flow velocity variation at sub-monthly to decadal timescales, The Cryosphere. 12. 2211-2227. https://doi.org/10.5194/tc-12-2211-2018.</td>
+    </tr>
+    <tr>
+      <td id="T_5421b_row21_col0" class="data row21 col0" >MEaSUREs_quarterly</td>
+      <td id="T_5421b_row21_col1" class="data row21 col1" >MEaSUREs quarterly data: Joughin, I. (2023). MEaSUREs Greenland Quarterly Ice Sheet Velocity Mosaics from SAR and Landsat. (NSIDC-0727, Version 5). [Data Set]. Boulder, Colorado USA. NASA National Snow and Ice Data Center Distributed Active Archive Center. https://doi.org/10.5067/V5KW64S63OSN. Date Accessed 04-21-2026.</td>
+    </tr>
+    <tr>
+      <td id="T_5421b_row22_col0" class="data row22 col0" >MEaSUREs_quarterly</td>
+      <td id="T_5421b_row22_col1" class="data row22 col1" >MEaSUREs quarterly method: Joughin, I., B. Smith, I. Howat, T. Scambos, and T. Moon. 2010. Greenland flow variability from icesheet-wide velocity mapping, Journal of Glaciology. 56. 415-430. https://doi.org/10.3189/002214310792447734</td>
+    </tr>
+    <tr>
+      <td id="T_5421b_row23_col0" class="data row23 col0" >MEaSUREs_quarterly</td>
+      <td id="T_5421b_row23_col1" class="data row23 col1" >MEaSUREs quarterly method: Joughin, I., B. Smith, and I. Howat. 2018. Greenland Ice Mapping Project: ice flow velocity variation at sub-monthly to decadal timescales, The Cryosphere. 12. 2211-2227. https://doi.org/10.5194/tc-12-2211-2018.</td>
+    </tr>
+    <tr>
+      <td id="T_5421b_row24_col0" class="data row24 col0" >MEaSUREs_winter</td>
+      <td id="T_5421b_row24_col1" class="data row24 col1" >MEaSUREs winter data: Joughin, I., Smith, B., Howat, I. & Scambos, T. (2015). MEaSUREs Greenland Ice Sheet Velocity Map from InSAR Data. (NSIDC-0478, Version 2). [Data Set]. Boulder, Colorado USA. NASA National Snow and Ice Data Center Distributed Active Archive Center. https://doi.org/10.5067/OC7B04ZM9G6Q. Date Accessed 04-23-2026.</td>
+    </tr>
+    <tr>
+      <td id="T_5421b_row25_col0" class="data row25 col0" >MEaSUREs_winter</td>
+      <td id="T_5421b_row25_col1" class="data row25 col1" >MEaSUREs winter method: Joughin, I., B. Smith, I. Howat, T. Scambos, and T. Moon. 2010. Greenland flow variability from icesheet-wide velocity mapping, Journal of Glaciology. 56. 415-430. https://doi.org/10.3189/002214310792447734</td>
+    </tr>
+    <tr>
+      <td id="T_5421b_row26_col0" class="data row26 col0" >MEaSUREs_winter</td>
+      <td id="T_5421b_row26_col1" class="data row26 col1" >MEaSUREs winter method: Joughin, I., B. Smith, and I. Howat. 2018. Greenland Ice Mapping Project: ice flow velocity variation at sub-monthly to decadal timescales, The Cryosphere. 12. 2211-2227. https://doi.org/10.5194/tc-12-2211-2018.</td>
+    </tr>
+    <tr>
+      <td id="T_5421b_row27_col0" class="data row27 col0" >Mouginot_annual</td>
+      <td id="T_5421b_row27_col1" class="data row27 col1" >Mouginot annual method: Mouginot, J., Rignot, E., Scheuchl, B. and Millan, R., 2017. Comprehensive annual ice sheet velocity mapping using Landsat-8, Sentinel-1, and RADARSAT-2 data. Remote Sensing, 9(4), p.364. DOI: https://doi.org/10.3390/rs9040364. </td>
+    </tr>
+    <tr>
+      <td id="T_5421b_row28_col0" class="data row28 col0" >PROMICE</td>
+      <td id="T_5421b_row28_col1" class="data row28 col1" >PROMICE data: Solgaard, Anne Munck; Kusk, Anders, 2026, Greenland Ice Velocity from Sentinel-1 Edition 5, https://doi.org/10.22008/FK2/K70OPK, GEUS Dataverse, V6</td>
+    </tr>
+    <tr>
+      <td id="T_5421b_row29_col0" class="data row29 col0" >PROMICE</td>
+      <td id="T_5421b_row29_col1" class="data row29 col1" >PROMICE method: Solgaard, A., Kusk, A., Merryman Boncori, J.P., Dall, J., Mankoff, K.D., Ahlstrøm, A.P., Andersen, S.B., Citterio, M., Karlsson, N.B., Kjeldsen, K.K. and Korsgaard, N.J., 2021. Greenland ice velocity maps from the PROMICE project. Earth System Science Data, 13(7), pp.3491-3512. DOI: https://doi.org/10.5194/essd-13-3491-2021.</td>
+    </tr>
+    <tr>
+      <td id="T_5421b_row30_col0" class="data row30 col0" >SHIFT</td>
+      <td id="T_5421b_row30_col1" class="data row30 col1" >SHIFT Greenland data: Sole, A. J. and Davison, B. J. 2026. SHeffield Ice Flow Tracker (SHIFT) velocity data: West Greenland ice surface velocity fields derived from intensity tracking of Sentinel-1 Synthetic Aperture Radar image pairs. [Online]. Available from: https://doi.org/10.15131/shef.data.33113009.v1 [Accessed: DD MMM YYYY].</td>
+    </tr>
+    <tr>
+      <td id="T_5421b_row31_col0" class="data row31 col0" >SHIFT</td>
+      <td id="T_5421b_row31_col1" class="data row31 col1" >SHIFT method: Davison, B.J., Sole, A.J., Cowton, T.R., Lea, J.M., Slater, D.A., Fahrner, D. and Nienow, P.W., 2020. Subglacial drainage evolution modulates seasonal ice flow variability of three tidewater glaciers in southwest Greenland. Journal of Geophysical Research: Earth Surface, 125(9), p.e2019JF005492. DOI: https://doi.org/10.1029/2019JF005492.</td>
+    </tr>
+  </tbody>
+</table>
+</div></div>
+</div>
+<p>Of course you may wish to use a more compact format for your citation table.</p>
+</section>
+
+    <script type="text/x-thebe-config">
+    {
+        requestKernel: true,
+        binderOptions: {
+            repo: "binder-examples/jupyter-stacks-datascience",
+            ref: "master",
+        },
+        codeMirrorConfig: {
+            theme: "abcdef",
+            mode: "shiver_env"
+        },
+        kernelOptions: {
+            name: "shiver_env",
+            path: "./examples"
+        },
+        predefinedOutput: true
+    }
+    </script>
+    <script>kernelName = 'shiver_env'</script>
+
+                </article>
+              
+
+              
+              
+              
+              
+                <footer class="prev-next-footer d-print-none">
+                  
+<div class="prev-next-area">
+    <a class="left-prev"
+       href="simple_timeseries.html"
+       title="previous page">
+      <i class="fa-solid fa-angle-left"></i>
+      <div class="prev-next-info">
+        <p class="prev-next-subtitle">previous</p>
+        <p class="prev-next-title">Timeseries extraction</p>
+      </div>
+    </a>
+    <a class="right-next"
+       href="simple_layers.html"
+       title="next page">
+      <div class="prev-next-info">
+        <p class="prev-next-subtitle">next</p>
+        <p class="prev-next-title">Large spatial scale extraction of velocity fields</p>
+      </div>
+      <i class="fa-solid fa-angle-right"></i>
+    </a>
+</div>
+                </footer>
+              
+            </div>
+            
+            
+              
+            
+          </div>
+          <footer class="bd-footer-content">
+            
+<div class="bd-footer-content__inner container">
+  
+  <div class="footer-item">
+    
+<p class="component-author">
+By Benjamin Davison
+</p>
+
+  </div>
+  
+  <div class="footer-item">
+    
+
+  <p class="copyright">
+    
+      © Copyright 2022.
+      <br/>
+    
+  </p>
+
+  </div>
+  
+  <div class="footer-item">
+    
+  </div>
+  
+  <div class="footer-item">
+    
+  </div>
+  
+</div>
+          </footer>
+        
+
+      </main>
+    </div>
+  </div>
+  
+  <!-- Scripts loaded after <body> so the DOM is not blocked -->
+  <script src="../_static/scripts/bootstrap.js?digest=dfe6caa3a7d634c4db9b"></script>
+<script src="../_static/scripts/pydata-sphinx-theme.js?digest=dfe6caa3a7d634c4db9b"></script>
+
+  <footer class="bd-footer">
+  </footer>
+  </body>
+</html>

@@ -52,7 +52,7 @@ def write_ome_metadata(zarr_path, max_level, master_x, master_y):
         "multiscales": [
             {
                 "version": "0.4",
-                "name": "Greenland_multisource_speed",
+                "name": "greenland_multisource_velocity",
                 "axes": [
                     {"name": "time", "type": "time"},
                     {"name": "y", "type": "space", "unit": "meter"},
@@ -87,33 +87,42 @@ def preprocess_promice(file_path):
     """Opens, formats, and converts units for a single PROMICE NetCDF file."""
     ds = xr.open_dataset(file_path, decode_times=True)
     
+    # 1. Keep relevant variables
     vars_to_keep = [
         'land_ice_surface_velocity_magnitude',
         'land_ice_surface_velocity_magnitude_std',
+        'land_ice_surface_easting_velocity',
+        'land_ice_surface_northing_velocity',
+        'land_ice_surface_easting_velocity_std',
+        'land_ice_surface_northing_velocity_std',
         'crs',
         'time_bnds'
     ]
     ds = ds[vars_to_keep]
     
+    # 2. Rename to match our schema
     ds = ds.rename({
         'land_ice_surface_velocity_magnitude': 'speed',
-        'land_ice_surface_velocity_magnitude_std': 'error',
+        'land_ice_surface_velocity_magnitude_std': 'speed_error',
+        'land_ice_surface_easting_velocity': 'vx',
+        'land_ice_surface_northing_velocity': 'vy',
+        'land_ice_surface_easting_velocity_std': 'vx_error',
+        'land_ice_surface_northing_velocity_std': 'vy_error',
         'crs': 'spatial_ref'
     })
     
-    # Convert m/day to m/year
-    ds['speed'] = ds['speed'] * 365.25
-    ds['error'] = ds['error'] * 365.25
+    # 3. Process all velocity/error variables (convert m/day to m/year, round to 1 decimal place, set attributes)
+    vel_vars = ['speed', 'speed_error', 'vx', 'vy', 'vx_error', 'vy_error']
+    for var in vel_vars:
+        ds[var] = np.round(ds[var] * 365.25, 1)
+        ds[var].attrs['units'] = 'm/year'
+        ds[var].attrs['grid_mapping'] = 'spatial_ref'
     
-    # Update metadata
-    ds['speed'].attrs['units'] = 'm/year'
-    ds['error'].attrs['units'] = 'm/year'
-    ds['speed'].attrs['grid_mapping'] = 'spatial_ref'
-    ds['error'].attrs['grid_mapping'] = 'spatial_ref'
-    
+    # 4. Add data_source identifier
     ds['data_source'] = xr.DataArray(np.array(["PROMICE"], dtype="<U50"), dims=["time"])
     
-    if ds['time_bnds'].dims == ('bnds', 'time'):
+    # 5. Fix time bounds dimensions and clean encoding
+    if 'time_bnds' in ds and ds['time_bnds'].dims == ('bnds', 'time'):
         ds['time_bnds'] = ds['time_bnds'].transpose('time', 'bnds')
         
     for var in ['time', 'time_bnds']:
@@ -122,13 +131,13 @@ def preprocess_promice(file_path):
             
     return ds
 
-
-# --- 2. MEaSUREs monthly Processing ---
-def parse_measures_monthly_time(filename):
+# 2. MEaSUREs (monthly, quarterly, annual, winter)
+def parse_measures_time(filename):
     """Extracts start, end, and midpoint datetimes from a MEaSUREs filename."""
+    # Example: GL_vel_mosaic_Monthly_01Dec14_31Dec14_vv_v05.0.tif
     parts = os.path.basename(filename).split('_')
-    start_str = parts[4] 
-    end_str = parts[5]   
+    start_str = parts[4] # e.g., 01Dec14
+    end_str = parts[5]   # e.g., 31Dec14
     
     start_dt = datetime.strptime(start_str, "%d%b%y")
     end_dt = datetime.strptime(end_str, "%d%b%y")
@@ -136,31 +145,60 @@ def parse_measures_monthly_time(filename):
     
     return np.datetime64(mid_dt), np.array([np.datetime64(start_dt), np.datetime64(end_dt)])
 
-def preprocess_measures_monthly(vv_file, master_x, master_y):
+
+def preprocess_measures(vv_file, master_x, master_y, source_label):
     """Loads MEaSUREs GeoTIFFs, calculates error, and interpolates to master grid."""
+    # 1. Deduce filepaths for all components
     ex_file = vv_file.replace('_vv_', '_ex_')
     ey_file = vv_file.replace('_vv_', '_ey_')
+    vx_file = vv_file.replace('_vv_', '_vx_')
+    vy_file = vv_file.replace('_vv_', '_vy_')
     
-    time_mid, time_bnds = parse_measures_monthly_time(vv_file)
+    # Extract times
+    time_mid, time_bnds = parse_measures_time(vv_file)
     
+    # 2. Load GeoTIFFs (squeeze removes the 'band' dimension)
     vv = rioxarray.open_rasterio(vv_file).squeeze('band', drop=True)
+    vx = rioxarray.open_rasterio(vx_file).squeeze('band', drop=True)
+    vy = rioxarray.open_rasterio(vy_file).squeeze('band', drop=True)
     ex = rioxarray.open_rasterio(ex_file).squeeze('band', drop=True)
     ey = rioxarray.open_rasterio(ey_file).squeeze('band', drop=True)
     
+    # Mask out the -1 no-data values with NaN before interpolating
     vv = vv.where(vv != -1)
+    vx = vx.where(vx != -1)
+    vy = vy.where(vy != -1)
     ex = ex.where(ex != -1)
     ey = ey.where(ey != -1)
     
+    # 3. Interpolate to PROMICE (master) grid
     vv_interp = vv.interp(x=master_x, y=master_y, method="nearest")
+    vx_interp = vx.interp(x=master_x, y=master_y, method="nearest")
+    vy_interp = vy.interp(x=master_x, y=master_y, method="nearest")
     ex_interp = ex.interp(x=master_x, y=master_y, method="nearest")
     ey_interp = ey.interp(x=master_x, y=master_y, method="nearest")
     
+    # Calculate hypotenuse for speed error
     err_interp = np.sqrt(ex_interp**2 + ey_interp**2)
     
+    # 4. Extract values and round to 1 decimal place
+    speed_vals = np.round(vv_interp.values, 1)
+    vx_vals = np.round(vx_interp.values, 1)
+    vy_vals = np.round(vy_interp.values, 1)
+    
+    speed_error_vals = np.round(err_interp.values, 1)
+    vx_error_vals = np.round(ex_interp.values, 1)
+    vy_error_vals = np.round(ey_interp.values, 1)
+    
+    # 5. Assemble into standard Dataset format
     ds = xr.Dataset({
-        'speed': (['time', 'y', 'x'], np.expand_dims(vv_interp.values, axis=0), {'units': 'm/year', 'grid_mapping': 'spatial_ref'}),
-        'error': (['time', 'y', 'x'], np.expand_dims(err_interp.values, axis=0), {'units': 'm/year', 'grid_mapping': 'spatial_ref'}),
-        'data_source': (['time'], np.array(["MEaSUREs_monthly"], dtype="<U50"))
+        'speed': (['time', 'y', 'x'], np.expand_dims(speed_vals, axis=0), {'units': 'm/year', 'grid_mapping': 'spatial_ref'}),
+        'vx': (['time', 'y', 'x'], np.expand_dims(vx_vals, axis=0), {'units': 'm/year', 'grid_mapping': 'spatial_ref'}),
+        'vy': (['time', 'y', 'x'], np.expand_dims(vy_vals, axis=0), {'units': 'm/year', 'grid_mapping': 'spatial_ref'}),
+        'speed_error': (['time', 'y', 'x'], np.expand_dims(speed_error_vals, axis=0), {'units': 'm/year', 'grid_mapping': 'spatial_ref'}),
+        'vx_error': (['time', 'y', 'x'], np.expand_dims(vx_error_vals, axis=0), {'units': 'm/year', 'grid_mapping': 'spatial_ref'}),
+        'vy_error': (['time', 'y', 'x'], np.expand_dims(vy_error_vals, axis=0), {'units': 'm/year', 'grid_mapping': 'spatial_ref'}),
+        'data_source': (['time'], np.array([source_label], dtype="<U50"))
     }, coords={
         'time': (['time'], [time_mid]),
         'time_bnds': (['time', 'bnds'], [time_bnds]),
@@ -171,155 +209,13 @@ def preprocess_measures_monthly(vv_file, master_x, master_y):
     return ds
 
 
-# --- 3. MEaSUREs quarterly Processing ---
-def parse_measures_quarterly_time(filename):
-    """Extracts start, end, and midpoint datetimes from a MEaSUREs quarterly filename."""
-    parts = os.path.basename(filename).split('_')
-    start_str = parts[4] 
-    end_str = parts[5]   
-    
-    start_dt = datetime.strptime(start_str, "%d%b%y")
-    end_dt = datetime.strptime(end_str, "%d%b%y")
-    mid_dt = start_dt + (end_dt - start_dt) / 2
-    
-    return np.datetime64(mid_dt), np.array([np.datetime64(start_dt), np.datetime64(end_dt)])
-
-def preprocess_measures_quarterly(vv_file, master_x, master_y):
-    """Loads MEaSUREs GeoTIFFs, calculates error, and interpolates to master grid."""
-    ex_file = vv_file.replace('_vv_', '_ex_')
-    ey_file = vv_file.replace('_vv_', '_ey_')
-    
-    time_mid, time_bnds = parse_measures_quarterly_time(vv_file)
-    
-    vv = rioxarray.open_rasterio(vv_file).squeeze('band', drop=True)
-    ex = rioxarray.open_rasterio(ex_file).squeeze('band', drop=True)
-    ey = rioxarray.open_rasterio(ey_file).squeeze('band', drop=True)
-    
-    vv = vv.where(vv != -1)
-    ex = ex.where(ex != -1)
-    ey = ey.where(ey != -1)
-    
-    vv_interp = vv.interp(x=master_x, y=master_y, method="nearest")
-    ex_interp = ex.interp(x=master_x, y=master_y, method="nearest")
-    ey_interp = ey.interp(x=master_x, y=master_y, method="nearest")
-    
-    err_interp = np.sqrt(ex_interp**2 + ey_interp**2)
-    
-    ds = xr.Dataset({
-        'speed': (['time', 'y', 'x'], np.expand_dims(vv_interp.values, axis=0), {'units': 'm/year', 'grid_mapping': 'spatial_ref'}),
-        'error': (['time', 'y', 'x'], np.expand_dims(err_interp.values, axis=0), {'units': 'm/year', 'grid_mapping': 'spatial_ref'}),
-        'data_source': (['time'], np.array(["MEaSUREs_quarterly"], dtype="<U50"))
-    }, coords={
-        'time': (['time'], [time_mid]),
-        'time_bnds': (['time', 'bnds'], [time_bnds]),
-        'y': (['y'], master_y.values),
-        'x': (['x'], master_x.values),
-    })
-    
-    return ds
-
-
-# --- 4. MEaSUREs annual Processing ---
-def parse_measures_annual_time(filename):
-    """Extracts start, end, and midpoint datetimes from a MEaSUREs annual filename."""
-    parts = os.path.basename(filename).split('_')
-    start_str = parts[4] 
-    end_str = parts[5]   
-    
-    start_dt = datetime.strptime(start_str, "%d%b%y")
-    end_dt = datetime.strptime(end_str, "%d%b%y")
-    mid_dt = start_dt + (end_dt - start_dt) / 2
-    
-    return np.datetime64(mid_dt), np.array([np.datetime64(start_dt), np.datetime64(end_dt)])
-
-def preprocess_measures_annual(vv_file, master_x, master_y):
-    """Loads MEaSUREs GeoTIFFs, calculates error, and interpolates to master grid."""
-    ex_file = vv_file.replace('_vv_', '_ex_')
-    ey_file = vv_file.replace('_vv_', '_ey_')
-    
-    time_mid, time_bnds = parse_measures_annual_time(vv_file)
-    
-    vv = rioxarray.open_rasterio(vv_file).squeeze('band', drop=True)
-    ex = rioxarray.open_rasterio(ex_file).squeeze('band', drop=True)
-    ey = rioxarray.open_rasterio(ey_file).squeeze('band', drop=True)
-    
-    vv = vv.where(vv != -1)
-    ex = ex.where(ex != -1)
-    ey = ey.where(ey != -1)
-    
-    vv_interp = vv.interp(x=master_x, y=master_y, method="nearest")
-    ex_interp = ex.interp(x=master_x, y=master_y, method="nearest")
-    ey_interp = ey.interp(x=master_x, y=master_y, method="nearest")
-    
-    err_interp = np.sqrt(ex_interp**2 + ey_interp**2)
-    
-    ds = xr.Dataset({
-        'speed': (['time', 'y', 'x'], np.expand_dims(vv_interp.values, axis=0), {'units': 'm/year', 'grid_mapping': 'spatial_ref'}),
-        'error': (['time', 'y', 'x'], np.expand_dims(err_interp.values, axis=0), {'units': 'm/year', 'grid_mapping': 'spatial_ref'}),
-        'data_source': (['time'], np.array(["MEaSUREs_annual"], dtype="<U50"))
-    }, coords={
-        'time': (['time'], [time_mid]),
-        'time_bnds': (['time', 'bnds'], [time_bnds]),
-        'y': (['y'], master_y.values),
-        'x': (['x'], master_x.values),
-    })
-    
-    return ds
-
-
-# --- 5. MEaSUREs winter Processing ---
-def parse_measures_winter_time(filename):
-    """Extracts start, end, and midpoint datetimes from a MEaSUREs winter filename."""
-    parts = os.path.basename(filename).split('_')
-    start_str = parts[4] 
-    end_str = parts[5]   
-    
-    start_dt = datetime.strptime(start_str, "%d%b%y")
-    end_dt = datetime.strptime(end_str, "%d%b%y")
-    mid_dt = start_dt + (end_dt - start_dt) / 2
-    
-    return np.datetime64(mid_dt), np.array([np.datetime64(start_dt), np.datetime64(end_dt)])
-
-def preprocess_measures_winter(vv_file, master_x, master_y):
-    """Loads MEaSUREs GeoTIFFs, calculates error, and interpolates to master grid."""
-    ex_file = vv_file.replace('_vv_', '_ex_')
-    ey_file = vv_file.replace('_vv_', '_ey_')
-    
-    time_mid, time_bnds = parse_measures_winter_time(vv_file)
-    
-    vv = rioxarray.open_rasterio(vv_file).squeeze('band', drop=True)
-    ex = rioxarray.open_rasterio(ex_file).squeeze('band', drop=True)
-    ey = rioxarray.open_rasterio(ey_file).squeeze('band', drop=True)
-    
-    vv = vv.where(vv != -1)
-    ex = ex.where(ex != -1)
-    ey = ey.where(ey != -1)
-    
-    vv_interp = vv.interp(x=master_x, y=master_y, method="nearest")
-    ex_interp = ex.interp(x=master_x, y=master_y, method="nearest")
-    ey_interp = ey.interp(x=master_x, y=master_y, method="nearest")
-    
-    err_interp = np.sqrt(ex_interp**2 + ey_interp**2)
-    
-    ds = xr.Dataset({
-        'speed': (['time', 'y', 'x'], np.expand_dims(vv_interp.values, axis=0), {'units': 'm/year', 'grid_mapping': 'spatial_ref'}),
-        'error': (['time', 'y', 'x'], np.expand_dims(err_interp.values, axis=0), {'units': 'm/year', 'grid_mapping': 'spatial_ref'}),
-        'data_source': (['time'], np.array(["MEaSUREs_winter"], dtype="<U50"))
-    }, coords={
-        'time': (['time'], [time_mid]),
-        'time_bnds': (['time', 'bnds'], [time_bnds]),
-        'y': (['y'], master_y.values),
-        'x': (['x'], master_x.values),
-    })
-    
-    return ds
-
-
-# --- 6. Mouginot Processing ---
+# --- 3. Mouginot Processing ---
 def parse_mouginot_time(filename):
+    # Example: vel_2010-07-01_2011-06-31.nc
     base = os.path.basename(filename).replace('vel_', '').replace('.nc', '')
     start_str, end_str = base.split('_')
     
+    # Fix the impossible June 31st date trap
     if end_str.endswith('-06-31'):
         end_str = end_str.replace('-06-31', '-06-30')
         
@@ -330,31 +226,59 @@ def parse_mouginot_time(filename):
 
 def preprocess_mouginot(file_path, master_x, master_y):
     time_mid, time_bnds = parse_mouginot_time(file_path)
+    
     ds_raw = xr.open_dataset(file_path)
     
-    vx = ds_raw['VX'].where(ds_raw['VX'] != 0)
-    vy = ds_raw['VY'].where(ds_raw['VY'] != 0)
+    # 1. Replace FillValues (0) with NaN so they don't corrupt the interpolation
+    vx_raw = ds_raw['VX'].where(ds_raw['VX'] != 0)
+    vy_raw = ds_raw['VY'].where(ds_raw['VY'] != 0)
     
-    speed_raw = np.sqrt(vx**2 + vy**2)
+    # Calculate speed
+    speed_raw = np.sqrt(vx_raw**2 + vy_raw**2)
+    
+    # 2. Calculate errors (5% of the absolute value)
+    speed_error_raw = speed_raw * 0.05
+    vx_error_raw = np.abs(vx_raw) * 0.05
+    vy_error_raw = np.abs(vy_raw) * 0.05
+    
+    # 3. Interpolate to master grid
     speed_interp = speed_raw.interp(x=master_x, y=master_y, method="nearest")
-    error_interp = speed_interp * 0.05
+    vx_interp = vx_raw.interp(x=master_x, y=master_y, method="nearest")
+    vy_interp = vy_raw.interp(x=master_x, y=master_y, method="nearest")
     
-    speed_vals = speed_interp.transpose('y', 'x').values
-    error_vals = error_interp.transpose('y', 'x').values
+    speed_error_interp = speed_error_raw.interp(x=master_x, y=master_y, method="nearest")
+    vx_error_interp = vx_error_raw.interp(x=master_x, y=master_y, method="nearest")
+    vy_error_interp = vy_error_raw.interp(x=master_x, y=master_y, method="nearest")
     
+    # 4. Extract values, transpose to match y,x dims, and round to 1 decimal place
+    speed_vals = np.round(speed_interp.transpose('y', 'x').values, 1)
+    vx_vals = np.round(vx_interp.transpose('y', 'x').values, 1)
+    vy_vals = np.round(vy_interp.transpose('y', 'x').values, 1)
+    
+    speed_error_vals = np.round(speed_error_interp.transpose('y', 'x').values, 1)
+    vx_error_vals = np.round(vx_error_interp.transpose('y', 'x').values, 1)
+    vy_error_vals = np.round(vy_error_interp.transpose('y', 'x').values, 1)
+    
+    # 5. Construct final dataset with consistent schema
     ds = xr.Dataset({
         'speed': (['time', 'y', 'x'], np.expand_dims(speed_vals, axis=0), {'units': 'm/year', 'grid_mapping': 'spatial_ref'}),
-        'error': (['time', 'y', 'x'], np.expand_dims(error_vals, axis=0), {'units': 'm/year', 'grid_mapping': 'spatial_ref'}),
+        'vx': (['time', 'y', 'x'], np.expand_dims(vx_vals, axis=0), {'units': 'm/year', 'grid_mapping': 'spatial_ref'}),
+        'vy': (['time', 'y', 'x'], np.expand_dims(vy_vals, axis=0), {'units': 'm/year', 'grid_mapping': 'spatial_ref'}),
+        'speed_error': (['time', 'y', 'x'], np.expand_dims(speed_error_vals, axis=0), {'units': 'm/year', 'grid_mapping': 'spatial_ref'}),
+        'vx_error': (['time', 'y', 'x'], np.expand_dims(vx_error_vals, axis=0), {'units': 'm/year', 'grid_mapping': 'spatial_ref'}),
+        'vy_error': (['time', 'y', 'x'], np.expand_dims(vy_error_vals, axis=0), {'units': 'm/year', 'grid_mapping': 'spatial_ref'}),
         'data_source': (['time'], np.array(["Mouginot_annual"], dtype="<U50"))
     }, coords={
         'time': (['time'], [time_mid]), 'time_bnds': (['time', 'bnds'], [time_bnds]),
         'y': (['y'], master_y.values), 'x': (['x'], master_x.values),
     })
+    
     return ds
 
 
-# --- 7. ITS_LIVE Processing ---
+# --- 4. ITS_LIVE Processing ---
 def parse_itslive_time(filename):
+    # Example: ITS_LIVE_velocity_120m_RGI05A_1986_V02.1.nc
     year_str = os.path.basename(filename).split('_')[5]
     start_dt = datetime(int(year_str), 1, 1)
     end_dt = datetime(int(year_str), 12, 31)
@@ -365,18 +289,37 @@ def preprocess_itslive(file_path, master_x, master_y):
     time_mid, time_bnds = parse_itslive_time(file_path)
     ds_raw = xr.open_dataset(file_path)
     
+    # Mask out the respective fill values
     v = ds_raw['v'].where(ds_raw['v'] != -32767)
+    vx = ds_raw['vx'].where(ds_raw['vx'] != -32767)
+    vy = ds_raw['vy'].where(ds_raw['vy'] != -32767)
     v_error = ds_raw['v_error'].where(ds_raw['v_error'] != 32767)
+    vx_error = ds_raw['vx_error'].where(ds_raw['vx_error'] != 32767)
+    vy_error = ds_raw['vy_error'].where(ds_raw['vy_error'] != 32767)
     
+    # Interpolate to master grid
     speed_interp = v.interp(x=master_x, y=master_y, method="nearest")
-    error_interp = v_error.interp(x=master_x, y=master_y, method="nearest")
+    vx_interp = vx.interp(x=master_x, y=master_y, method="nearest")
+    vy_interp = vy.interp(x=master_x, y=master_y, method="nearest")
+    speed_error_interp = v_error.interp(x=master_x, y=master_y, method="nearest")
+    vx_error_interp = vx_error.interp(x=master_x, y=master_y, method="nearest")
+    vy_error_interp = vy_error.interp(x=master_x, y=master_y, method="nearest")
     
-    speed_vals = speed_interp.transpose('y', 'x').values
-    error_vals = error_interp.transpose('y', 'x').values
+    # Ensure dimensions are ordered correctly (y, x) before expanding to 3D
+    speed_vals = np.round(speed_interp.transpose('y', 'x').values, 1)
+    vx_vals = np.round(vx_interp.transpose('y', 'x').values, 1)
+    vy_vals = np.round(vy_interp.transpose('y', 'x').values, 1)
+    speed_error_vals = np.round(speed_error_interp.transpose('y', 'x').values, 1)
+    vx_error_vals = np.round(vx_error_interp.transpose('y', 'x').values, 1)
+    vy_error_vals = np.round(vy_error_interp.transpose('y', 'x').values, 1)
     
     ds = xr.Dataset({
         'speed': (['time', 'y', 'x'], np.expand_dims(speed_vals, axis=0), {'units': 'm/year', 'grid_mapping': 'spatial_ref'}),
-        'error': (['time', 'y', 'x'], np.expand_dims(error_vals, axis=0), {'units': 'm/year', 'grid_mapping': 'spatial_ref'}),
+        'vx': (['time', 'y', 'x'], np.expand_dims(vx_vals, axis=0), {'units': 'm/year', 'grid_mapping': 'spatial_ref'}),
+        'vy': (['time', 'y', 'x'], np.expand_dims(vy_vals, axis=0), {'units': 'm/year', 'grid_mapping': 'spatial_ref'}),
+        'speed_error': (['time', 'y', 'x'], np.expand_dims(speed_error_vals, axis=0), {'units': 'm/year', 'grid_mapping': 'spatial_ref'}),
+        'vx_error': (['time', 'y', 'x'], np.expand_dims(vx_error_vals, axis=0), {'units': 'm/year', 'grid_mapping': 'spatial_ref'}),
+        'vy_error': (['time', 'y', 'x'], np.expand_dims(vy_error_vals, axis=0), {'units': 'm/year', 'grid_mapping': 'spatial_ref'}),
         'data_source': (['time'], np.array(["ITS_LIVE_annual"], dtype="<U50"))
     }, coords={
         'time': (['time'], [time_mid]), 'time_bnds': (['time', 'bnds'], [time_bnds]),
@@ -385,122 +328,234 @@ def preprocess_itslive(file_path, master_x, master_y):
     return ds
 
 
-# --- 8. ESA CCI Sentinel-1 Processing ---
+# --- 5. ESA CCI Sentinel-1 Processing ---
 def preprocess_esacci_s1(file_path, target_idx, master_x, master_y):
+    # Using .isel() fixes duplicate time bugs safely
     ds_raw = xr.open_dataset(file_path, decode_times=True)
     ds_slice = ds_raw.isel(time=target_idx) 
     
-    vx = ds_slice['land_ice_surface_east_velocity']
-    vy = ds_slice['land_ice_surface_north_velocity']
+    # 1. Extract variables and convert to m/year
+    vx_raw = ds_slice['land_ice_surface_east_velocity'] * 365.25
+    vy_raw = ds_slice['land_ice_surface_north_velocity'] * 365.25
     
-    speed_raw = np.sqrt(vx**2 + vy**2) * 365.25
+    # Calculate speed
+    speed_raw = np.sqrt(vx_raw**2 + vy_raw**2)
+    
+    # 2. Calculate errors (5% of the absolute value)
+    speed_error_raw = speed_raw * 0.05
+    vx_error_raw = np.abs(vx_raw) * 0.05
+    vy_error_raw = np.abs(vy_raw) * 0.05
+    
+    # 3. Interpolate to master grid
     speed_interp = speed_raw.interp(x=master_x, y=master_y, method="nearest")
-    error_interp = speed_interp * 0.05
+    vx_interp = vx_raw.interp(x=master_x, y=master_y, method="nearest")
+    vy_interp = vy_raw.interp(x=master_x, y=master_y, method="nearest")
     
-    speed_vals = speed_interp.transpose('y', 'x').values
-    error_vals = error_interp.transpose('y', 'x').values
+    speed_error_interp = speed_error_raw.interp(x=master_x, y=master_y, method="nearest")
+    vx_error_interp = vx_error_raw.interp(x=master_x, y=master_y, method="nearest")
+    vy_error_interp = vy_error_raw.interp(x=master_x, y=master_y, method="nearest")
     
+    # 4. Extract values, transpose to match y,x dims, and round to 1 decimal place
+    speed_vals = np.round(speed_interp.transpose('y', 'x').values, 1)
+    vx_vals = np.round(vx_interp.transpose('y', 'x').values, 1)
+    vy_vals = np.round(vy_interp.transpose('y', 'x').values, 1)
+    
+    speed_error_vals = np.round(speed_error_interp.transpose('y', 'x').values, 1)
+    vx_error_vals = np.round(vx_error_interp.transpose('y', 'x').values, 1)
+    vy_error_vals = np.round(vy_error_interp.transpose('y', 'x').values, 1)
+    
+    # 5. Construct final dataset with consistent schema
     ds = xr.Dataset({
         'speed': (['time', 'y', 'x'], np.expand_dims(speed_vals, axis=0), {'units': 'm/year', 'grid_mapping': 'spatial_ref'}),
-        'error': (['time', 'y', 'x'], np.expand_dims(error_vals, axis=0), {'units': 'm/year', 'grid_mapping': 'spatial_ref'}),
+        'vx': (['time', 'y', 'x'], np.expand_dims(vx_vals, axis=0), {'units': 'm/year', 'grid_mapping': 'spatial_ref'}),
+        'vy': (['time', 'y', 'x'], np.expand_dims(vy_vals, axis=0), {'units': 'm/year', 'grid_mapping': 'spatial_ref'}),
+        'speed_error': (['time', 'y', 'x'], np.expand_dims(speed_error_vals, axis=0), {'units': 'm/year', 'grid_mapping': 'spatial_ref'}),
+        'vx_error': (['time', 'y', 'x'], np.expand_dims(vx_error_vals, axis=0), {'units': 'm/year', 'grid_mapping': 'spatial_ref'}),
+        'vy_error': (['time', 'y', 'x'], np.expand_dims(vy_error_vals, axis=0), {'units': 'm/year', 'grid_mapping': 'spatial_ref'}),
         'data_source': (['time'], np.array(["ESA_CCI_Sentinel-1"], dtype="<U50"))
     }, coords={
         'y': (['y'], master_y.values), 'x': (['x'], master_x.values),
     })
+    
     return ds
 
 
-# --- 9. ESA CCI Sentinel-2 Processing ---
+# --- 6. ESA CCI Sentinel-2 Processing ---
 def preprocess_esacci_s2(file_path, target_idx, master_x, master_y):
     ds_raw = xr.open_dataset(file_path, decode_times=True)
     ds_slice = ds_raw.isel(time=target_idx)
     
-    vx = ds_slice['land_ice_surface_easting_velocity']
-    vy = ds_slice['land_ice_surface_northing_velocity']
+    # 1. Extract variables and convert to m/year
+    vx_raw = ds_slice['land_ice_surface_easting_velocity'] * 365.25
+    vy_raw = ds_slice['land_ice_surface_northing_velocity'] * 365.25
     
-    speed_raw = np.sqrt(vx**2 + vy**2) * 365.25
+    # Calculate speed
+    speed_raw = np.sqrt(vx_raw**2 + vy_raw**2)
+    
+    # 2. Calculate errors (5% of the absolute value)
+    speed_error_raw = speed_raw * 0.05
+    vx_error_raw = np.abs(vx_raw) * 0.05
+    vy_error_raw = np.abs(vy_raw) * 0.05
+    
+    # 3. Interpolate to master grid
     speed_interp = speed_raw.interp(x=master_x, y=master_y, method="nearest")
-    error_interp = speed_interp * 0.05
+    vx_interp = vx_raw.interp(x=master_x, y=master_y, method="nearest")
+    vy_interp = vy_raw.interp(x=master_x, y=master_y, method="nearest")
     
-    speed_vals = speed_interp.transpose('y', 'x').values
-    error_vals = error_interp.transpose('y', 'x').values
+    speed_error_interp = speed_error_raw.interp(x=master_x, y=master_y, method="nearest")
+    vx_error_interp = vx_error_raw.interp(x=master_x, y=master_y, method="nearest")
+    vy_error_interp = vy_error_raw.interp(x=master_x, y=master_y, method="nearest")
     
+    # 4. Extract values, transpose to match y,x dims, and round to 1 decimal place
+    speed_vals = np.round(speed_interp.transpose('y', 'x').values, 1)
+    vx_vals = np.round(vx_interp.transpose('y', 'x').values, 1)
+    vy_vals = np.round(vy_interp.transpose('y', 'x').values, 1)
+    
+    speed_error_vals = np.round(speed_error_interp.transpose('y', 'x').values, 1)
+    vx_error_vals = np.round(vx_error_interp.transpose('y', 'x').values, 1)
+    vy_error_vals = np.round(vy_error_interp.transpose('y', 'x').values, 1)
+    
+    # 5. Construct final dataset with consistent schema
     ds = xr.Dataset({
         'speed': (['time', 'y', 'x'], np.expand_dims(speed_vals, axis=0), {'units': 'm/year', 'grid_mapping': 'spatial_ref'}),
-        'error': (['time', 'y', 'x'], np.expand_dims(error_vals, axis=0), {'units': 'm/year', 'grid_mapping': 'spatial_ref'}),
+        'vx': (['time', 'y', 'x'], np.expand_dims(vx_vals, axis=0), {'units': 'm/year', 'grid_mapping': 'spatial_ref'}),
+        'vy': (['time', 'y', 'x'], np.expand_dims(vy_vals, axis=0), {'units': 'm/year', 'grid_mapping': 'spatial_ref'}),
+        'speed_error': (['time', 'y', 'x'], np.expand_dims(speed_error_vals, axis=0), {'units': 'm/year', 'grid_mapping': 'spatial_ref'}),
+        'vx_error': (['time', 'y', 'x'], np.expand_dims(vx_error_vals, axis=0), {'units': 'm/year', 'grid_mapping': 'spatial_ref'}),
+        'vy_error': (['time', 'y', 'x'], np.expand_dims(vy_error_vals, axis=0), {'units': 'm/year', 'grid_mapping': 'spatial_ref'}),
         'data_source': (['time'], np.array(["ESA_CCI_Sentinel-2"], dtype="<U50"))
     }, coords={
         'y': (['y'], master_y.values), 'x': (['x'], master_x.values),
     })
+    
     return ds
 
 
-# --- 10. ESA CCI CSK Processing ---
+# --- 7. ESA CCI CSK Processing ---
 def preprocess_esacci_csk(file_path, target_idx, master_x, master_y):
     ds_raw = xr.open_dataset(file_path, decode_times=True)
     ds_slice = ds_raw.isel(time=target_idx)
     
+    # 1. Extract variables and convert to m/year
     speed_raw = ds_slice['land_ice_surface_velocity_magnitude'] * 365.25
-    error_raw = ds_slice['land_ice_surface_velocity_magnitude_std'] * 365.25
+    vx_raw = ds_slice['land_ice_surface_easting_velocity'] * 365.25
+    vy_raw = ds_slice['land_ice_surface_northing_velocity'] * 365.25
     
+    speed_error_raw = ds_slice['land_ice_surface_velocity_magnitude_std'] * 365.25
+    vx_error_raw = ds_slice['land_ice_surface_easting_velocity_std'] * 365.25
+    vy_error_raw = ds_slice['land_ice_surface_northing_velocity_std'] * 365.25
+    
+    # 2. Interpolate to master grid
     speed_interp = speed_raw.interp(x=master_x, y=master_y, method="nearest")
-    error_interp = error_raw.interp(x=master_x, y=master_y, method="nearest")
+    vx_interp = vx_raw.interp(x=master_x, y=master_y, method="nearest")
+    vy_interp = vy_raw.interp(x=master_x, y=master_y, method="nearest")
     
-    speed_vals = speed_interp.transpose('y', 'x').values
-    error_vals = error_interp.transpose('y', 'x').values
+    speed_error_interp = speed_error_raw.interp(x=master_x, y=master_y, method="nearest")
+    vx_error_interp = vx_error_raw.interp(x=master_x, y=master_y, method="nearest")
+    vy_error_interp = vy_error_raw.interp(x=master_x, y=master_y, method="nearest")
     
+    # 3. Extract values, transpose to match y,x dims, and round to 1 decimal place
+    speed_vals = np.round(speed_interp.transpose('y', 'x').values, 1)
+    vx_vals = np.round(vx_interp.transpose('y', 'x').values, 1)
+    vy_vals = np.round(vy_interp.transpose('y', 'x').values, 1)
+    
+    speed_error_vals = np.round(speed_error_interp.transpose('y', 'x').values, 1)
+    vx_error_vals = np.round(vx_error_interp.transpose('y', 'x').values, 1)
+    vy_error_vals = np.round(vy_error_interp.transpose('y', 'x').values, 1)
+    
+    # 4. Construct final dataset with consistent schema
     ds = xr.Dataset({
         'speed': (['time', 'y', 'x'], np.expand_dims(speed_vals, axis=0), {'units': 'm/year', 'grid_mapping': 'spatial_ref'}),
-        'error': (['time', 'y', 'x'], np.expand_dims(error_vals, axis=0), {'units': 'm/year', 'grid_mapping': 'spatial_ref'}),
+        'vx': (['time', 'y', 'x'], np.expand_dims(vx_vals, axis=0), {'units': 'm/year', 'grid_mapping': 'spatial_ref'}),
+        'vy': (['time', 'y', 'x'], np.expand_dims(vy_vals, axis=0), {'units': 'm/year', 'grid_mapping': 'spatial_ref'}),
+        'speed_error': (['time', 'y', 'x'], np.expand_dims(speed_error_vals, axis=0), {'units': 'm/year', 'grid_mapping': 'spatial_ref'}),
+        'vx_error': (['time', 'y', 'x'], np.expand_dims(vx_error_vals, axis=0), {'units': 'm/year', 'grid_mapping': 'spatial_ref'}),
+        'vy_error': (['time', 'y', 'x'], np.expand_dims(vy_error_vals, axis=0), {'units': 'm/year', 'grid_mapping': 'spatial_ref'}),
         'data_source': (['time'], np.array(["ESA_CCI_CSK"], dtype="<U50"))
     }, coords={
         'y': (['y'], master_y.values), 'x': (['x'], master_x.values),
     })
+    
     return ds
 
-
-# --- 11. ESA CCI ERS/Envisat Processing ---
+# --- 8. ESA CCI ERS1-2/Envisat, ERS2-95/96, PALSAR 2006-2011 & ERS1 (northern basins)  Processing ---
 def preprocess_esacci_ers_env(file_path, target_idx, master_x, master_y, source_label="ESA_CCI_ERS1-2_Envisat"):
     ds_raw = xr.open_dataset(file_path, decode_times=True)
     ds_slice = ds_raw.isel(time=target_idx)
     
+    # 1. Extract vx and vy
+    if 'land_ice_surface_easting_velocity' in ds_slice and 'land_ice_surface_northing_velocity' in ds_slice:
+        vx_raw = ds_slice['land_ice_surface_easting_velocity'] * 365.25
+        vy_raw = ds_slice['land_ice_surface_northing_velocity'] * 365.25
+    elif 'land_ice_surface_east_velocity' in ds_slice and 'land_ice_surface_north_velocity' in ds_slice:
+        vx_raw = ds_slice['land_ice_surface_east_velocity'] * 365.25
+        vy_raw = ds_slice['land_ice_surface_north_velocity'] * 365.25
+    else:
+        raise KeyError(f"No valid velocity component variables found in {file_path}")
+        
+    # 2. Extract speed
     if 'land_ice_surface_velocity_magnitude' in ds_slice:
         speed_raw = ds_slice['land_ice_surface_velocity_magnitude'] * 365.25
     else:
-        if 'land_ice_surface_east_velocity' in ds_slice:
-            vx = ds_slice['land_ice_surface_east_velocity']
-            vy = ds_slice['land_ice_surface_north_velocity']
-        elif 'land_ice_surface_easting_velocity' in ds_slice:
-            vx = ds_slice['land_ice_surface_easting_velocity']
-            vy = ds_slice['land_ice_surface_northing_velocity']
-        else:
-            raise KeyError(f"No valid speed or velocity component variables found in {file_path}")
-        speed_raw = np.sqrt(vx**2 + vy**2) * 365.25
+        speed_raw = np.sqrt(vx_raw**2 + vy_raw**2)
         
-    if 'land_ice_surface_velocity_magnitude_std' in ds_slice:
-        error_raw = ds_slice['land_ice_surface_velocity_magnitude_std'] * 365.25
+    # 3. Extract vx_error and vy_error
+    if 'land_ice_surface_easting_velocity_std' in ds_slice and 'land_ice_surface_northing_velocity_std' in ds_slice:
+        vx_error_raw = ds_slice['land_ice_surface_easting_velocity_std'] * 365.25
+        vy_error_raw = ds_slice['land_ice_surface_northing_velocity_std'] * 365.25
     else:
-        error_raw = speed_raw * 0.05
+        # Fallback: 5% of the absolute value of the components
+        vx_error_raw = np.abs(vx_raw) * 0.05
+        vy_error_raw = np.abs(vy_raw) * 0.05
+
+    # 4. Extract speed error
+    if 'land_ice_surface_velocity_magnitude_std' in ds_slice:
+        speed_error_raw = ds_slice['land_ice_surface_velocity_magnitude_std'] * 365.25
+    elif 'land_ice_surface_easting_velocity_std' in ds_slice and 'land_ice_surface_northing_velocity_std' in ds_slice:
+        # If speed error is missing but component errors exist, calculate it
+        speed_error_raw = np.sqrt(vx_error_raw**2 + vy_error_raw**2)
+    else:
+        speed_error_raw = speed_raw * 0.05
         
+    # 5. Interpolate to master grid
     speed_interp = speed_raw.interp(x=master_x, y=master_y, method="nearest")
-    error_interp = error_raw.interp(x=master_x, y=master_y, method="nearest")
+    vx_interp = vx_raw.interp(x=master_x, y=master_y, method="nearest")
+    vy_interp = vy_raw.interp(x=master_x, y=master_y, method="nearest")
     
-    speed_vals = speed_interp.transpose('y', 'x').values
-    error_vals = error_interp.transpose('y', 'x').values
+    speed_error_interp = speed_error_raw.interp(x=master_x, y=master_y, method="nearest")
+    vx_error_interp = vx_error_raw.interp(x=master_x, y=master_y, method="nearest")
+    vy_error_interp = vy_error_raw.interp(x=master_x, y=master_y, method="nearest")
     
+    # 6. Extract values, transpose to match y,x dims, and round to 1 decimal place
+    speed_vals = np.round(speed_interp.transpose('y', 'x').values, 1)
+    vx_vals = np.round(vx_interp.transpose('y', 'x').values, 1)
+    vy_vals = np.round(vy_interp.transpose('y', 'x').values, 1)
+    
+    speed_error_vals = np.round(speed_error_interp.transpose('y', 'x').values, 1)
+    vx_error_vals = np.round(vx_error_interp.transpose('y', 'x').values, 1)
+    vy_error_vals = np.round(vy_error_interp.transpose('y', 'x').values, 1)
+    
+    # 7. Construct final dataset
     ds = xr.Dataset({
         'speed': (['time', 'y', 'x'], np.expand_dims(speed_vals, axis=0), {'units': 'm/year', 'grid_mapping': 'spatial_ref'}),
-        'error': (['time', 'y', 'x'], np.expand_dims(error_vals, axis=0), {'units': 'm/year', 'grid_mapping': 'spatial_ref'}),
+        'vx': (['time', 'y', 'x'], np.expand_dims(vx_vals, axis=0), {'units': 'm/year', 'grid_mapping': 'spatial_ref'}),
+        'vy': (['time', 'y', 'x'], np.expand_dims(vy_vals, axis=0), {'units': 'm/year', 'grid_mapping': 'spatial_ref'}),
+        'speed_error': (['time', 'y', 'x'], np.expand_dims(speed_error_vals, axis=0), {'units': 'm/year', 'grid_mapping': 'spatial_ref'}),
+        'vx_error': (['time', 'y', 'x'], np.expand_dims(vx_error_vals, axis=0), {'units': 'm/year', 'grid_mapping': 'spatial_ref'}),
+        'vy_error': (['time', 'y', 'x'], np.expand_dims(vy_error_vals, axis=0), {'units': 'm/year', 'grid_mapping': 'spatial_ref'}),
         'data_source': (['time'], np.array([source_label], dtype="<U50"))
     }, coords={
         'y': (['y'], master_y.values), 'x': (['x'], master_x.values),
     })
+    
     return ds
 
 
-# --- 12. ESA CCI Winter Processing ---
+# --- 9. ESA CCI Winter Processing ---
 def parse_cci_winter_time(file_path):
+    """Parses time bounds directly from netcdf global attributes."""
     with xr.open_dataset(file_path) as ds:
+        # Slice [:10] in case the string has 'T00:00:00' appended
         start_str = ds.attrs.get('time_coverage_start')[:10]
         end_str = ds.attrs.get('time_coverage_end')[:10]
         
@@ -511,49 +566,84 @@ def parse_cci_winter_time(file_path):
     return np.datetime64(mid_dt), np.array([np.datetime64(start_dt), np.datetime64(end_dt)])
 
 def preprocess_esacci_winter(file_path, master_x, master_y):
+    """Processes 2D Winter ESA CCI datasets."""
     ds_raw = xr.open_dataset(file_path)
+    
+    # Time
     if 'time' in ds_raw.dims:
         ds_raw = ds_raw.squeeze('time', drop=True)
     
+    # 1. Extract vx and vy
+    vx_raw = ds_raw.get('land_ice_surface_easting_velocity', ds_raw.get('land_ice_surface_east_velocity')) * 365.25
+    vy_raw = ds_raw.get('land_ice_surface_northing_velocity', ds_raw.get('land_ice_surface_north_velocity')) * 365.25
+    
+    # 2. Extract speed
     if 'land_ice_surface_velocity_magnitude' in ds_raw:
         speed_raw = ds_raw['land_ice_surface_velocity_magnitude'] * 365.25
     else:
-        vx = ds_raw.get('land_ice_surface_easting_velocity', ds_raw.get('land_ice_surface_east_velocity'))
-        vy = ds_raw.get('land_ice_surface_northing_velocity', ds_raw.get('land_ice_surface_north_velocity'))
-        speed_raw = np.sqrt(vx**2 + vy**2) * 365.25
+        speed_raw = np.sqrt(vx_raw**2 + vy_raw**2)
         
+    # 3. Extract vx_error and vy_error
+    if 'land_ice_surface_easting_velocity_std' in ds_raw and 'land_ice_surface_northing_velocity_std' in ds_raw:
+        vx_error_raw = ds_raw['land_ice_surface_easting_velocity_std'] * 365.25
+        vy_error_raw = ds_raw['land_ice_surface_northing_velocity_std'] * 365.25
+    else:
+        # Fallback: 5% of the absolute value of the components
+        vx_error_raw = np.abs(vx_raw) * 0.05
+        vy_error_raw = np.abs(vy_raw) * 0.05
+
+    # 4. Extract speed error
     if 'land_ice_surface_velocity_stddev' in ds_raw:
-        error_raw = ds_raw['land_ice_surface_velocity_stddev'] * 365.25
+        speed_error_raw = ds_raw['land_ice_surface_velocity_stddev'] * 365.25
     elif 'land_ice_surface_velocity_magnitude_std' in ds_raw:
-        error_raw = ds_raw['land_ice_surface_velocity_magnitude_std'] * 365.25
-    elif 'land_ice_surface_velocity_magnuitude_std' in ds_raw:
-        error_raw = ds_raw['land_ice_surface_velocity_magnuitude_std'] * 365.25
+        speed_error_raw = ds_raw['land_ice_surface_velocity_magnitude_std'] * 365.25
+    elif 'land_ice_surface_velocity_magnuitude_std' in ds_raw: # yes, there is an ESA CCI dataset with this variable name
+        speed_error_raw = ds_raw['land_ice_surface_velocity_magnuitude_std'] * 365.25
     else:
         std_x = ds_raw.get('land_ice_surface_easting_velocity_std', ds_raw.get('land_ice_surface_easting_stddev'))
         std_y = ds_raw.get('land_ice_surface_northing_velocity_std', ds_raw.get('land_ice_surface_northing_stddev'))
         if std_x is not None and std_y is not None:
-            error_raw = np.sqrt(std_x**2 + std_y**2) * 365.25
+            speed_error_raw = np.sqrt(std_x**2 + std_y**2) * 365.25
         else:
-            error_raw = speed_raw * 0.05
+            speed_error_raw = speed_raw * 0.05
     
+    # 5. Interpolate to master grid
     speed_interp = speed_raw.interp(x=master_x, y=master_y, method="nearest")
-    error_interp = error_raw.interp(x=master_x, y=master_y, method="nearest")
+    vx_interp = vx_raw.interp(x=master_x, y=master_y, method="nearest")
+    vy_interp = vy_raw.interp(x=master_x, y=master_y, method="nearest")
     
-    speed_vals = speed_interp.transpose('y', 'x').values
-    error_vals = error_interp.transpose('y', 'x').values
+    speed_error_interp = speed_error_raw.interp(x=master_x, y=master_y, method="nearest")
+    vx_error_interp = vx_error_raw.interp(x=master_x, y=master_y, method="nearest")
+    vy_error_interp = vy_error_raw.interp(x=master_x, y=master_y, method="nearest")
     
+    # 6. Extract values, transpose to match y,x dims, and round to 1 decimal place
+    speed_vals = np.round(speed_interp.transpose('y', 'x').values, 1)
+    vx_vals = np.round(vx_interp.transpose('y', 'x').values, 1)
+    vy_vals = np.round(vy_interp.transpose('y', 'x').values, 1)
+    
+    speed_error_vals = np.round(speed_error_interp.transpose('y', 'x').values, 1)
+    vx_error_vals = np.round(vx_error_interp.transpose('y', 'x').values, 1)
+    vy_error_vals = np.round(vy_error_interp.transpose('y', 'x').values, 1)
+    
+    # 7. Construct final dataset with consistent schema
     ds = xr.Dataset({
         'speed': (['time', 'y', 'x'], np.expand_dims(speed_vals, axis=0), {'units': 'm/year', 'grid_mapping': 'spatial_ref'}),
-        'error': (['time', 'y', 'x'], np.expand_dims(error_vals, axis=0), {'units': 'm/year', 'grid_mapping': 'spatial_ref'}),
+        'vx': (['time', 'y', 'x'], np.expand_dims(vx_vals, axis=0), {'units': 'm/year', 'grid_mapping': 'spatial_ref'}),
+        'vy': (['time', 'y', 'x'], np.expand_dims(vy_vals, axis=0), {'units': 'm/year', 'grid_mapping': 'spatial_ref'}),
+        'speed_error': (['time', 'y', 'x'], np.expand_dims(speed_error_vals, axis=0), {'units': 'm/year', 'grid_mapping': 'spatial_ref'}),
+        'vx_error': (['time', 'y', 'x'], np.expand_dims(vx_error_vals, axis=0), {'units': 'm/year', 'grid_mapping': 'spatial_ref'}),
+        'vy_error': (['time', 'y', 'x'], np.expand_dims(vy_error_vals, axis=0), {'units': 'm/year', 'grid_mapping': 'spatial_ref'}),
         'data_source': (['time'], np.array(["ESA_CCI_winter"], dtype="<U50"))
     }, coords={
         'y': (['y'], master_y.values), 'x': (['x'], master_x.values),
     })
+    
     return ds
 
 
-# --- 13. ENVEO Processing ---
+# --- 10. ENVEO Processing ---
 def parse_enveo_time(filename):
+    """Automatically grabs the two 8-digit dates (YYYYMMDD) from any ENVEO filename string."""
     base = os.path.basename(filename)
     dates = re.findall(r'(20\d{6})', base)
     
@@ -565,22 +655,64 @@ def parse_enveo_time(filename):
 
 def preprocess_enveo_tiff(mag_file, master_x, master_y):
     std_file = mag_file.replace('_mag.tif', '_stdev.tif')
+    vxvy_file = mag_file.replace('_mag.tif', '.tif')
     
+    # Open single-band datasets
     mag = rioxarray.open_rasterio(mag_file).squeeze('band', drop=True)
     std = rioxarray.open_rasterio(std_file).squeeze('band', drop=True)
     
-    if mag.rio.nodata is not None: mag = mag.where(mag != mag.rio.nodata)
-    if std.rio.nodata is not None: std = std.where(std != std.rio.nodata)
+    # 1. Parse vx and vy from the 3-band geotiff
+    vxvy = rioxarray.open_rasterio(vxvy_file)
+    vx = vxvy.sel(band=1).drop_vars('band')
+    vy = vxvy.sel(band=2).drop_vars('band')
+    
+    # Safely mask native NoData values if they exist
+    if mag.rio.nodata is not None: 
+        mag = mag.where(mag != mag.rio.nodata)
+    if std.rio.nodata is not None: 
+        std = std.where(std != std.rio.nodata)
+    if vxvy.rio.nodata is not None: 
+        vx = vx.where(vx != vxvy.rio.nodata)
+        vy = vy.where(vy != vxvy.rio.nodata)
         
+    # Interpolate to master grid
     mag_interp = mag.interp(x=master_x, y=master_y, method="nearest")
     std_interp = std.interp(x=master_x, y=master_y, method="nearest")
+    vx_interp = vx.interp(x=master_x, y=master_y, method="nearest")
+    vy_interp = vy.interp(x=master_x, y=master_y, method="nearest")
     
+    # Convert all components to m/year
     speed_vals = mag_interp.values * 365.25
-    error_vals = std_interp.values * 365.25
+    speed_error_vals = std_interp.values * 365.25
+    vx_vals = vx_interp.values * 365.25
+    vy_vals = vy_interp.values * 365.25
     
+    # 2. Calculate vx_error and vy_error based on proportional contribution
+    # We use np.errstate to suppress division-by-zero warnings in off-ice/nodata regions
+    with np.errstate(divide='ignore', invalid='ignore'):
+        # Proportion of speed belonging to vx and vy (avoiding division by zero)
+        vx_prop = np.where(speed_vals > 0, np.abs(vx_vals) / speed_vals, 0)
+        vy_prop = np.where(speed_vals > 0, np.abs(vy_vals) / speed_vals, 0)
+        
+    vx_error_vals = speed_error_vals * vx_prop
+    vy_error_vals = speed_error_vals * vy_prop
+    
+    # 3. Round everything to 1 decimal place to reduce Zarr volume
+    speed_vals = np.round(speed_vals, 1)
+    speed_error_vals = np.round(speed_error_vals, 1)
+    vx_vals = np.round(vx_vals, 1)
+    vy_vals = np.round(vy_vals, 1)
+    vx_error_vals = np.round(vx_error_vals, 1)
+    vy_error_vals = np.round(vy_error_vals, 1)
+    
+    # Build dataset
     ds = xr.Dataset({
         'speed': (['time', 'y', 'x'], np.expand_dims(speed_vals, axis=0), {'units': 'm/year', 'grid_mapping': 'spatial_ref'}),
-        'error': (['time', 'y', 'x'], np.expand_dims(error_vals, axis=0), {'units': 'm/year', 'grid_mapping': 'spatial_ref'}),
+        'vx': (['time', 'y', 'x'], np.expand_dims(vx_vals, axis=0), {'units': 'm/year', 'grid_mapping': 'spatial_ref'}),
+        'vy': (['time', 'y', 'x'], np.expand_dims(vy_vals, axis=0), {'units': 'm/year', 'grid_mapping': 'spatial_ref'}),
+        'speed_error': (['time', 'y', 'x'], np.expand_dims(speed_error_vals, axis=0), {'units': 'm/year', 'grid_mapping': 'spatial_ref'}),
+        'vx_error': (['time', 'y', 'x'], np.expand_dims(vx_error_vals, axis=0), {'units': 'm/year', 'grid_mapping': 'spatial_ref'}),
+        'vy_error': (['time', 'y', 'x'], np.expand_dims(vy_error_vals, axis=0), {'units': 'm/year', 'grid_mapping': 'spatial_ref'}),
         'data_source': (['time'], np.array(["ENVEO_annual"], dtype="<U50"))
     }, coords={
         'y': (['y'], master_y.values), 'x': (['x'], master_x.values),
@@ -591,19 +723,33 @@ def preprocess_enveo_nc(file_path, master_x, master_y):
     ds_raw = xr.open_dataset(file_path)
     
     speed_raw = ds_raw['land_ice_surface_velocity_magnitude'] * 365.25
-    std_x = ds_raw['land_ice_surface_easting_stddev']
-    std_y = ds_raw['land_ice_surface_northing_stddev']
-    error_raw = np.sqrt(std_x**2 + std_y**2) * 365.25
+    vx_raw = ds_raw['land_ice_surface_easting_velocity'] * 365.25
+    vy_raw = ds_raw['land_ice_surface_northing_velocity'] * 365.25
+    vx_error_raw = ds_raw['land_ice_surface_easting_stddev'] * 365.25
+    vy_error_raw = ds_raw['land_ice_surface_northing_stddev'] * 365.25
+    speed_error_raw = np.sqrt(vx_error_raw**2 + vy_error_raw**2)
     
     speed_interp = speed_raw.interp(x=master_x, y=master_y, method="nearest")
-    error_interp = error_raw.interp(x=master_x, y=master_y, method="nearest")
+    vx_interp = vx_raw.interp(x=master_x, y=master_y, method="nearest")
+    vy_interp = vy_raw.interp(x=master_x, y=master_y, method="nearest")
+    speed_error_interp = speed_error_raw.interp(x=master_x, y=master_y, method="nearest")
+    vx_error_interp = vx_error_raw.interp(x=master_x, y=master_y, method="nearest")
+    vy_error_interp = vy_error_raw.interp(x=master_x, y=master_y, method="nearest")
     
-    speed_vals = speed_interp.transpose('y', 'x').values
-    error_vals = error_interp.transpose('y', 'x').values
+    speed_vals = np.round(speed_interp.transpose('y', 'x').values, 1)
+    vx_vals = np.round(vx_interp.transpose('y', 'x').values, 1)
+    vy_vals = np.round(vy_interp.transpose('y', 'x').values, 1)
+    speed_error_vals = np.round(speed_error_interp.transpose('y', 'x').values, 1)
+    vx_error_vals = np.round(vx_error_interp.transpose('y', 'x').values, 1)
+    vy_error_vals = np.round(vy_error_interp.transpose('y', 'x').values, 1)
     
     ds = xr.Dataset({
         'speed': (['time', 'y', 'x'], np.expand_dims(speed_vals, axis=0), {'units': 'm/year', 'grid_mapping': 'spatial_ref'}),
-        'error': (['time', 'y', 'x'], np.expand_dims(error_vals, axis=0), {'units': 'm/year', 'grid_mapping': 'spatial_ref'}),
+        'vx': (['time', 'y', 'x'], np.expand_dims(vx_vals, axis=0), {'units': 'm/year', 'grid_mapping': 'spatial_ref'}),
+        'vy': (['time', 'y', 'x'], np.expand_dims(vy_vals, axis=0), {'units': 'm/year', 'grid_mapping': 'spatial_ref'}),
+        'speed_error': (['time', 'y', 'x'], np.expand_dims(speed_error_vals, axis=0), {'units': 'm/year', 'grid_mapping': 'spatial_ref'}),
+        'vx_error': (['time', 'y', 'x'], np.expand_dims(vx_error_vals, axis=0), {'units': 'm/year', 'grid_mapping': 'spatial_ref'}),
+        'vy_error': (['time', 'y', 'x'], np.expand_dims(vy_error_vals, axis=0), {'units': 'm/year', 'grid_mapping': 'spatial_ref'}),
         'data_source': (['time'], np.array(["ENVEO_annual"], dtype="<U50"))
     }, coords={
         'y': (['y'], master_y.values), 'x': (['x'], master_x.values),
@@ -611,8 +757,10 @@ def preprocess_enveo_nc(file_path, master_x, master_y):
     return ds
 
 
-# --- 14. SHIFT Processing ---
+
+# --- 11. SHIFT Processing ---
 def parse_shift_time(date_str):
+    """Extracts datetimes from SHIFT YYYYMMDD_YYYYMMDD strings."""
     start_str, end_str = date_str.split('_')
     start_dt = datetime.strptime(start_str, "%Y%m%d")
     end_dt = datetime.strptime(end_str, "%Y%m%d")
@@ -620,6 +768,7 @@ def parse_shift_time(date_str):
     return np.datetime64(mid_dt), np.array([np.datetime64(start_dt), np.datetime64(end_dt)])
 
 def read_shift_med(filepath):
+    """Safely reads the 'med' column from a SHIFT metadata text file."""
     if not os.path.exists(filepath):
         return np.nan
     try:
@@ -634,6 +783,31 @@ def read_shift_med(filepath):
         if 'med' in headers:
             med_idx = headers.index('med')
             val = float(values[med_idx])
+            # Return NaN if the parsed value is basically nodata
+            if np.isnan(val) or val == -9999 or val == -1:
+                return np.nan
+            return val
+    except:
+        pass
+    return np.nan
+
+def read_shift_std(filepath):
+    """Safely reads the 'std' column from a SHIFT metadata text file."""
+    if not os.path.exists(filepath):
+        return np.nan
+    try:
+        with open(filepath, 'r') as f:
+            lines = f.readlines()
+        if len(lines) < 2: 
+            return np.nan
+            
+        headers = lines[0].split()
+        values = lines[1].split()
+        
+        if 'std' in headers:
+            std_idx = headers.index('std')
+            val = float(values[std_idx])
+            # Return NaN if the parsed value is basically nodata
             if np.isnan(val) or val == -9999 or val == -1:
                 return np.nan
             return val
@@ -644,38 +818,75 @@ def read_shift_med(filepath):
 def preprocess_shift(epoch_dir, master_x, master_y):
     date_str = os.path.basename(epoch_dir)
     speed_file = os.path.join(epoch_dir, f"S_{date_str}_200m_raw.tif")
+    vx_file = os.path.join(epoch_dir, f"U_{date_str}_200m_raw.tif")
+    vy_file = os.path.join(epoch_dir, f"V_{date_str}_200m_raw.tif")
     meta_dir = os.path.join(epoch_dir, "metadata")
     
+    # 1. Load velocity components (Already in m/year)
     speed = rioxarray.open_rasterio(speed_file).squeeze('band', drop=True)
+    vx = rioxarray.open_rasterio(vx_file).squeeze('band', drop=True)
+    vy = rioxarray.open_rasterio(vy_file).squeeze('band', drop=True)
     if speed.rio.nodata is not None: 
         speed = speed.where(speed != speed.rio.nodata)
+    if vx.rio.nodata is not None: 
+        vx = vx.where(vx != vx.rio.nodata)
+    if vy.rio.nodata is not None: 
+        vy = vy.where(vy != vy.rio.nodata)
         
     speed_interp = speed.interp(x=master_x, y=master_y, method="nearest")
+    vx_interp = vx.interp(x=master_x, y=master_y, method="nearest")
+    vy_interp = vy.interp(x=master_x, y=master_y, method="nearest")
     
-    rock_u = read_shift_med(os.path.join(meta_dir, f"rock_mask_U_metadata_200m_{date_str}.txt"))
-    rock_v = read_shift_med(os.path.join(meta_dir, f"rock_mask_V_metadata_200m_{date_str}.txt"))
+    # 2. Extract Error Metadata
+    vx_error_scalar = read_shift_std(os.path.join(meta_dir, f"rock_mask_U_metadata_200m_{date_str}.txt"))
+    vy_error_scalar = read_shift_std(os.path.join(meta_dir, f"rock_mask_V_metadata_200m_{date_str}.txt"))
     
-    error_scalar = np.nan
-    if not (np.isnan(rock_u) or np.isnan(rock_v)):
-        error_scalar = np.sqrt(rock_u**2 + rock_v**2)
+    speed_error_scalar = np.nan
+    
+    if not (np.isnan(vx_error_scalar) or np.isnan(vy_error_scalar)):
+        speed_error_scalar = np.sqrt(vx_error_scalar**2 + vy_error_scalar**2)
     else:
-        off_u = read_shift_med(os.path.join(meta_dir, f"off_ice_U_metadata_200m_{date_str}.txt"))
-        off_v = read_shift_med(os.path.join(meta_dir, f"off_ice_V_metadata_200m_{date_str}.txt"))
-        if not (np.isnan(off_u) or np.isnan(off_v)):
-            error_scalar = np.sqrt(off_u**2 + off_v**2)
+        vx_error_scalar = read_shift_std(os.path.join(meta_dir, f"off_ice_U_metadata_200m_{date_str}.txt"))
+        vy_error_scalar = read_shift_std(os.path.join(meta_dir, f"off_ice_V_metadata_200m_{date_str}.txt"))
+        if not (np.isnan(vx_error_scalar) or np.isnan(vy_error_scalar)):
+            speed_error_scalar = np.sqrt(vx_error_scalar**2 + vy_error_scalar**2)
 
-    if np.isnan(error_scalar):
-        error_interp = speed_interp * 0.05
+    # 3. Apply Error (Constant Scalar or 5% Fallback)
+    if np.isnan(speed_error_scalar):
+        speed_error_interp = speed_interp * 0.05
     else:
-        error_interp = xr.full_like(speed_interp, error_scalar)
-        error_interp = error_interp.where(speed_interp.notnull())
+        # Create a spatial array matching the speed footprint, filled with the single scalar value
+        speed_error_interp = xr.full_like(speed_interp, speed_error_scalar)
+        speed_error_interp = speed_error_interp.where(speed_interp.notnull())
+    # 3b. VX
+    if np.isnan(vx_error_scalar):
+        vx_error_interp = abs(vx_interp) * 0.05
+    else:
+        # Create a spatial array matching the vx footprint, filled with the single scalar value
+        vx_error_interp = xr.full_like(vx_interp, vx_error_scalar)
+        vx_error_interp = vx_error_interp.where(vx_interp.notnull())
+    # 3c. VY    
+    if np.isnan(vy_error_scalar):
+        vy_error_interp = abs(vy_interp) * 0.05
+    else:
+        # Create a spatial array matching the vy footprint, filled with the single scalar value
+        vy_error_interp = xr.full_like(vy_interp, vy_error_scalar)
+        vy_error_interp = vy_error_interp.where(vy_interp.notnull())
 
-    speed_vals = speed_interp.values
-    error_vals = error_interp.values
+    speed_vals = np.round(speed_interp.values, 1)
+    vx_vals = np.round(vx_interp.values, 1)
+    vy_vals = np.round(vy_interp.values, 1)
+    speed_error_vals = np.round(speed_error_interp.values, 1)
+    vx_error_vals = np.round(vx_error_interp.values, 1) 
+    vy_error_vals = np.round(vy_error_interp.values, 1)
     
     ds = xr.Dataset({
         'speed': (['time', 'y', 'x'], np.expand_dims(speed_vals, axis=0), {'units': 'm/year', 'grid_mapping': 'spatial_ref'}),
-        'error': (['time', 'y', 'x'], np.expand_dims(error_vals, axis=0), {'units': 'm/year', 'grid_mapping': 'spatial_ref'}),
+        'vx': (['time', 'y', 'x'], np.expand_dims(vx_vals, axis=0), {'units': 'm/year', 'grid_mapping': 'spatial_ref'}),
+        'vy': (['time', 'y', 'x'], np.expand_dims(vy_vals, axis=0), {'units': 'm/year', 'grid_mapping': 'spatial_ref'}),
+        'speed_error': (['time', 'y', 'x'], np.expand_dims(speed_error_vals, axis=0), {'units': 'm/year', 'grid_mapping': 'spatial_ref'}),
+        'vx_error': (['time', 'y', 'x'], np.expand_dims(vx_error_vals, axis=0), {'units': 'm/year', 'grid_mapping': 'spatial_ref'}),
+        'vy_error': (['time', 'y', 'x'], np.expand_dims(vy_error_vals, axis=0), {'units': 'm/year', 'grid_mapping': 'spatial_ref'}),
         'data_source': (['time'], np.array(["SHIFT"], dtype="<U50"))
     }, coords={
         'y': (['y'], master_y.values), 'x': (['x'], master_x.values),
@@ -685,7 +896,7 @@ def preprocess_shift(epoch_dir, master_x, master_y):
 
 # --- HPC PYRAMID BUILDER LOGIC ---
 
-OUTPUT_ZARR = "/mnt/parscratch/users/gg1bjd/Data/Velocity/Greenland/multisource_zarr/Greenland_multisource_speed_spatial.zarr"
+OUTPUT_ZARR = "/mnt/parscratch/users/gg1bjd/Data/Velocity/Greenland/multisource_zarr/greenland_multisource_velocity_spatial.zarr"
 CATALOG_FILE = "/mnt/parscratch/users/gg1bjd/Data/Velocity/Greenland/multisource_zarr/master_epoch_catalog_spatial.pkl"
 
 def build_catalog_and_skeleton():
@@ -716,25 +927,25 @@ def build_catalog_and_skeleton():
             
     # 2. MEaSUREs monthly
     for f in sorted(glob.glob(os.path.join(measures_monthly_dir, "*_vv_*.tif"))):
-        t, tb = parse_measures_monthly_time(f)
+        t, tb = parse_measures_time(f)
         t_n, tb_n = apply_noise(t, tb)
         epochs.append({'time': t_n, 'time_bnds': tb_n, 'source': 'MEaSUREs_monthly', 'path': f})
         
     # 3. MEaSUREs quarterly
     for f in sorted(glob.glob(os.path.join(measures_quarterly_dir, "*_vv_*.tif"))):
-        t, tb = parse_measures_quarterly_time(f)
+        t, tb = parse_measures_time(f)
         t_n, tb_n = apply_noise(t, tb)
         epochs.append({'time': t_n, 'time_bnds': tb_n, 'source': 'MEaSUREs_quarterly', 'path': f})
         
     # 4. MEaSUREs annual
     for f in sorted(glob.glob(os.path.join(measures_annual_dir, "*_vv_*.tif"))):
-        t, tb = parse_measures_annual_time(f)
+        t, tb = parse_measures_time(f)
         t_n, tb_n = apply_noise(t, tb)
         epochs.append({'time': t_n, 'time_bnds': tb_n, 'source': 'MEaSUREs_annual', 'path': f})
         
     # 5. MEaSUREs winter
     for f in sorted(glob.glob(os.path.join(measures_winter_dir, "*_vv_*.tif"))):
-        t, tb = parse_measures_winter_time(f)
+        t, tb = parse_measures_time(f)
         t_n, tb_n = apply_noise(t, tb)
         epochs.append({'time': t_n, 'time_bnds': tb_n, 'source': 'MEaSUREs_winter', 'path': f})
         
@@ -808,8 +1019,10 @@ def build_catalog_and_skeleton():
     first_promice = next(item['path'] for item in epochs if item['source'] == 'PROMICE')
     ds_master = preprocess_promice(first_promice)
     
+    # Extract times, time bounds and sources from the catalog
     times = [ep['time'] for ep in epochs]
     time_bnds = [ep['time_bnds'] for ep in epochs]
+    sources = np.array([ep['source'] for ep in epochs], dtype="<U50")
     
     # Generate Skeletons dynamically until 1024x1024 condition is met
     current_ds_master = ds_master
@@ -826,15 +1039,18 @@ def build_catalog_and_skeleton():
         ch_x = min(1024, master_x.size)
         chunk_def = (1, ch_y, ch_x)
         
-        empty_speed = da.empty((total_epochs, master_y.size, master_x.size), chunks=chunk_def, dtype=np.float32)
-        empty_error = da.empty((total_epochs, master_y.size, master_x.size), chunks=chunk_def, dtype=np.float32)
-        empty_source = da.full((total_epochs,), "", chunks=(1,), dtype="<U50")
+        # Create empty 3D dask array
+        empty_array_3D = da.empty((total_epochs, master_y.size, master_x.size), chunks=chunk_def, dtype=np.float32)
 
         ds_skeleton = xr.Dataset({
-            'speed': (['time', 'y', 'x'], empty_speed, ds_master['speed'].attrs),
-            'error': (['time', 'y', 'x'], empty_error, ds_master['error'].attrs),
+            'speed': (['time', 'y', 'x'], empty_array_3D, ds_master['speed'].attrs),
+            'vx': (['time', 'y', 'x'], empty_array_3D, ds_master['vx'].attrs),
+            'vy': (['time', 'y', 'x'], empty_array_3D, ds_master['vy'].attrs),
+            'speed_error': (['time', 'y', 'x'], empty_array_3D, ds_master['speed_error'].attrs),
+            'vx_error': (['time', 'y', 'x'], empty_array_3D, ds_master['vx_error'].attrs),
+            'vy_error': (['time', 'y', 'x'], empty_array_3D, ds_master['vy_error'].attrs),
             'spatial_ref': ([], ds_master['spatial_ref'].values, ds_master['spatial_ref'].attrs),
-            'data_source': (['time'], empty_source)
+            'data_source': (['time'], sources)
         }, coords={
             'time': (['time'], np.array(times), ds_master['time'].attrs),
             'time_bnds': (['time', 'bnds'], np.array(time_bnds), ds_master['time_bnds'].attrs),
@@ -843,7 +1059,15 @@ def build_catalog_and_skeleton():
         })
 
         for var in ['time', 'time_bnds']: ds_skeleton[var].encoding.clear()
-        encoding = {'speed': {'chunks': chunk_def}, 'error': {'chunks': chunk_def}, 'data_source': {'dtype': '<U50'}}
+        encoding = {
+            'speed': {'chunks': chunk_def}, 
+            'vx': {'chunks': chunk_def}, 
+            'vy': {'chunks': chunk_def}, 
+            'speed_error': {'chunks': chunk_def}, 
+            'vx_error': {'chunks': chunk_def}, 
+            'vy_error': {'chunks': chunk_def}, 
+            'data_source': {'chunks': (total_epochs,), 'dtype': '<U50'} 
+        }
         
         ds_skeleton.to_zarr(OUTPUT_ZARR, group=str(level), compute=False, encoding=encoding, mode='w' if level == 0 else 'a')
         
@@ -863,7 +1087,7 @@ def build_catalog_and_skeleton():
     print("Pyramid skeletons initialized successfully!")
 
 
-def process_worker(target_source):
+def process_worker(target_source, batch_start=None, batch_end=None):
     """Run by multiple parallel jobs. Loads catalog, filters by source, downsamples and inserts data."""
     print(f"Worker started for source: {target_source}")
     with open(CATALOG_FILE, 'rb') as f:
@@ -873,17 +1097,21 @@ def process_worker(target_source):
     ds_master = xr.open_dataset(first_promice)
     master_x, master_y = ds_master['x'], ds_master['y']
     
-    for i, ep in enumerate(epochs):
-        if ep['source'] != target_source:
-            continue 
-            
-        print(f"  [{i}/{len(epochs)}] Processing {os.path.basename(ep['path'])}")
+    # 1. Filter for source while retaining the global index 'i' for the Zarr region write
+    source_epochs = [(i, ep) for i, ep in enumerate(epochs) if ep['source'] == target_source]
+    
+    # 2. Slice the list if batch arguments were provided
+    if batch_start is not None and batch_end is not None:
+        source_epochs = source_epochs[batch_start:batch_end]
         
+    print(f"Processing {len(source_epochs)} epochs for {target_source} (Indices {batch_start} to {batch_end})")
+    
+    for global_i, ep in source_epochs:
+        print(f"  [Global Index: {global_i}] Processing {os.path.basename(ep['path'])}")
+        
+        # Dispatch to appropriate function...
         if ep['source'] == 'PROMICE': ds_slice = preprocess_promice(ep['path'])
-        elif ep['source'] == 'MEaSUREs_monthly': ds_slice = preprocess_measures_monthly(ep['path'], master_x, master_y)
-        elif ep['source'] == 'MEaSUREs_quarterly': ds_slice = preprocess_measures_quarterly(ep['path'], master_x, master_y)
-        elif ep['source'] == 'MEaSUREs_annual': ds_slice = preprocess_measures_annual(ep['path'], master_x, master_y)
-        elif ep['source'] == 'MEaSUREs_winter': ds_slice = preprocess_measures_winter(ep['path'], master_x, master_y)
+        elif ep['source'].startswith('MEaSUREs'): ds_slice = preprocess_measures(ep['path'], master_x, master_y, ep['source'])
         elif ep['source'] == 'Mouginot_annual': ds_slice = preprocess_mouginot(ep['path'], master_x, master_y)
         elif ep['source'] == 'ITS_LIVE_annual': ds_slice = preprocess_itslive(ep['path'], master_x, master_y)
         elif ep['source'] == 'ESA_CCI_winter': ds_slice = preprocess_esacci_winter(ep['path'], master_x, master_y)
@@ -901,8 +1129,10 @@ def process_worker(target_source):
         level = 0
         while True:
             # Isolate 2D raster payload data arrays matching structural shapes 
-            ds_to_write = ds_slice.drop_vars(['x', 'y', 'spatial_ref', 'time', 'time_bnds'], errors='ignore')
-            ds_to_write.to_zarr(OUTPUT_ZARR, group=str(level), region={'time': slice(i, i+1)})
+            ds_to_write = ds_slice.drop_vars(['x', 'y', 'spatial_ref', 'time', 'time_bnds', 'source'], errors='ignore')
+            
+            # 3. Use the global index to write to the exact correct time coordinate
+            ds_to_write.to_zarr(OUTPUT_ZARR, group=str(level), region={'time': slice(global_i, global_i+1)})
             
             # Break loop if current layout scale matches the single-chunk threshold condition
             if ds_slice['x'].size <= 1024 and ds_slice['y'].size <= 1024:
@@ -910,11 +1140,15 @@ def process_worker(target_source):
                 
             # Construct subsequent structural slice downsampled grid properties
             ds_next = xr.Dataset()
-            for var in ['speed', 'error']:
-                if 'y' in ds_slice[var].dims and 'x' in ds_slice[var].dims:
-                    ds_next[var] = ds_slice[var].coarsen(x=2, y=2, boundary='pad').mean(keep_attrs=True)
-                else:
-                    ds_next[var] = ds_slice[var]
+            
+            # 4. Downsample
+            vars_to_downsample = ['speed', 'vx', 'vy', 'speed_error', 'vx_error', 'vy_error']
+            for var in vars_to_downsample:
+                if var in ds_slice:
+                    if 'y' in ds_slice[var].dims and 'x' in ds_slice[var].dims:
+                        ds_next[var] = ds_slice[var].coarsen(x=2, y=2, boundary='pad').mean(keep_attrs=True)
+                    else:
+                        ds_next[var] = ds_slice[var]
                     
             # Reassign metadata array fields not bound to standard grid definitions
             ds_next['data_source'] = ds_slice['data_source']
@@ -926,12 +1160,12 @@ def process_worker(target_source):
             ds_slice = ds_next
             level += 1
         
-    print(f"Worker for {target_source} completed!")
+    print(f"Worker for {target_source} (Indices {batch_start}-{batch_end}) completed!")
 
 
 if __name__ == "__main__":
     if len(sys.argv) < 2:
-        print("Usage: python script.py [init | process SOURCE_NAME | consolidate]")
+        print("Usage: python script.py [init | process SOURCE_NAME [start] [end] | consolidate]")
         sys.exit(1)
         
     command = sys.argv[1]
@@ -942,8 +1176,16 @@ if __name__ == "__main__":
         if len(sys.argv) < 3:
             print("Please provide a data source name. (e.g. python script.py process PROMICE)")
             sys.exit(1)
+            
         source_target = sys.argv[2]
-        process_worker(source_target)
+        batch_start, batch_end = None, None
+        
+        # If batch boundaries are provided via CLI arguments
+        if len(sys.argv) >= 5:
+            batch_start = int(sys.argv[3])
+            batch_end = int(sys.argv[4])
+            
+        process_worker(source_target, batch_start, batch_end)
     elif command == "consolidate":
         zarr.consolidate_metadata(OUTPUT_ZARR)
         print("OME-Zarr metadata multi-level hierarchy consolidated successfully!")

@@ -1,0 +1,24 @@
+name: shiver_env
+channels:
+  - conda-forge
+  - defaults
+dependencies:
+  - python=3.11  
+  - xarray
+  - rioxarray
+  - pandas
+  - numpy
+  - matplotlib
+  - cartopy
+  - pyproj
+  - zarr
+  - dask
+  - fsspec
+  - aiohttp
+  - requests
+  - h5netcdf     
+  - s3fs       
+  - netcdf4     
+  - bottleneck   
+  - jupyterlab
+  - "jupyter-book<1.0"  
