@@ -9,10 +9,7 @@ build:
     python: "3.11"
   jobs:
     post_install:
-      # Force pip to install jupyter-book into the active RTD environment
-      - python -m pip install "jupyter-book<1.0"
-    pre_build:
-      # Now generate the Sphinx configuration
+      # Generate the Sphinx configuration right after the environment finishes installing
       - jupyter-book config sphinx docs/
 
 sphinx:
