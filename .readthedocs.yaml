@@ -8,10 +8,12 @@ build:
   tools:
     python: "3.11"
   jobs:
+    post_install:
+      # Force pip to install jupyter-book into the active RTD environment
+      - python -m pip install "jupyter-book<1.0"
     pre_build:
-      # Tell Jupyter Book to read _config.yml from the docs/ folder
+      # Now generate the Sphinx configuration
       - jupyter-book config sphinx docs/
 
 sphinx:
-  # Tell Sphinx to use the conf.py that was generated inside docs/
   configuration: docs/conf.py
