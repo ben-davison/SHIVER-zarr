@@ -1,13 +1,13 @@
 # "The Sheffield Ice Velocity ExploreR (SHIVER): an online tool for low latency exploration, analysis and sub-setting of unified satellite-derived ice velocity data for Earth's ice sheets" - code and documentation
 
-[![DOI](https://zenodo.org/badge/DOI/10.5281/zenodo.21375859)](https://doi.org/10.5281/zenodo.21375859)
+[![DOI](https://zenodo.org/badge/DOI/10.5281/zenodo.21375859.svg)](https://doi.org/10.5281/zenodo.21375859)
 
 **NOTE:** This code and the associated manuscript are in preparation and may be subject to change.
 
 ## Overview
 This repository contains:
 1. The scripts used to generate the dataset described in the manuscript in preparation: *"The Sheffield Ice Velocity ExploreR (SHIVER): an online tool for low latency exploration, analysis and sub-setting of unified satellite-derived ice velocity data for Earth's ice sheets"*. 
-2. Everything required to produce the SHIVER readthedocs website (https://shiver.readthedocs.io/), which describes how to access cloud-hosted Zarr stores of the SHIVER data.
+2. Everything required to produce the SHIVER readthedocs website (https://shiver-zarr.readthedocs.io/), which describes how to access cloud-hosted Zarr stores of the SHIVER data.
 
 **Note:** This repository only contains the code to generate the dataset. The resulting dataset is hosted by Source Cooperative at https://source.coop/uos-shiver.
 

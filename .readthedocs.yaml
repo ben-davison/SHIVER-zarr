@@ -1,0 +1,17 @@
+version: 2
+
+# 1. Let Read the Docs set up Conda natively
+conda:
+  environment: environment.yml
+
+build:
+  os: ubuntu-22.04
+  tools:
+    python: "3.11"
+  
+  # 2. Override the default build step to run Jupyter Book instead of Sphinx
+  jobs:
+    build:
+      - jupyter-book build .
+      - mkdir -p $READTHEDOCS_OUTPUT/html/
+      - cp -a _build/html/. $READTHEDOCS_OUTPUT/html/
