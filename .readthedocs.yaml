@@ -1,16 +1,16 @@
 version: 2
 
-conda:
-  environment: environment.yml
-
 build:
   os: ubuntu-22.04
   tools:
-    python: "3.11"
-  jobs:
-    post_install:
-      # Generate the Sphinx configuration right after the environment finishes installing
-      - jupyter-book config sphinx docs/
+    python: "mambaforge-latest"   
+
+conda:
+  environment: environment.yml
+
+jobs:
+  post_install:
+    - jupyter-book config sphinx docs/
 
 sphinx:
   configuration: docs/conf.py
