@@ -3,22 +3,22 @@ channels:
   - conda-forge
   - defaults
 dependencies:
-  - python=3.11  
-  - xarray
-  - rioxarray
-  - pandas
-  - numpy
-  - matplotlib
-  - cartopy
-  - pyproj
-  - zarr
-  - dask
-  - fsspec
-  - aiohttp
   - requests
-  - h5netcdf     
-  - s3fs       
-  - netcdf4     
-  - bottleneck   
+  - aiohttp
+  - bottleneck
+  - pyproj
+  - h5netcdf
+  - netcdf4
+  - xarray
   - jupyterlab
-  - "jupyter-book<1.0"  
+  - dask
+  - pandas
+  - cartopy
+  - jupyter-book[version='<1.0']
+  - fsspec
+  - matplotlib
+  - rioxarray
+  - python=3.11
+  - numpy
+  - zarr
+  - s3fs
