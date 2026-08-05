@@ -9,10 +9,9 @@ build:
     python: "3.11"
   jobs:
     pre_build:
-      # Generate the standard Sphinx configuration from your Jupyter Book config
-      - jupyter-book config sphinx .
+      # Tell Jupyter Book to read _config.yml from the docs/ folder
+      - jupyter-book config sphinx docs/
 
-# Tell Read The Docs to build using the dynamically generated Sphinx config
 sphinx:
-  builder: html
-  configuration: conf.py
+  # Tell Sphinx to use the conf.py that was generated inside docs/
+  configuration: docs/conf.py
