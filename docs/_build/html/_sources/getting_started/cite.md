@@ -6,7 +6,7 @@ A dataset description paper for SHIVER is in preparation. The citation for that 
 
 The dataset itself should also be cited like this:
 
-> Davison, B. J. (2026). SHeffield Ice Velocity ExploreR (SHIVER): initial release of Zarr creation code (Version [specify version number]) [Computer software]. Zenodo. https://doi.org/10.5281/zenodo.21375859
+> Davison, B. J. (2026). SHeffield Ice Velocity ExploreR (SHIVER): A unified satellite-derived ice velocity dataset for Earth's ice sheets (Version v[specify version number]) [Data set]. Zenodo. https://doi.org/10.5281/zenodo.21375859
 
 Or if your outputs relied on the SHIVER interactive application, then you should cite the application like this:
 

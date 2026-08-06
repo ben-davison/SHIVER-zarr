@@ -66,7 +66,7 @@ const thebe_selector_output = ".output, .cell_output"
     <link rel="index" title="Index" href="../genindex.html" />
     <link rel="search" title="Search" href="../search.html" />
     <link rel="next" title="Generating citations for Contributing Datasets" href="generating_citations.html" />
-    <link rel="prev" title="Inspecting the Zarr Structure" href="zarr_structure.html" />
+    <link rel="prev" title="The Flow of Earth’s Ice Sheets in Zarr" href="../data/zarr_structure.html" />
   <meta name="viewport" content="width=device-width, initial-scale=1"/>
   <meta name="docsearch:language" content="en"/>
   </head>
@@ -181,9 +181,13 @@ const thebe_selector_output = ".output, .cell_output"
 <li class="toctree-l1"><a class="reference internal" href="../getting_started/comparison.html">Comparison of Contributing Datasets</a></li>
 <li class="toctree-l1"><a class="reference internal" href="../getting_started/cite.html">Cite</a></li>
 </ul>
+<p aria-level="2" class="caption" role="heading"><span class="caption-text">Data</span></p>
+<ul class="nav bd-sidenav">
+<li class="toctree-l1"><a class="reference internal" href="../data/what_is_zarr.html">What is Zarr?</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../data/zarr_structure.html">The Flow of Earth’s Ice Sheets in Zarr</a></li>
+</ul>
 <p aria-level="2" class="caption" role="heading"><span class="caption-text">Examples</span></p>
 <ul class="current nav bd-sidenav">
-<li class="toctree-l1"><a class="reference internal" href="zarr_structure.html">Inspecting the Zarr Structure</a></li>
 <li class="toctree-l1 current active"><a class="current reference internal" href="#">Timeseries extraction</a></li>
 <li class="toctree-l1"><a class="reference internal" href="generating_citations.html">Generating citations for Contributing Datasets</a></li>
 <li class="toctree-l1"><a class="reference internal" href="simple_layers.html">Large spatial scale extraction of velocity fields</a></li>
@@ -467,7 +471,7 @@ document.write(`
 <div class="cell_input docutils container">
 <div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="c1"># Load the timeseries-optimized Zarr store lazily</span>
 <span class="n">url</span> <span class="o">=</span> <span class="s2">&quot;https://data.source.coop/uos-shiver/greenland/greenland_multisource_velocity_timeseries.zarr&quot;</span>
-<span class="n">ds</span> <span class="o">=</span> <span class="n">xr</span><span class="o">.</span><span class="n">open_zarr</span><span class="p">(</span><span class="n">greenland_url</span><span class="p">,</span> <span class="n">consolidated</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span><span class="o">.</span><span class="n">sortby</span><span class="p">(</span><span class="s1">&#39;time&#39;</span><span class="p">)</span>
+<span class="n">ds</span> <span class="o">=</span> <span class="n">xr</span><span class="o">.</span><span class="n">open_zarr</span><span class="p">(</span><span class="n">url</span><span class="p">,</span> <span class="n">consolidated</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span><span class="o">.</span><span class="n">sortby</span><span class="p">(</span><span class="s1">&#39;time&#39;</span><span class="p">)</span>
 
 <span class="c1"># Handle Y-axis orientation for slicing</span>
 <span class="n">y_slice</span> <span class="o">=</span> <span class="nb">slice</span><span class="p">(</span><span class="n">ymax</span><span class="p">,</span> <span class="n">ymin</span><span class="p">)</span> <span class="k">if</span> <span class="n">ds</span><span class="o">.</span><span class="n">y</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span> <span class="o">&gt;</span> <span class="n">ds</span><span class="o">.</span><span class="n">y</span><span class="p">[</span><span class="o">-</span><span class="mi">1</span><span class="p">]</span> <span class="k">else</span> <span class="nb">slice</span><span class="p">(</span><span class="n">ymin</span><span class="p">,</span> <span class="n">ymax</span><span class="p">)</span>
@@ -573,12 +577,12 @@ document.write(`
                   
 <div class="prev-next-area">
     <a class="left-prev"
-       href="zarr_structure.html"
+       href="../data/zarr_structure.html"
        title="previous page">
       <i class="fa-solid fa-angle-left"></i>
       <div class="prev-next-info">
         <p class="prev-next-subtitle">previous</p>
-        <p class="prev-next-title">Inspecting the Zarr Structure</p>
+        <p class="prev-next-title">The Flow of Earth’s Ice Sheets in Zarr</p>
       </div>
     </a>
     <a class="right-next"

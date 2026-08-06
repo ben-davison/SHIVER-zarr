@@ -9,9 +9,13 @@ parts:
       - file: getting_started/comparison
       - file: getting_started/cite
 
+  - caption: Data
+    chapters:
+      - file: data/what_is_zarr
+      - file: data/zarr_structure
+
   - caption: Examples
     chapters:
-      - file: examples/zarr_structure
       - file: examples/simple_timeseries
       - file: examples/generating_citations
       - file: examples/simple_layers

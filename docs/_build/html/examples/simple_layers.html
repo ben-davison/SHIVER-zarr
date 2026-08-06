@@ -181,9 +181,13 @@ const thebe_selector_output = ".output, .cell_output"
 <li class="toctree-l1"><a class="reference internal" href="../getting_started/comparison.html">Comparison of Contributing Datasets</a></li>
 <li class="toctree-l1"><a class="reference internal" href="../getting_started/cite.html">Cite</a></li>
 </ul>
+<p aria-level="2" class="caption" role="heading"><span class="caption-text">Data</span></p>
+<ul class="nav bd-sidenav">
+<li class="toctree-l1"><a class="reference internal" href="../data/what_is_zarr.html">What is Zarr?</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../data/zarr_structure.html">The Flow of Earth’s Ice Sheets in Zarr</a></li>
+</ul>
 <p aria-level="2" class="caption" role="heading"><span class="caption-text">Examples</span></p>
 <ul class="current nav bd-sidenav">
-<li class="toctree-l1"><a class="reference internal" href="zarr_structure.html">Inspecting the Zarr Structure</a></li>
 <li class="toctree-l1"><a class="reference internal" href="simple_timeseries.html">Timeseries extraction</a></li>
 <li class="toctree-l1"><a class="reference internal" href="generating_citations.html">Generating citations for Contributing Datasets</a></li>
 <li class="toctree-l1 current active"><a class="current reference internal" href="#">Large spatial scale extraction of velocity fields</a></li>
@@ -442,7 +446,7 @@ document.write(`
 <p>We can filter the Zarr to target a particular Contributing Dataset. Since we want a relatively complete velocity field for this example, we will visualise the most recent <code class="docutils literal notranslate"><span class="pre">MEaSUREs</span> <span class="pre">annual</span></code> velocity field.</p>
 <div class="cell docutils container">
 <div class="cell_input docutils container">
-<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="c1"># Identify only measures multiyear data</span>
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="c1"># Identify only measures annual data</span>
 <span class="n">source_mask</span> <span class="o">=</span> <span class="p">(</span><span class="n">ds</span><span class="p">[</span><span class="s1">&#39;data_source&#39;</span><span class="p">]</span> <span class="o">==</span> <span class="s1">&#39;MEaSUREs_annual&#39;</span><span class="p">)</span><span class="o">.</span><span class="n">compute</span><span class="p">()</span>
 
 <span class="c1"># Apply the mask to the lazy time array</span>
@@ -489,7 +493,7 @@ document.write(`
 <span class="n">xmin</span><span class="p">,</span> <span class="n">ymax</span> <span class="o">=</span> <span class="n">transformer</span><span class="o">.</span><span class="n">transform</span><span class="p">(</span><span class="n">lon_top_left</span><span class="p">,</span> <span class="n">lat_top_left</span><span class="p">)</span>
 <span class="n">xmax</span><span class="p">,</span> <span class="n">ymin</span> <span class="o">=</span> <span class="n">transformer</span><span class="o">.</span><span class="n">transform</span><span class="p">(</span><span class="n">lon_bot_right</span><span class="p">,</span> <span class="n">lat_bot_right</span><span class="p">)</span>
 
-<span class="c1"># Find the most recent MEaSUREs_multiyear epoch</span>
+<span class="c1"># Find the most recent MEaSUREs_annual epoch</span>
 <span class="n">source_mask</span> <span class="o">=</span> <span class="p">(</span><span class="n">ds_hr</span><span class="p">[</span><span class="s1">&#39;data_source&#39;</span><span class="p">]</span> <span class="o">==</span> <span class="s1">&#39;MEaSUREs_annual&#39;</span><span class="p">)</span><span class="o">.</span><span class="n">compute</span><span class="p">()</span>
 <span class="n">latest_time</span> <span class="o">=</span> <span class="n">ds_hr</span><span class="o">.</span><span class="n">time</span><span class="p">[</span><span class="n">source_mask</span><span class="p">][</span><span class="o">-</span><span class="mi">1</span><span class="p">]</span>
 

@@ -1,4 +1,4 @@
-# "The Sheffield Ice Velocity ExploreR (SHIVER): an online tool for low latency exploration, analysis and sub-setting of unified satellite-derived ice velocity data for Earth's ice sheets" - code and documentation
+# The Sheffield Ice Velocity ExploreR (SHIVER): A unified satellite-derived ice velocity dataset for Earth's ice sheets
 
 [![DOI](https://zenodo.org/badge/DOI/10.5281/zenodo.21375859.svg)](https://doi.org/10.5281/zenodo.21375859)
 
