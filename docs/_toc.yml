@@ -4,15 +4,15 @@ parts:
   - caption: Getting Started
     chapters:
       - file: getting_started/why
-      - file: getting_started/contributing_data
-      - file: getting_started/unified_data
-      - file: getting_started/comparison
       - file: getting_started/cite
 
   - caption: Data
     chapters:
-      - file: data/what_is_zarr
-      - file: data/zarr_structure
+      - file: zarr_data/what_is_zarr
+      - file: zarr_data/contributing_data
+      - file: zarr_data/unified_data
+      - file: zarr_data/comparison
+      - file: zarr_data/zarr_structure
 
   - caption: Examples
     chapters:

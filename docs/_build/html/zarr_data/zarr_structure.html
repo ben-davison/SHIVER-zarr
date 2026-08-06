@@ -62,9 +62,11 @@ const thebe_selector_input = "pre"
 const thebe_selector_output = ".output, .cell_output"
 </script>
     <script async="async" src="../_static/sphinx-thebe.js"></script>
-    <script>DOCUMENTATION_OPTIONS.pagename = 'examples/zarr_structure';</script>
+    <script>DOCUMENTATION_OPTIONS.pagename = 'zarr_data/zarr_structure';</script>
     <link rel="index" title="Index" href="../genindex.html" />
     <link rel="search" title="Search" href="../search.html" />
+    <link rel="next" title="Timeseries extraction" href="../examples/simple_timeseries.html" />
+    <link rel="prev" title="Comparison of Contributing Datasets" href="comparison.html" />
   <meta name="viewport" content="width=device-width, initial-scale=1"/>
   <meta name="docsearch:language" content="en"/>
   </head>
@@ -127,8 +129,6 @@ const thebe_selector_output = ".output, .cell_output"
       
       
       
-        
-      
       <div class="bd-sidebar-primary bd-sidebar">
         
 
@@ -179,20 +179,20 @@ const thebe_selector_output = ".output, .cell_output"
 <li class="toctree-l1"><a class="reference internal" href="../getting_started/cite.html">Cite</a></li>
 </ul>
 <p aria-level="2" class="caption" role="heading"><span class="caption-text">Data</span></p>
-<ul class="nav bd-sidenav">
-<li class="toctree-l1"><a class="reference internal" href="../zarr_data/what_is_zarr.html">What is Zarr?</a></li>
-<li class="toctree-l1"><a class="reference internal" href="../zarr_data/contributing_data.html">Contributing Datasets</a></li>
-<li class="toctree-l1"><a class="reference internal" href="../zarr_data/unified_data.html">Unified Datasets</a></li>
-<li class="toctree-l1"><a class="reference internal" href="../zarr_data/comparison.html">Comparison of Contributing Datasets</a></li>
-<li class="toctree-l1"><a class="reference internal" href="../zarr_data/zarr_structure.html">Inspecting the Zarr Structure</a></li>
+<ul class="current nav bd-sidenav">
+<li class="toctree-l1"><a class="reference internal" href="what_is_zarr.html">What is Zarr?</a></li>
+<li class="toctree-l1"><a class="reference internal" href="contributing_data.html">Contributing Datasets</a></li>
+<li class="toctree-l1"><a class="reference internal" href="unified_data.html">Unified Datasets</a></li>
+<li class="toctree-l1"><a class="reference internal" href="comparison.html">Comparison of Contributing Datasets</a></li>
+<li class="toctree-l1 current active"><a class="current reference internal" href="#">Inspecting the Zarr Structure</a></li>
 </ul>
 <p aria-level="2" class="caption" role="heading"><span class="caption-text">Examples</span></p>
 <ul class="nav bd-sidenav">
-<li class="toctree-l1"><a class="reference internal" href="simple_timeseries.html">Timeseries extraction</a></li>
-<li class="toctree-l1"><a class="reference internal" href="generating_citations.html">Generating citations for Contributing Datasets</a></li>
-<li class="toctree-l1"><a class="reference internal" href="simple_layers.html">Large spatial scale extraction of velocity fields</a></li>
-<li class="toctree-l1"><a class="reference internal" href="simple_subset.html">Datacube subsetting</a></li>
-<li class="toctree-l1"><a class="reference internal" href="temporal_statistics.html">Calculating temporal statistics (advanced)</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../examples/simple_timeseries.html">Timeseries extraction</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../examples/generating_citations.html">Generating citations for Contributing Datasets</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../examples/simple_layers.html">Large spatial scale extraction of velocity fields</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../examples/simple_subset.html">Datacube subsetting</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../examples/temporal_statistics.html">Calculating temporal statistics (advanced)</a></li>
 </ul>
 <p aria-level="2" class="caption" role="heading"><span class="caption-text">Appendix</span></p>
 <ul class="nav bd-sidenav">
@@ -271,7 +271,7 @@ const thebe_selector_output = ".output, .cell_output"
       
       
       
-      <li><a href="https://github.com/ben-davison/SHIVER-build-zarr/edit/main/docs/examples/zarr_structure.ipynb" target="_blank"
+      <li><a href="https://github.com/ben-davison/SHIVER-build-zarr/edit/main/docs/zarr_data/zarr_structure.ipynb" target="_blank"
    class="btn btn-sm btn-source-edit-button dropdown-item"
    title="Suggest edit"
    data-bs-placement="left" data-bs-toggle="tooltip"
@@ -288,7 +288,7 @@ const thebe_selector_output = ".output, .cell_output"
       
       
       
-      <li><a href="https://github.com/ben-davison/SHIVER-build-zarr/issues/new?title=Issue%20on%20page%20%2Fexamples/zarr_structure.html&body=Your%20issue%20content%20here." target="_blank"
+      <li><a href="https://github.com/ben-davison/SHIVER-build-zarr/issues/new?title=Issue%20on%20page%20%2Fzarr_data/zarr_structure.html&body=Your%20issue%20content%20here." target="_blank"
    class="btn btn-sm btn-source-issues-button dropdown-item"
    title="Open an issue"
    data-bs-placement="left" data-bs-toggle="tooltip"
@@ -318,7 +318,7 @@ const thebe_selector_output = ".output, .cell_output"
       
       
       
-      <li><a href="../_sources/examples/zarr_structure.ipynb" target="_blank"
+      <li><a href="../_sources/zarr_data/zarr_structure.ipynb" target="_blank"
    class="btn btn-sm btn-download-source-button dropdown-item"
    title="Download source file"
    data-bs-placement="left" data-bs-toggle="tooltip"
@@ -414,7 +414,7 @@ document.write(`
 <div id="searchbox"></div>
                 <article class="bd-article">
                   
-  <section class="tex2jax_ignore mathjax_ignore" id="inspecting-the-zarr-structure">
+  <section id="inspecting-the-zarr-structure">
 <h1>Inspecting the Zarr Structure<a class="headerlink" href="#inspecting-the-zarr-structure" title="Permalink to this heading">#</a></h1>
 <p>SHIVER provides three Zarr stores for each of Greenland and Antarctica. Each Zarr is optimized for different types of analysis. Before we go on to explore those types of analysis, it’s useful to first inspect the structure of these Zarr storese.</p>
 <p>To begin with, let’s examine the structure of <code class="docutils literal notranslate"><span class="pre">antarctica_multisource_velocity_spatial.zarr</span></code>, which is chunked shallowly in time to allow large areas of data to be loaded into memory with minimal resources. The Greenland equivalent uses the same chunk definition.</p>
@@ -5588,7 +5588,7 @@ Data variables:
         },
         kernelOptions: {
             name: "shiver_env",
-            path: "./examples"
+            path: "./zarr_data"
         },
         predefinedOutput: true
     }
@@ -5605,6 +5605,24 @@ Data variables:
                 <footer class="prev-next-footer d-print-none">
                   
 <div class="prev-next-area">
+    <a class="left-prev"
+       href="comparison.html"
+       title="previous page">
+      <i class="fa-solid fa-angle-left"></i>
+      <div class="prev-next-info">
+        <p class="prev-next-subtitle">previous</p>
+        <p class="prev-next-title">Comparison of Contributing Datasets</p>
+      </div>
+    </a>
+    <a class="right-next"
+       href="../examples/simple_timeseries.html"
+       title="next page">
+      <div class="prev-next-info">
+        <p class="prev-next-subtitle">next</p>
+        <p class="prev-next-title">Timeseries extraction</p>
+      </div>
+      <i class="fa-solid fa-angle-right"></i>
+    </a>
 </div>
                 </footer>
               

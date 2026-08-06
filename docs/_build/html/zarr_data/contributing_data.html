@@ -62,11 +62,11 @@ const thebe_selector_input = "pre"
 const thebe_selector_output = ".output, .cell_output"
 </script>
     <script async="async" src="../_static/sphinx-thebe.js"></script>
-    <script>DOCUMENTATION_OPTIONS.pagename = 'getting_started/contributing_data';</script>
+    <script>DOCUMENTATION_OPTIONS.pagename = 'zarr_data/contributing_data';</script>
     <link rel="index" title="Index" href="../genindex.html" />
     <link rel="search" title="Search" href="../search.html" />
     <link rel="next" title="Unified Datasets" href="unified_data.html" />
-    <link rel="prev" title="Why SHIVER?" href="why.html" />
+    <link rel="prev" title="What is Zarr?" href="what_is_zarr.html" />
   <meta name="viewport" content="width=device-width, initial-scale=1"/>
   <meta name="docsearch:language" content="en"/>
   </head>
@@ -174,17 +174,17 @@ const thebe_selector_output = ".output, .cell_output"
             </li>
         </ul>
         <p aria-level="2" class="caption" role="heading"><span class="caption-text">Getting Started</span></p>
+<ul class="nav bd-sidenav">
+<li class="toctree-l1"><a class="reference internal" href="../getting_started/why.html">Why SHIVER?</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../getting_started/cite.html">Cite</a></li>
+</ul>
+<p aria-level="2" class="caption" role="heading"><span class="caption-text">Data</span></p>
 <ul class="current nav bd-sidenav">
-<li class="toctree-l1"><a class="reference internal" href="why.html">Why SHIVER?</a></li>
+<li class="toctree-l1"><a class="reference internal" href="what_is_zarr.html">What is Zarr?</a></li>
 <li class="toctree-l1 current active"><a class="current reference internal" href="#">Contributing Datasets</a></li>
 <li class="toctree-l1"><a class="reference internal" href="unified_data.html">Unified Datasets</a></li>
 <li class="toctree-l1"><a class="reference internal" href="comparison.html">Comparison of Contributing Datasets</a></li>
-<li class="toctree-l1"><a class="reference internal" href="cite.html">Cite</a></li>
-</ul>
-<p aria-level="2" class="caption" role="heading"><span class="caption-text">Data</span></p>
-<ul class="nav bd-sidenav">
-<li class="toctree-l1"><a class="reference internal" href="../data/what_is_zarr.html">What is Zarr?</a></li>
-<li class="toctree-l1"><a class="reference internal" href="../data/zarr_structure.html">The Flow of Earth’s Ice Sheets in Zarr</a></li>
+<li class="toctree-l1"><a class="reference internal" href="zarr_structure.html">Inspecting the Zarr Structure</a></li>
 </ul>
 <p aria-level="2" class="caption" role="heading"><span class="caption-text">Examples</span></p>
 <ul class="nav bd-sidenav">
@@ -271,7 +271,7 @@ const thebe_selector_output = ".output, .cell_output"
       
       
       
-      <li><a href="https://github.com/ben-davison/SHIVER-build-zarr/edit/main/docs/getting_started/contributing_data.md" target="_blank"
+      <li><a href="https://github.com/ben-davison/SHIVER-build-zarr/edit/main/docs/zarr_data/contributing_data.md" target="_blank"
    class="btn btn-sm btn-source-edit-button dropdown-item"
    title="Suggest edit"
    data-bs-placement="left" data-bs-toggle="tooltip"
@@ -288,7 +288,7 @@ const thebe_selector_output = ".output, .cell_output"
       
       
       
-      <li><a href="https://github.com/ben-davison/SHIVER-build-zarr/issues/new?title=Issue%20on%20page%20%2Fgetting_started/contributing_data.html&body=Your%20issue%20content%20here." target="_blank"
+      <li><a href="https://github.com/ben-davison/SHIVER-build-zarr/issues/new?title=Issue%20on%20page%20%2Fzarr_data/contributing_data.html&body=Your%20issue%20content%20here." target="_blank"
    class="btn btn-sm btn-source-issues-button dropdown-item"
    title="Open an issue"
    data-bs-placement="left" data-bs-toggle="tooltip"
@@ -318,7 +318,7 @@ const thebe_selector_output = ".output, .cell_output"
       
       
       
-      <li><a href="../_sources/getting_started/contributing_data.md" target="_blank"
+      <li><a href="../_sources/zarr_data/contributing_data.md" target="_blank"
    class="btn btn-sm btn-download-source-button dropdown-item"
    title="Download source file"
    data-bs-placement="left" data-bs-toggle="tooltip"
@@ -412,8 +412,8 @@ document.write(`
             </div>
             <nav aria-label="Page">
                 <ul class="visible nav section-nav flex-column">
-<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#greenland">Greenland</a></li>
-<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#antarctica">Antarctica</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#greenland-data">Greenland Data</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#antarctica-data">Antarctica Data</a></li>
 <li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#summary">Summary</a></li>
 </ul>
             </nav>
@@ -428,32 +428,331 @@ document.write(`
                   
   <section class="tex2jax_ignore mathjax_ignore" id="contributing-datasets">
 <h1>Contributing Datasets<a class="headerlink" href="#contributing-datasets" title="Permalink to this heading">#</a></h1>
-<section id="greenland">
-<h2>Greenland<a class="headerlink" href="#greenland" title="Permalink to this heading">#</a></h2>
-<p>The Unified Dataset for the Greenland Ice Sheet integrates 17 distinct ice velocity Contributing Datasets. The Greenland Ice Sheet data are summarised in Table 1 and Figure 1.</p>
-<figure class="align-default" id="greenland-overview-fig">
-<img alt="Greenland data overview" src="../_images/greenland_data_overview.png" />
-<figcaption>
-<p><span class="caption-number">Fig. 1 </span><span class="caption-text">Summary of the Greenland Ice Sheet unified dataset. (a) Time-average mean speed, (b) mean error, (c) total number of valid (non-NaN) measurements, (d) the date of the first valid measurement and (e) date of the last valid measurement across all contributing datasets. (f) Timeline of all contributing datasets, where each black dot represents the mid-date of each measurement epoch and the width of each coloured bar represents the duration of each measurement epoch. The number of epochs is listed on the right. *Contributing dataset name has been shortened for display ? full names are in Table 1.</span><a class="headerlink" href="#greenland-overview-fig" title="Permalink to this image">#</a></p>
-</figcaption>
-</figure>
-<p><img alt="Greenland Data Table" src="../_images/greenland_data_table.png" /></p>
+<p>Our ice sheet velocity Zarr stores contain ice velocity estimates that have been generated over years of effort by many research groups.</p>
+<section id="greenland-data">
+<h2>Greenland Data<a class="headerlink" href="#greenland-data" title="Permalink to this heading">#</a></h2>
+<p><em>There are 17 Contributing Datasets for Greenland, which are summarised in this table:</em></p>
+<p><strong>Table 1. Datasets contributing to the Greenland Ice Sheet unified dataset.</strong></p>
+<div class="pst-scrollable-table-container"><table class="table">
+<thead>
+<tr class="row-odd"><th class="head text-left"><p>Source Dataset</p></th>
+<th class="head text-left"><p>Start Date</p></th>
+<th class="head text-left"><p>End Date</p></th>
+<th class="head text-right"><p>Epochs</p></th>
+<th class="head text-right"><p>Sep. (days)</p></th>
+<th class="head text-right"><p>Resolution (m)</p></th>
+<th class="head text-right"><p>Citation</p></th>
+</tr>
+</thead>
+<tbody>
+<tr class="row-even"><td class="text-left"><p>ENVEO annual</p></td>
+<td class="text-left"><p>01/10/2014</p></td>
+<td class="text-left"><p>30/09/2020</p></td>
+<td class="text-right"><p>6</p></td>
+<td class="text-right"><p>364</p></td>
+<td class="text-right"><p>250</p></td>
+<td class="text-right"><p>[1]</p></td>
+</tr>
+<tr class="row-odd"><td class="text-left"><p>ESA CCI CSK</p></td>
+<td class="text-left"><p>02/06/2012</p></td>
+<td class="text-left"><p>25/12/2014</p></td>
+<td class="text-right"><p>13</p></td>
+<td class="text-right"><p>4</p></td>
+<td class="text-right"><p>250</p></td>
+<td class="text-right"><p>[2]</p></td>
+</tr>
+<tr class="row-even"><td class="text-left"><p>ESA CCI ERS1 1991-1992</p></td>
+<td class="text-left"><p>29/12/1991</p></td>
+<td class="text-left"><p>22/03/1992</p></td>
+<td class="text-right"><p>1</p></td>
+<td class="text-right"><p>84</p></td>
+<td class="text-right"><p>500</p></td>
+<td class="text-right"><p>[11]</p></td>
+</tr>
+<tr class="row-odd"><td class="text-left"><p>ESA CCI ERS1-2 Envisat</p></td>
+<td class="text-left"><p>01/08/1991</p></td>
+<td class="text-left"><p>07/02/2011</p></td>
+<td class="text-right"><p>1877</p></td>
+<td class="text-right"><p>35</p></td>
+<td class="text-right"><p>90</p></td>
+<td class="text-right"><p>[3-10]</p></td>
+</tr>
+<tr class="row-even"><td class="text-left"><p>ESA CCI ERS2 1995-1996</p></td>
+<td class="text-left"><p>03/09/1995</p></td>
+<td class="text-left"><p>29/03/1996</p></td>
+<td class="text-right"><p>1</p></td>
+<td class="text-right"><p>208</p></td>
+<td class="text-right"><p>90</p></td>
+<td class="text-right"><p>[12]</p></td>
+</tr>
+<tr class="row-odd"><td class="text-left"><p>ESA CCI PALSAR</p></td>
+<td class="text-left"><p>20/12/2006</p></td>
+<td class="text-left"><p>17/03/2011</p></td>
+<td class="text-right"><p>5</p></td>
+<td class="text-right"><p>112</p></td>
+<td class="text-right"><p>90</p></td>
+<td class="text-right"><p>[13]</p></td>
+</tr>
+<tr class="row-even"><td class="text-left"><p>ESA CCI Sentinel-1<sup>a</sup></p></td>
+<td class="text-left"><p>10/10/2014</p></td>
+<td class="text-left"><p>22/03/2017</p></td>
+<td class="text-right"><p>1133</p></td>
+<td class="text-right"><p>12</p></td>
+<td class="text-right"><p>250</p></td>
+<td class="text-right"><p>[14-22]</p></td>
+</tr>
+<tr class="row-odd"><td class="text-left"><p>ESA CCI Sentinel-2<sup>a</sup></p></td>
+<td class="text-left"><p>01/05/2017</p></td>
+<td class="text-left"><p>14/09/2017</p></td>
+<td class="text-right"><p>28</p></td>
+<td class="text-right"><p>14</p></td>
+<td class="text-right"><p>50</p></td>
+<td class="text-right"><p>[23-31]</p></td>
+</tr>
+<tr class="row-even"><td class="text-left"><p>ESA CCI winter<sup>c</sup></p></td>
+<td class="text-left"><p>21/01/2014</p></td>
+<td class="text-left"><p>28/02/2018</p></td>
+<td class="text-right"><p>5</p></td>
+<td class="text-right"><p>62</p></td>
+<td class="text-right"><p>500</p></td>
+<td class="text-right"><p>[32]</p></td>
+</tr>
+<tr class="row-odd"><td class="text-left"><p>ITS LIVE annual</p></td>
+<td class="text-left"><p>01/01/1985</p></td>
+<td class="text-left"><p>31/12/2024</p></td>
+<td class="text-right"><p>40</p></td>
+<td class="text-right"><p>364</p></td>
+<td class="text-right"><p>120</p></td>
+<td class="text-right"><p>[33]</p></td>
+</tr>
+<tr class="row-even"><td class="text-left"><p>MEaSUREs annual</p></td>
+<td class="text-left"><p>01/12/2014</p></td>
+<td class="text-left"><p>30/11/2023</p></td>
+<td class="text-right"><p>9</p></td>
+<td class="text-right"><p>364</p></td>
+<td class="text-right"><p>200</p></td>
+<td class="text-right"><p>[34-36]</p></td>
+</tr>
+<tr class="row-odd"><td class="text-left"><p>MEaSUREs monthly</p></td>
+<td class="text-left"><p>01/12/2014</p></td>
+<td class="text-left"><p>30/11/2024</p></td>
+<td class="text-right"><p>120</p></td>
+<td class="text-right"><p>30</p></td>
+<td class="text-right"><p>200</p></td>
+<td class="text-right"><p>[37-39]</p></td>
+</tr>
+<tr class="row-even"><td class="text-left"><p>MEaSUREs qaurterly</p></td>
+<td class="text-left"><p>01/12/2014</p></td>
+<td class="text-left"><p>30/11/2024</p></td>
+<td class="text-right"><p>40</p></td>
+<td class="text-right"><p>91</p></td>
+<td class="text-right"><p>200</p></td>
+<td class="text-right"><p>[40-42]</p></td>
+</tr>
+<tr class="row-odd"><td class="text-left"><p>MEaSUREs winter</p></td>
+<td class="text-left"><p>03/09/2000</p></td>
+<td class="text-left"><p>31/05/2018</p></td>
+<td class="text-right"><p>11</p></td>
+<td class="text-right"><p>272</p></td>
+<td class="text-right"><p>200</p></td>
+<td class="text-right"><p>[43-45]</p></td>
+</tr>
+<tr class="row-even"><td class="text-left"><p>Mouginot annual<sup>a</sup></p></td>
+<td class="text-left"><p>01/07/1972</p></td>
+<td class="text-left"><p>30/06/2017</p></td>
+<td class="text-right"><p>38</p></td>
+<td class="text-right"><p>364</p></td>
+<td class="text-right"><p>90</p></td>
+<td class="text-right"><p>[46]</p></td>
+</tr>
+<tr class="row-odd"><td class="text-left"><p>PROMICE</p></td>
+<td class="text-left"><p>05/01/2016</p></td>
+<td class="text-left"><p>28/06/2026</p></td>
+<td class="text-right"><p>317</p></td>
+<td class="text-right"><p>24</p></td>
+<td class="text-right"><p>200</p></td>
+<td class="text-right"><p>[47], [48]</p></td>
+</tr>
+<tr class="row-even"><td class="text-left"><p>SHIFT<sup>d</sup></p></td>
+<td class="text-left"><p>11/10/2014</p></td>
+<td class="text-left"><p>17/01/2026</p></td>
+<td class="text-right"><p>1663</p></td>
+<td class="text-right"><p>12</p></td>
+<td class="text-right"><p>200</p></td>
+<td class="text-right"><p>[49], [50]</p></td>
+</tr>
+</tbody>
+</table>
+</div>
+<p><sup>a</sup> Error of all epochs and velocity components assumed to be 5% <br />
+<sup>b</sup> Error for years 2017/2018, 2018/2019 and 2019/2020 provided. Velocity component errors for years 2014/2015, 2015/2016 and 2016/2017 calculated by scaling the velocity magnitude error by the proportional contribution of each velocity component to the velocity magnitude. <br />
+<sup>c</sup> Error provided for all components in winters 2013/2014. All errors assumed to be 5% in winter 2014/2015. Only velocity magnitude error provided in winters 2015/2016, 2016/2017 and 2017/2018, so velocity component errors assumed to be 5%. <br />
+<sup>d</sup> Error is provided as a scalar value defined as the standard deviation of apparent ice motion over bedrock areas. If provided error is NaN for a given epoch, the error is assumed to be 5%.</p>
 </section>
-<section id="antarctica">
-<h2>Antarctica<a class="headerlink" href="#antarctica" title="Permalink to this heading">#</a></h2>
-<p>The Unified Dataset for the Antarctic Ice Sheet integrates 17 distinct ice velocity Contributing Datasets. The Antarctic Ice Sheet data are summarised in Table 2 and Figure 2.</p>
-<figure class="align-default" id="antarctic-overview-fig">
-<img alt="Antarctic data overview" src="../_images/antarctica_data_overview.png" />
-<figcaption>
-<p><span class="caption-number">Fig. 2 </span><span class="caption-text">Summary of Antarctic Ice Sheet unified dataset. (a) Time-average mean speed, (b) mean error, (c) total number of valid (non-NaN) measurements, (d) the date of the first valid measurement and (e) date of the last valid measurement across all contributing datasets. (f) Timeline of all contributing datasets, where each black dot represents the mid-date of each measurement epoch and the width of each coloured bar represents the duration of each measurement epoch. The number of epochs is listed on the right. *Contributing dataset name has been shortened for display ? full names are in Table 2.</span><a class="headerlink" href="#antarctic-overview-fig" title="Permalink to this image">#</a></p>
-</figcaption>
-</figure>
-<p><img alt="Antarctica Data Table" src="../_images/antarctica_data_table.png" /></p>
+<section id="antarctica-data">
+<h2>Antarctica Data<a class="headerlink" href="#antarctica-data" title="Permalink to this heading">#</a></h2>
+<p><em>There are 17 Contributing Datasets for Antarctica, which are summarised in this table:</em></p>
+<p><strong>Table 2. Datasets contributing to the Antarctic Ice Sheet unified dataset.</strong></p>
+<div class="pst-scrollable-table-container"><table class="table">
+<thead>
+<tr class="row-odd"><th class="head text-left"><p>Source Dataset</p></th>
+<th class="head text-left"><p>Start Date</p></th>
+<th class="head text-left"><p>End Date</p></th>
+<th class="head text-right"><p>Epochs</p></th>
+<th class="head text-right"><p>Sep. (days)</p></th>
+<th class="head text-right"><p>Resolution (m)</p></th>
+<th class="head text-right"><p>Citation</p></th>
+</tr>
+</thead>
+<tbody>
+<tr class="row-even"><td class="text-left"><p>ENVEO ALOS<sup>a</sup></p></td>
+<td class="text-left"><p>29/09/2009</p></td>
+<td class="text-left"><p>17/02/2011</p></td>
+<td class="text-right"><p>2</p></td>
+<td class="text-right"><p>47</p></td>
+<td class="text-right"><p>50</p></td>
+<td class="text-right"><p>[51]</p></td>
+</tr>
+<tr class="row-odd"><td class="text-left"><p>ENVEO ERS<sup>a</sup></p></td>
+<td class="text-left"><p>11/01/1992</p></td>
+<td class="text-left"><p>10/11/1999</p></td>
+<td class="text-right"><p>13</p></td>
+<td class="text-right"><p>2</p></td>
+<td class="text-right"><p>500</p></td>
+<td class="text-right"><p>[52], [53]</p></td>
+</tr>
+<tr class="row-even"><td class="text-left"><p>ENVEO Sentinel-1 PIG<sup>a</sup></p></td>
+<td class="text-left"><p>10/10/2014</p></td>
+<td class="text-left"><p>21/08/2019</p></td>
+<td class="text-right"><p>402</p></td>
+<td class="text-right"><p>13</p></td>
+<td class="text-right"><p>200</p></td>
+<td class="text-right"><p>[54]</p></td>
+</tr>
+<tr class="row-odd"><td class="text-left"><p>ENVEO TSX<sup>a</sup></p></td>
+<td class="text-left"><p>26/06/2007</p></td>
+<td class="text-left"><p>11/12/2016</p></td>
+<td class="text-right"><p>125</p></td>
+<td class="text-right"><p>12</p></td>
+<td class="text-right"><p>50</p></td>
+<td class="text-right"><p>[55]</p></td>
+</tr>
+<tr class="row-even"><td class="text-left"><p>ENVEO TSX PALSAR<sup>a</sup></p></td>
+<td class="text-left"><p>02/07/2010</p></td>
+<td class="text-left"><p>09/03/2012</p></td>
+<td class="text-right"><p>1</p></td>
+<td class="text-right"><p>617</p></td>
+<td class="text-right"><p>50</p></td>
+<td class="text-right"><p>[56]</p></td>
+</tr>
+<tr class="row-odd"><td class="text-left"><p>ENVEO TSX Sentinel-1<sup>a</sup></p></td>
+<td class="text-left"><p>31/10/2015</p></td>
+<td class="text-left"><p>11/12/2016</p></td>
+<td class="text-right"><p>1</p></td>
+<td class="text-right"><p>408</p></td>
+<td class="text-right"><p>50</p></td>
+<td class="text-right"><p>[57]</p></td>
+</tr>
+<tr class="row-even"><td class="text-left"><p>ENVEO monthly</p></td>
+<td class="text-left"><p>01/10/2014</p></td>
+<td class="text-left"><p>31/12/2021</p></td>
+<td class="text-right"><p>87</p></td>
+<td class="text-right"><p>30</p></td>
+<td class="text-right"><p>200</p></td>
+<td class="text-right"><p>[58]</p></td>
+</tr>
+<tr class="row-odd"><td class="text-left"><p>ESA CCI annual</p></td>
+<td class="text-left"><p>01/04/2021</p></td>
+<td class="text-left"><p>31/03/2024</p></td>
+<td class="text-right"><p>3</p></td>
+<td class="text-right"><p>365</p></td>
+<td class="text-right"><p>200</p></td>
+<td class="text-right"><p>[59]</p></td>
+</tr>
+<tr class="row-even"><td class="text-left"><p>ITS LIVE annual</p></td>
+<td class="text-left"><p>01/01/1985</p></td>
+<td class="text-left"><p>31/12/2024</p></td>
+<td class="text-right"><p>40</p></td>
+<td class="text-right"><p>365</p></td>
+<td class="text-right"><p>120</p></td>
+<td class="text-right"><p>[60]</p></td>
+</tr>
+<tr class="row-odd"><td class="text-left"><p>Joughin Sentinel-1<sup>a</sup></p></td>
+<td class="text-left"><p>01/04/2015</p></td>
+<td class="text-left"><p>29/09/2020</p></td>
+<td class="text-right"><p>22</p></td>
+<td class="text-right"><p>90</p></td>
+<td class="text-right"><p>500</p></td>
+<td class="text-right"><p>[61]</p></td>
+</tr>
+<tr class="row-even"><td class="text-left"><p>Joughin TSX<sup>a</sup></p></td>
+<td class="text-left"><p>06/02/2009</p></td>
+<td class="text-left"><p>24/12/2015</p></td>
+<td class="text-right"><p>13</p></td>
+<td class="text-right"><p>106</p></td>
+<td class="text-right"><p>500</p></td>
+<td class="text-right"><p>[62]</p></td>
+</tr>
+<tr class="row-odd"><td class="text-left"><p>Li Totten<sup>a</sup></p></td>
+<td class="text-left"><p>01/01/1963</p></td>
+<td class="text-left"><p>31/12/1989</p></td>
+<td class="text-right"><p>3</p></td>
+<td class="text-right"><p>365</p></td>
+<td class="text-right"><p>1000</p></td>
+<td class="text-right"><p>[63]</p></td>
+</tr>
+<tr class="row-even"><td class="text-left"><p>MEaSUREs ASE</p></td>
+<td class="text-left"><p>01/01/1996</p></td>
+<td class="text-left"><p>31/12/2012</p></td>
+<td class="text-right"><p>10</p></td>
+<td class="text-right"><p>365</p></td>
+<td class="text-right"><p>450</p></td>
+<td class="text-right"><p>[64], [65]</p></td>
+</tr>
+<tr class="row-odd"><td class="text-left"><p>MEaSUREs annual</p></td>
+<td class="text-left"><p>01/07/2000</p></td>
+<td class="text-left"><p>30/06/2025</p></td>
+<td class="text-right"><p>21</p></td>
+<td class="text-right"><p>365</p></td>
+<td class="text-right"><p>1000</p></td>
+<td class="text-right"><p>[66], [67]</p></td>
+</tr>
+<tr class="row-even"><td class="text-left"><p>MEaSUREs multiyear</p></td>
+<td class="text-left"><p>01/07/1995</p></td>
+<td class="text-left"><p>30/06/2022</p></td>
+<td class="text-right"><p>4</p></td>
+<td class="text-right"><p>730</p></td>
+<td class="text-right"><p>450</p></td>
+<td class="text-right"><p>[68], [69]</p></td>
+</tr>
+<tr class="row-odd"><td class="text-left"><p>SHIFT<sup>c</sup></p></td>
+<td class="text-left"><p>25/11/2014</p></td>
+<td class="text-left"><p>20/01/2026</p></td>
+<td class="text-right"><p>2033</p></td>
+<td class="text-right"><p>13</p></td>
+<td class="text-right"><p>200</p></td>
+<td class="text-right"><p>[70], [71]</p></td>
+</tr>
+<tr class="row-even"><td class="text-left"><p>SID annual<sup>d</sup></p></td>
+<td class="text-left"><p>01/01/2015</p></td>
+<td class="text-left"><p>31/12/2024</p></td>
+<td class="text-right"><p>10</p></td>
+<td class="text-right"><p>365</p></td>
+<td class="text-right"><p>250</p></td>
+<td class="text-right"><p>[72], [73]</p></td>
+</tr>
+</tbody>
+</table>
+</div>
+<p><sup>a</sup> Error of all epochs and velocity components assumed to be 5% <br />
+<sup>b</sup> Error calculated by scaling the velocity magnitude error by the proportional contribution of each velocity component to the velocity magnitude. <br />
+<sup>c</sup> Error is provided as a scalar value defined as the standard deviation of apparent ice motion over bedrock areas. If provided error is NaN for a given epoch, the error is assumed to be 5%. <br />
+<sup>d</sup> No velocity component data provided, so are assumed to be NaN.</p>
 </section>
 <section id="summary">
 <h2>Summary<a class="headerlink" href="#summary" title="Permalink to this heading">#</a></h2>
 <p>Combined, these sources offer an extensive historical record of ice motion. For Greenland, the measurements span from July 1972 to the present, with epoch resolutions ranging from four days to one year. For the Antarctic Ice Sheet, the temporal record extends from 1963 to January 2026, with epoch resolutions ranging from two days to multiple years.</p>
-<p>The data infrastructure is designed to accommodate ongoing data generation. Currently, only one Contributing Dataset for Greenland (PROMICE (Solgaard et al. 2021)) receives predictable, operational updates; these new data are automatically ingested into the Unified Dataset and made accessible via SHIVER (Section 4) with a delay of one day following data publication by PROMICE. Irregular updates from other sources (e.g., MEaSUREs, ITS_LIVE), as well as the integration of entirely new ice velocity products, will be incorporated periodically into future versions of the Unified Dataset.</p>
+<p>The data infrastructure is designed to accommodate ongoing data generation. Currently, only one Contributing Dataset for Greenland (PROMICE (Solgaard et al. 2021)) receives predictable, operational updates; these new data are automatically ingested into the Unified Dataset and made accessible via SHIVER with a delay of one day following data publication by PROMICE. Irregular updates from other sources (e.g., MEaSUREs, ITS_LIVE), as well as the integration of entirely new ice velocity products, will be incorporated periodically into future versions of the Unified Dataset.</p>
 </section>
 </section>
 
@@ -470,7 +769,7 @@ document.write(`
         },
         kernelOptions: {
             name: "python3",
-            path: "./getting_started"
+            path: "./zarr_data"
         },
         predefinedOutput: true
     }
@@ -488,12 +787,12 @@ document.write(`
                   
 <div class="prev-next-area">
     <a class="left-prev"
-       href="why.html"
+       href="what_is_zarr.html"
        title="previous page">
       <i class="fa-solid fa-angle-left"></i>
       <div class="prev-next-info">
         <p class="prev-next-subtitle">previous</p>
-        <p class="prev-next-title">Why SHIVER?</p>
+        <p class="prev-next-title">What is Zarr?</p>
       </div>
     </a>
     <a class="right-next"
@@ -521,8 +820,8 @@ document.write(`
   </div>
   <nav class="bd-toc-nav page-toc">
     <ul class="visible nav section-nav flex-column">
-<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#greenland">Greenland</a></li>
-<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#antarctica">Antarctica</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#greenland-data">Greenland Data</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#antarctica-data">Antarctica Data</a></li>
 <li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#summary">Summary</a></li>
 </ul>
   </nav></div>
