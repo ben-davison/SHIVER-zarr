@@ -12,13 +12,8 @@ PROMICE_DIR = "/mnt/parscratch/users/gg1bjd/Data/Velocity/Greenland/PROMICE_edit
 OUTPUT_ZARR = "/mnt/parscratch/users/gg1bjd/Data/Velocity/Greenland/multisource_zarr/greenland_multisource_velocity_spatial.zarr"
 CATALOG_FILE = "/mnt/parscratch/users/gg1bjd/Data/Velocity/Greenland/multisource_zarr/master_epoch_catalog_spatial.pkl"
 
-# --- HELPERS ---
-def apply_noise(t, tb):
-    """Adds 1 to 86399 seconds of random noise to ensure strictly unique Zarr coordinates."""
-    noise = np.timedelta64(random.randint(1, 1000), 'ms')
-    return np.datetime64(t) + noise, np.array(tb, dtype='datetime64[ns]') + noise
 
-# --- 2. PROMICE Processing ---
+# --- PROMICE Processing ---
 def preprocess_promice(file_path):
     """Opens, formats, and converts units for a single PROMICE NetCDF file."""
     ds = xr.open_dataset(file_path, decode_times=True)
@@ -68,7 +63,7 @@ def preprocess_promice(file_path):
     return ds
 
 
-# --- 3. IDENTIFY NEW FILES ---
+# --- IDENTIFY NEW FILES ---
 def get_new_promice_files_from_pyramid():
     """Identifies new NetCDF files by checking Group 0 of the OME-Zarr store directly."""
     if not os.path.exists(OUTPUT_ZARR):
@@ -95,7 +90,7 @@ def get_new_promice_files_from_pyramid():
             
     return new_files
 
-# --- 4. MULTI-LEVEL APPEND LOOP ---
+# --- MULTI-LEVEL APPEND LOOP ---
 def append_new_data_to_pyramid(new_files):
     """Processes, downsamples, and appends new epochs to all pyramid levels."""
     if not new_files:
@@ -104,12 +99,11 @@ def append_new_data_to_pyramid(new_files):
         
     print(f"Detected {len(new_files)} new PROMICE files. Beginning OME-Zarr append...")
     
-    # 1. Inspect the existing Zarr store to find exactly what levels exist
+    # 1. Inspect existing Zarr store to find pyramid levels
     z_store = zarr.open(OUTPUT_ZARR, mode='r')
     existing_levels = sorted([int(k) for k in z_store.group_keys() if k.isdigit()])
     print(f"Targeting existing Zarr pyramid levels: {existing_levels}")
     
-    # Optional: Load the pyramid pickle catalog
     existing_epochs = []
     if os.path.exists(CATALOG_FILE):
         with open(CATALOG_FILE, 'rb') as f:
@@ -120,72 +114,69 @@ def append_new_data_to_pyramid(new_files):
     
     for i, f in enumerate(new_files):
         print(f"  [{i+1}/{len(new_files)}] Pre-processing {os.path.basename(f)}")
-        ds_slice = preprocess_promice(f)
-        
-        # Replicate unique noise logic
-        t = ds_slice['time'].values[0]
-        tb = ds_slice['time_bnds'].values
-        if ds_slice['time_bnds'].dims == ('bnds', 'time'):
-            tb = ds_slice['time_bnds'].transpose('time', 'bnds').values[0]
-        else:
-            tb = tb[0] if tb.ndim > 1 else tb
+        try:
+            ds_slice = preprocess_promice(f)
             
-        t_n, tb_n = apply_noise(t, tb)
+            t = ds_slice['time'].values[0]
+            tb = ds_slice['time_bnds'].values
+            if ds_slice['time_bnds'].dims == ('bnds', 'time'):
+                tb = ds_slice['time_bnds'].transpose('time', 'bnds').values[0]
+            else:
+                tb = tb[0] if tb.ndim > 1 else tb
+                        
+            # Format time coordinates AND data_source variable
+            ds_slice = ds_slice.assign_coords(time=[t])
+            ds_slice['time_bnds'] = (['time', 'bnds'], [tb] if tb.ndim == 1 else tb)
+            ds_slice['data_source'] = (['time'], np.array(['PROMICE'], dtype='<U50'))
+            
+            batch_datasets.append(ds_slice)
+            existing_epochs.append({
+                'time': t, 
+                'time_bnds': tb, 
+                'source': 'PROMICE', 
+                'path': f
+            })
+            
+        except Exception as e:
+            print(f"Error pre-processing {f}: {e}")
+            print("Halting batch processing to prevent further store corruption.")
+            break
+
+    if not batch_datasets:
+        print("No valid datasets were prepared for appending. Exiting.")
+        sys.exit(1)
         
-        # Prep the slice with new coordinates
-        ds_slice = ds_slice.assign_coords(time=[t_n])
-        ds_slice['time_bnds'].values = [tb_n] if ds_slice['time_bnds'].ndim == 2 else tb_n
-        
-        batch_datasets.append(ds_slice)
-        
-        # Track epoch history
-        existing_epochs.append({
-            'time': t_n, 
-            'time_bnds': tb_n, 
-            'source': 'PROMICE', 
-            'path': f
-        })
-        
-    # Combine all individual files into one single Xarray Dataset
-    print(f"Concatenating {len(new_files)} files into a single batch for appending...", flush=True)
+    print(f"Concatenating {len(batch_datasets)} files into a single batch for appending...", flush=True)
     ds_batch = xr.concat(batch_datasets, dim='time')
             
-    
-    # --- STEP B: Iterate through levels, coarsen the batch, and append once per level ---
+    # --- STEP B: Iterate through levels, coarsen batch, and append ---
     for level in existing_levels:
         print(f"Appending batch to Group '{level}'...", flush=True)
         
-        # If we are past Level 0, coarsen the entire batch from the previous level
+        # Coarsen spatial dimensions for levels > 0 (retains all 1D metadata intact)
         if level > 0:
-            ds_next = xr.Dataset()
+            ds_coarsened = ds_batch.copy()
             for var in ['speed', 'vx', 'vy', 'speed_error', 'vx_error', 'vy_error']:
-                if var in ds_batch and 'y' in ds_batch[var].dims and 'x' in ds_batch[var].dims:
-                    ds_next[var] = ds_batch[var].coarsen(x=2, y=2, boundary='pad').mean(keep_attrs=True)
-                elif var in ds_batch:
-                    ds_next[var] = ds_batch[var]
+                if var in ds_coarsened and 'y' in ds_coarsened[var].dims and 'x' in ds_coarsened[var].dims:
+                    ds_coarsened[var] = ds_coarsened[var].coarsen(x=2, y=2, boundary='pad').mean(keep_attrs=True)
                     
-            if 'data_source' in ds_batch: ds_next['data_source'] = ds_batch['data_source']
-            if 'time_bnds' in ds_batch: ds_next['time_bnds'] = ds_batch['time_bnds']
-            
-            ds_next = ds_next.assign_coords({
+            ds_coarsened = ds_coarsened.assign_coords({
                 'x': ds_batch['x'].coarsen(x=2, boundary='pad').mean(keep_attrs=True),
                 'y': ds_batch['y'].coarsen(y=2, boundary='pad').mean(keep_attrs=True)
             })
-            ds_batch = ds_next  # Update the pointer for the next iteration
+            ds_batch = ds_coarsened  # Update pointer for next iteration
             
-        # Drop fixed spatial variables so we don't overwrite/conflict with the target group
+        # Drop fixed spatial variables so we don't conflict with target group
         ds_level_write = ds_batch.drop_vars(['x', 'y', 'spatial_ref'], errors='ignore')
         
-        # Clear any lingering file encoding on the batch before writing
         for var in ds_level_write.variables:
             ds_level_write[var].encoding.clear()
         
-        # Append the ENTIRE batch at once to the group
+        # Append batch to specific pyramid level group
         ds_level_write.to_zarr(OUTPUT_ZARR, group=str(level), append_dim='time', mode='a')
         
-        
-    # --- STEP C: Re-consolidate 1D metadata arrays into single chunks (Zarr v3) ---
-    print("Re-consolidating 1D metadata arrays into single chunks...", flush=True)
+    # --- STEP C: Re-consolidate 1D metadata arrays into single chunks per group ---
+    print("Re-consolidating 1D metadata arrays into single chunks across all pyramid levels...", flush=True)
     z_root = zarr.open(OUTPUT_ZARR, mode='a')
 
     for level in existing_levels:
@@ -195,24 +186,21 @@ def append_new_data_to_pyramid(new_files):
             if var_name in grp:
                 arr = grp[var_name]
                 
-                # 1. Read data and preserve attributes
                 full_data = arr[:]
                 saved_attrs = dict(arr.attrs)
                 
-                # 2. Overwrite using the Zarr v3 create_array API
+                # Overwrite array as a single chunk covering full updated length
                 grp.create_array(
                     name=var_name,
                     data=full_data,
-                    chunks=full_data.shape,  # Forces a single chunk spanning full length
+                    chunks=full_data.shape,
                     attributes=saved_attrs,
                     overwrite=True
                 )
     
-    # Save the updated pickle catalog
     with open(CATALOG_FILE, 'wb') as f:
         pickle.dump(existing_epochs, f)
         
-    # Consolidate hierarchical Zarr structural mappings
     zarr.consolidate_metadata(OUTPUT_ZARR)
     print("OME-Zarr hierarchy consolidated successfully!")
     print("Pyramid append process completed successfully!")

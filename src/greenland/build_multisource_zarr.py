@@ -8,15 +8,9 @@ import zarr
 import rioxarray
 import pickle
 from datetime import datetime
-import random
 import re
 
 # --- HELPERS ---
-def apply_noise(t, tb):
-    """Adds 1 to 1000 milliseconds of random noise to ensure strictly unique Zarr coordinates."""
-    noise = np.timedelta64(random.randint(1, 1000), 'ms')
-    return np.datetime64(t) + noise, np.array(tb, dtype='datetime64[ns]') + noise
-
 def get_highest_version_files(base_dir, region_wildcard, file_wildcard):
     """Finds all region directories, picks the highest v1.* folder, and returns the target files."""
     files = []
@@ -869,68 +863,57 @@ def build_catalog_and_skeleton():
             tb = temp_ds['time_bnds'].values
             if temp_ds['time_bnds'].dims == ('bnds', 'time'): tb = temp_ds['time_bnds'].transpose('time', 'bnds').values[0]
             else: tb = tb[0] if tb.ndim > 1 else tb
-            t_n, tb_n = apply_noise(t, tb)
-            epochs.append({'time': t_n, 'time_bnds': tb_n, 'source': 'PROMICE', 'path': f})
+            epochs.append({'time': t, 'time_bnds': tb, 'source': 'PROMICE', 'path': f})
             
     # 2. MEaSUREs monthly
     for f in sorted(glob.glob(os.path.join(measures_monthly_dir, "*_vv_*.tif"))):
         t, tb = parse_measures_time(f)
-        t_n, tb_n = apply_noise(t, tb)
-        epochs.append({'time': t_n, 'time_bnds': tb_n, 'source': 'MEaSUREs_monthly', 'path': f})
+        epochs.append({'time': t, 'time_bnds': tb, 'source': 'MEaSUREs_monthly', 'path': f})
         
     # 3. MEaSUREs quarterly
     for f in sorted(glob.glob(os.path.join(measures_quarterly_dir, "*_vv_*.tif"))):
         t, tb = parse_measures_time(f)
-        t_n, tb_n = apply_noise(t, tb)
-        epochs.append({'time': t_n, 'time_bnds': tb_n, 'source': 'MEaSUREs_quarterly', 'path': f})
+        epochs.append({'time': t, 'time_bnds': tb, 'source': 'MEaSUREs_quarterly', 'path': f})
         
     # 4. MEaSUREs annual
     for f in sorted(glob.glob(os.path.join(measures_annual_dir, "*_vv_*.tif"))):
         t, tb = parse_measures_time(f)
-        t_n, tb_n = apply_noise(t, tb)
-        epochs.append({'time': t_n, 'time_bnds': tb_n, 'source': 'MEaSUREs_annual', 'path': f})
+        epochs.append({'time': t, 'time_bnds': tb, 'source': 'MEaSUREs_annual', 'path': f})
         
     # 5. MEaSUREs winter
     for f in sorted(glob.glob(os.path.join(measures_winter_dir, "*_vv_*.tif"))):
         t, tb = parse_measures_time(f)
-        t_n, tb_n = apply_noise(t, tb)
-        epochs.append({'time': t_n, 'time_bnds': tb_n, 'source': 'MEaSUREs_winter', 'path': f})
+        epochs.append({'time': t, 'time_bnds': tb, 'source': 'MEaSUREs_winter', 'path': f})
         
     # 6. Mouginot
     for f in sorted(glob.glob(os.path.join(mouginot_dir, "*.nc"))):
         t, tb = parse_mouginot_time(f)
-        t_n, tb_n = apply_noise(t, tb)
-        epochs.append({'time': t_n, 'time_bnds': tb_n, 'source': 'Mouginot_annual', 'path': f})
+        epochs.append({'time': t, 'time_bnds': tb, 'source': 'Mouginot_annual', 'path': f})
         
     # 7. ITS_LIVE
     for f in sorted(glob.glob(os.path.join(itslive_dir, "*.nc"))):
         t, tb = parse_itslive_time(f)
-        t_n, tb_n = apply_noise(t, tb)
-        epochs.append({'time': t_n, 'time_bnds': tb_n, 'source': 'ITS_LIVE_annual', 'path': f})
+        epochs.append({'time': t, 'time_bnds': tb, 'source': 'ITS_LIVE_annual', 'path': f})
         
     # 8. ESA CCI Winter
     for f in get_highest_version_files(esacci_dir, "greenland_ice_velocity_map_winter_*", "*.nc"):
         t, tb = parse_cci_winter_time(f)
-        t_n, tb_n = apply_noise(t, tb)
-        epochs.append({'time': t_n, 'time_bnds': tb_n, 'source': 'ESA_CCI_winter', 'path': f})
+        epochs.append({'time': t, 'time_bnds': tb, 'source': 'ESA_CCI_winter', 'path': f})
 
     # 9. ENVEO
     for f in sorted(glob.glob(os.path.join(enveo_dir, "*", "*_mag.tif"))) + sorted(glob.glob(os.path.join(enveo_dir, "*_mag.tif"))):
         t, tb = parse_enveo_time(f)
-        t_n, tb_n = apply_noise(t, tb)
-        epochs.append({'time': t_n, 'time_bnds': tb_n, 'source': 'ENVEO_annual', 'path': f})
+        epochs.append({'time': t, 'time_bnds': tb, 'source': 'ENVEO_annual', 'path': f})
     for f in sorted(glob.glob(os.path.join(enveo_dir, "*", "C3S_GrIS_IV_250m_S1_*.nc"))) + sorted(glob.glob(os.path.join(enveo_dir, "C3S_GrIS_IV_250m_S1_*.nc"))):
         t, tb = parse_enveo_time(f)
-        t_n, tb_n = apply_noise(t, tb)
-        epochs.append({'time': t_n, 'time_bnds': tb_n, 'source': 'ENVEO_annual', 'path': f})
+        epochs.append({'time': t, 'time_bnds': tb, 'source': 'ENVEO_annual', 'path': f})
 
     # 10. SHIFT
     for d in sorted(glob.glob(os.path.join(shift_dir, "*_*"))):
         date_str = os.path.basename(d)
         if os.path.exists(os.path.join(d, f"S_{date_str}_200m_raw.tif")):
             t, tb = parse_shift_time(date_str)
-            t_n, tb_n = apply_noise(t, tb)
-            epochs.append({'time': t_n, 'time_bnds': tb_n, 'source': 'SHIFT', 'path': d})
+            epochs.append({'time': t, 'time_bnds': tb, 'source': 'SHIFT', 'path': d})
 
     # 11. ESA CCI Timeseries
     cci_sources = [
@@ -952,11 +935,22 @@ def build_catalog_and_skeleton():
                         tb = ds_slice['time_bnds'].values
                         if tb.ndim > 1: tb = tb.flatten()[:2]
                     else: tb = np.array([t, t])
-                    t_n, tb_n = apply_noise(t, tb)
-                    epochs.append({'time': t_n, 'time_bnds': tb_n, 'idx': idx, 'source': source_name, 'path': f})
+                    epochs.append({'time': t, 'time_bnds': tb, 'idx': idx, 'source': source_name, 'path': f})
         
-    # Sort ALL chronologically
+    # Sort ALL chronologically by the true base time
     epochs = sorted(epochs, key=lambda d: d['time'])
+    
+    # Guarantee strict uniqueness deterministically
+    for i in range(1, len(epochs)):
+        if epochs[i]['time'] <= epochs[i-1]['time']:
+            # Calculate the exact offset needed to be 1ms greater than the previous time
+            diff = epochs[i-1]['time'] - epochs[i]['time']
+            offset = diff + np.timedelta64(1, 'ms')
+            
+            # Apply to both time and time_bnds
+            epochs[i]['time'] += offset
+            epochs[i]['time_bnds'] += offset
+
     total_epochs = len(epochs)
     print(f"Found {total_epochs} total epochs for the FULL build.")
 

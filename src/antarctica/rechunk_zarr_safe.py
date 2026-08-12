@@ -66,16 +66,17 @@ def safe_p2p_rechunk(mode):
     print("Applying chunk definitions and writing to temporary store...")
     ds_rechunked = ds.chunk(chunk_dict)
     
-    # Write to a temporary path to ensure crash-safety
-    # Explicitly set zarr_format=3 if you want to ensure the output is V3
-    ds_rechunked.to_zarr(temp_target_path, zarr_format=3)
-    
-    # Explicitly override chunking for 1D/2D metadata variables
+    # Explicitly override chunking for 1D/2D metadata variables before writing
     # Passing -1 forces Dask to use exactly 1 chunk for the entire dimension(s)
     print("Enforcing single-chunk format for metadata arrays...")
     for var in ['time', 'time_bnds', 'data_source']:
         if var in ds_rechunked:
+            # Overwrite the variable in the dataset with a single-chunked version
             ds_rechunked[var] = ds_rechunked[var].chunk(-1)
+            
+    print("Writing to temporary store...")
+    # Write to a temporary path 
+    ds_rechunked.to_zarr(temp_target_path, zarr_format=3)
 
     # --- 5. ATOMIC SWAP ---
     print("Rechunking complete! Performing safe swap...")

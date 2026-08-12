@@ -8,7 +8,6 @@ import zarr
 import rioxarray
 import pickle
 from datetime import datetime, timedelta
-import random
 import re
 
 # --- Paths ---
@@ -31,12 +30,6 @@ CATALOG_FILE = os.path.join(OUTPUT_DIR, "master_epoch_catalog.pkl")
 
 # Ensure output directory exists
 os.makedirs(OUTPUT_DIR, exist_ok=True)
-
-# --- Helpers ---
-def apply_noise(t, tb):
-    """Adds 1 to 1000 milliseconds of random noise to ensure strictly unique Zarr coordinates."""
-    noise = np.timedelta64(random.randint(1, 1000), 'ms')
-    return np.datetime64(t) + noise, np.array(tb, dtype='datetime64[ns]') + noise
 
 # --- 1. ENVEO Monthly Processing ---
 def parse_enveo_monthly_time(file_path):
@@ -270,8 +263,9 @@ def catalog_measures_ase(file_path):
         start_dt = datetime(year, 1, 1)
         end_dt = datetime(year, 12, 31)
         mid_dt = start_dt + (end_dt - start_dt) / 2
-        t_n, tb_n = apply_noise(np.datetime64(mid_dt), np.array([np.datetime64(start_dt), np.datetime64(end_dt)]))
-        epochs.append({'time': t_n, 'time_bnds': tb_n, 'source': 'MEaSUREs_ASE', 'path': file_path, 'year': year})
+        t = np.datetime64(mid_dt)
+        tb = np.array([np.datetime64(start_dt), np.datetime64(end_dt)])
+        epochs.append({'time': t, 'time_bnds': tb, 'source': 'MEaSUREs_ASE', 'path': file_path, 'year': year})
     return epochs
 
 def preprocess_measures_ase(file_path, year, master_x, master_y):
@@ -701,11 +695,12 @@ def catalog_enveo_ers(base_dir):
         start_dt = datetime.strptime(match.group(1), "%Y%m%d")
         end_dt = datetime.strptime(match.group(2), "%Y%m%d")
         mid_dt = start_dt + (end_dt - start_dt) / 2
+        t = np.datetime64(mid_dt)
+        tb = np.array([np.datetime64(start_dt), np.datetime64(end_dt)])
         
         tifs = [t for t in glob.glob(os.path.join(cdir, "*.tif")) if "_mag" not in os.path.basename(t)]
         for tif in tifs:
-            t_n, tb_n = apply_noise(np.datetime64(mid_dt), np.array([np.datetime64(start_dt), np.datetime64(end_dt)]))
-            epochs.append({'time': t_n, 'time_bnds': tb_n, 'source': 'ENVEO_ERS', 'path': tif})
+            epochs.append({'time': t, 'time_bnds': tb, 'source': 'ENVEO_ERS', 'path': tif})
     return epochs
 
 def preprocess_enveo_ers(file_path, master_x, master_y):
@@ -781,8 +776,9 @@ def catalog_enveo_tsx(base_dir):
             start_dt = datetime.strptime(match.group(1), "%Y%m%d")
             end_dt = datetime.strptime(match.group(2), "%Y%m%d")
             mid_dt = start_dt + (end_dt - start_dt) / 2
-            t_n, tb_n = apply_noise(np.datetime64(mid_dt), np.array([np.datetime64(start_dt), np.datetime64(end_dt)]))
-            epochs.append({'time': t_n, 'time_bnds': tb_n, 'source': 'ENVEO_TSX', 'path': tif})
+            t = np.datetime64(mid_dt)
+            tb = np.array([np.datetime64(start_dt), np.datetime64(end_dt)])
+            epochs.append({'time': t, 'time_bnds': tb, 'source': 'ENVEO_TSX', 'path': tif})
     return epochs
 
 def preprocess_enveo_tsx(file_path, master_x, master_y):
@@ -858,8 +854,9 @@ def catalog_enveo_alos(base_dir):
             start_dt = datetime.strptime(match.group(1), "%Y%m%d")
             end_dt = datetime.strptime(match.group(2), "%Y%m%d")
             mid_dt = start_dt + (end_dt - start_dt) / 2
-            t_n, tb_n = apply_noise(np.datetime64(mid_dt), np.array([np.datetime64(start_dt), np.datetime64(end_dt)]))
-            epochs.append({'time': t_n, 'time_bnds': tb_n, 'source': 'ENVEO_ALOS', 'path': tif})
+            t = np.datetime64(mid_dt)
+            tb = np.array([np.datetime64(start_dt), np.datetime64(end_dt)])
+            epochs.append({'time': t, 'time_bnds': tb, 'source': 'ENVEO_ALOS', 'path': tif})
     return epochs
 
 def preprocess_enveo_alos(file_path, master_x, master_y):
@@ -933,8 +930,9 @@ def catalog_enveo_tsx_s1(base_dir):
             start_dt = datetime(2015, 10, 31)
             end_dt = datetime(2016, 12, 11)
             mid_dt = start_dt + (end_dt - start_dt) / 2
-            t_n, tb_n = apply_noise(np.datetime64(mid_dt), np.array([np.datetime64(start_dt), np.datetime64(end_dt)]))
-            epochs.append({'time': t_n, 'time_bnds': tb_n, 'source': 'ENVEO_TSX_Sentinel-1', 'path': tif})
+            t = np.datetime64(mid_dt)
+            tb = np.array([np.datetime64(start_dt), np.datetime64(end_dt)])
+            epochs.append({'time': t, 'time_bnds': tb, 'source': 'ENVEO_TSX_Sentinel-1', 'path': tif})
     return epochs
 
 def preprocess_enveo_tsx_s1(file_path, master_x, master_y):
@@ -1011,8 +1009,9 @@ def catalog_enveo_tsx_palsar(base_dir):
             start_dt = datetime(2010, 7, 2)
             end_dt = datetime(2012, 3, 9)
             mid_dt = start_dt + (end_dt - start_dt) / 2
-            t_n, tb_n = apply_noise(np.datetime64(mid_dt), np.array([np.datetime64(start_dt), np.datetime64(end_dt)]))
-            epochs.append({'time': t_n, 'time_bnds': tb_n, 'source': 'ENVEO_TSX_PALSAR', 'path': tif})
+            t = np.datetime64(mid_dt)
+            tb = np.array([np.datetime64(start_dt), np.datetime64(end_dt)])
+            epochs.append({'time': t, 'time_bnds': tb, 'source': 'ENVEO_TSX_PALSAR', 'path': tif})
     return epochs
 
 def preprocess_enveo_tsx_palsar(file_path, master_x, master_y):
@@ -1157,9 +1156,8 @@ def catalog_shift(base_dir):
                 tifs = [f for f in os.listdir(cdir) if f.startswith('S_') and 'raw.tif' in f.lower()]
                 if tifs: speed_file = os.path.join(cdir, tifs[0])
                 else: continue
-            t_n, tb_n = apply_noise(t, tb)
             epochs.append({
-                'time': t_n, 'time_bnds': tb_n, 
+                'time': t, 'time_bnds': tb, 
                 'source': 'SHIFT', 'path': speed_file,
                 'epoch_dir': cdir, 'date_str': date_str
             })
@@ -1259,26 +1257,22 @@ def build_catalog_and_skeleton():
     # 1. ENVEO
     for f in sorted(glob.glob(os.path.join(ENVEO_DIR, "*.nc"))):
         t, tb = parse_enveo_monthly_time(f)
-        t_n, tb_n = apply_noise(t, tb)
-        epochs.append({'time': t_n, 'time_bnds': tb_n, 'source': 'ENVEO_monthly', 'path': f})
+        epochs.append({'time': t, 'time_bnds': tb, 'source': 'ENVEO_monthly', 'path': f})
         
     # 2. ITS_LIVE
     for f in sorted(glob.glob(os.path.join(ITSLIVE_DIR, "*.nc"))):
         t, tb = parse_itslive_annual_time(f)
-        t_n, tb_n = apply_noise(t, tb)
-        epochs.append({'time': t_n, 'time_bnds': tb_n, 'source': 'ITS_LIVE_annual', 'path': f})
+        epochs.append({'time': t, 'time_bnds': tb, 'source': 'ITS_LIVE_annual', 'path': f})
 
     # 3. MEaSUREs Annual
     for f in sorted(glob.glob(os.path.join(MEASURES_DIR, "*_1km_v*.nc"))):
         t, tb = parse_measures_annual_time(f)
-        t_n, tb_n = apply_noise(t, tb)
-        epochs.append({'time': t_n, 'time_bnds': tb_n, 'source': 'MEaSUREs_annual', 'path': f})
+        epochs.append({'time': t, 'time_bnds': tb, 'source': 'MEaSUREs_annual', 'path': f})
 
     # 4. MEaSUREs Multiyear
     for f in sorted(glob.glob(os.path.join(MEASURES_MULTI_DIR, "*.nc"))):
         t, tb = parse_measures_multiyear_time(f)
-        t_n, tb_n = apply_noise(t, tb)
-        epochs.append({'time': t_n, 'time_bnds': tb_n, 'source': 'MEaSUREs_multiyear', 'path': f})
+        epochs.append({'time': t, 'time_bnds': tb, 'source': 'MEaSUREs_multiyear', 'path': f})
         
     # 5. MEaSUREs ASE
     for f in sorted(glob.glob(os.path.join(MEASURES_ASE_DIR, "*.nc"))):
@@ -1287,26 +1281,22 @@ def build_catalog_and_skeleton():
     # 6. SID Annual
     for f in sorted(glob.glob(os.path.join(SID_ANNUAL_DIR, "*.nc"))):
         t, tb = parse_sid_annual_time(f)
-        t_n, tb_n = apply_noise(t, tb)
-        epochs.append({'time': t_n, 'time_bnds': tb_n, 'source': 'SID_annual', 'path': f})
+        epochs.append({'time': t, 'time_bnds': tb, 'source': 'SID_annual', 'path': f})
         
     # 7. ESA CCI Annual
     for f in sorted(glob.glob(os.path.join(ESA_CCI_ANNUAL_DIR, "*.nc"))):
         t, tb = parse_esacci_annual_time(f)
-        t_n, tb_n = apply_noise(t, tb)
-        epochs.append({'time': t_n, 'time_bnds': tb_n, 'source': 'ESA_CCI_annual', 'path': f})
+        epochs.append({'time': t, 'time_bnds': tb, 'source': 'ESA_CCI_annual', 'path': f})
 
     # 8. Joughin Sentinel-1
     for f in sorted(glob.glob(os.path.join(JOUGHIN_DIR, "VelPIG.S1Quarterly.*.vx.tif"))):
         t, tb = parse_joughin_s1_time(f)
-        t_n, tb_n = apply_noise(t, tb)
-        epochs.append({'time': t_n, 'time_bnds': tb_n, 'source': 'Joughin_Sentinel-1', 'path': f})
+        epochs.append({'time': t, 'time_bnds': tb, 'source': 'Joughin_Sentinel-1', 'path': f})
 
     # 9. Joughin TSX
     for f in sorted(glob.glob(os.path.join(JOUGHIN_DIR, "VelPIG.TSX.*.vx.tif"))):
         t, tb = parse_joughin_tsx_time(f)
-        t_n, tb_n = apply_noise(t, tb)
-        epochs.append({'time': t_n, 'time_bnds': tb_n, 'source': 'Joughin_TSX', 'path': f})
+        epochs.append({'time': t, 'time_bnds': tb, 'source': 'Joughin_TSX', 'path': f})
 
     # 10. Li Totten
     li_totten_targets = ["1963_1973_v.tif", "1973_1989_v.tif", "1989_v.tif"]
@@ -1314,14 +1304,12 @@ def build_catalog_and_skeleton():
         file_path = os.path.join(LI_TOTTEN_DIR, filename)
         if os.path.exists(file_path):
             t, tb = parse_li_totten_time(file_path)
-            t_n, tb_n = apply_noise(t, tb)
-            epochs.append({'time': t_n, 'time_bnds': tb_n, 'source': 'Li_Totten', 'path': file_path})
+            epochs.append({'time': t, 'time_bnds': tb, 'source': 'Li_Totten', 'path': file_path})
             
     # 11. ENVEO Sentinel-1 PIG
     for f in sorted(glob.glob(os.path.join(ENVEO_S1_PIG_DIR, "*_vv.tif"))):
         t, tb = parse_enveo_s1_pig_time(f)
-        t_n, tb_n = apply_noise(t, tb)
-        epochs.append({'time': t_n, 'time_bnds': tb_n, 'source': 'ENVEO_Sentinel-1_PIG', 'path': f})
+        epochs.append({'time': t, 'time_bnds': tb, 'source': 'ENVEO_Sentinel-1_PIG', 'path': f})
         
     # 12. ENVEO ERS
     epochs.extend(catalog_enveo_ers(ENVEO_OTHERS_DIR))
@@ -1341,10 +1329,22 @@ def build_catalog_and_skeleton():
     # 17. SHIFT
     epochs.extend(catalog_shift(SHIFT_DIR))
         
-    # Sort ALL chronologically
+    # Sort ALL chronologically by the true base time
     epochs = sorted(epochs, key=lambda d: d['time'])
+    
+    # Guarantee strict uniqueness deterministically
+    for i in range(1, len(epochs)):
+        if epochs[i]['time'] <= epochs[i-1]['time']:
+            # Calculate the exact offset needed to be 1ms greater than the previous time
+            diff = epochs[i-1]['time'] - epochs[i]['time']
+            offset = diff + np.timedelta64(1, 'ms')
+            
+            # Apply to both time and time_bnds
+            epochs[i]['time'] += offset
+            epochs[i]['time_bnds'] += offset
+
     total_epochs = len(epochs)
-    print(f"Found {total_epochs} total epochs for the FULL build.", flush=True)
+    print(f"Found {total_epochs} total epochs for the FULL build.")
 
     # Save to disk so workers know the master index map
     with open(CATALOG_FILE, 'wb') as f:

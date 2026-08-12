@@ -21,13 +21,7 @@ OUTPUT_ZARR = "/mnt/parscratch/users/gg1bjd/Data/Velocity/Greenland/multisource_
 PKL_CATALOG = "/mnt/parscratch/users/gg1bjd/Data/Velocity/Greenland/multisource_zarr/master_epoch_catalog.pkl"
 JSON_CATALOG = "/mnt/parscratch/users/gg1bjd/Data/Velocity/Greenland/multisource_zarr/greenland_multisource_velocity_catalog.json"
 
-# --- HELPERS ---
-def apply_noise(t, tb):
-    """Adds 1 to 1000 milliseconds of random noise to ensure strictly unique Zarr coordinates."""
-    noise = np.timedelta64(random.randint(1, 1000), 'ms')
-    return np.datetime64(t) + noise, np.array(tb, dtype='datetime64[ns]') + noise
-
-# --- 2. PROMICE Processing ---
+# --- PROMICE Processing ---
 def preprocess_promice(file_path):
     """Opens, formats, and converts units for a single PROMICE NetCDF file."""
     ds = xr.open_dataset(file_path, decode_times=True)
@@ -77,7 +71,7 @@ def preprocess_promice(file_path):
     return ds
 
 
-# --- 3. IDENTIFY NEW FILES ---
+# --- IDENTIFY NEW FILES ---
 def get_new_promice_files_from_zarr():
     """Identifies new NetCDF files by checking the Zarr store directly."""
     ds_zarr = xr.open_zarr(OUTPUT_ZARR)
@@ -99,7 +93,7 @@ def get_new_promice_files_from_zarr():
             
     return new_files
 
-# --- 4. UPDATE METADATA CATALOGS ---
+# --- UPDATE METADATA CATALOGS ---
 def build_json_catalog(zarr_path, region):
     print(f"Generating JSON metadata catalog for {zarr_path} (Region: {region})...")
     
@@ -187,7 +181,7 @@ def build_json_catalog(zarr_path, region):
         
     print(f"Catalog successfully saved to {catalog_out_path}")
 
-# --- 5. APPEND AND UPDATE ---
+# --- APPEND AND UPDATE ---
 def append_new_data(new_files):
     """Processes, applies noise, appends batch to Zarr, and updates catalogs."""
     if not new_files:
@@ -217,17 +211,16 @@ def append_new_data(new_files):
                 tb = ds_new['time_bnds'].transpose('time', 'bnds').values[0]
             else:
                 tb = tb[0] if tb.ndim > 1 else tb
-                
-            t_n, tb_n = apply_noise(t, tb)
-            
+                            
             # Format time coordinates
-            ds_new = ds_new.assign_coords(time=[t_n])
-            ds_new['time_bnds'].values = [tb_n] if ds_new['time_bnds'].ndim == 2 else tb_n
+            ds_new = ds_new.assign_coords(time=[t])
+            ds_new['time_bnds'] = (['time', 'bnds'], [tb] if tb.ndim == 1 else tb)
+            ds_new['data_source'] = (['time'], np.array(['PROMICE'], dtype='<U50'))
             
             batch_datasets.append(ds_new)
             processed_epochs.append({
-                'time': t_n, 
-                'time_bnds': tb_n, 
+                'time': t, 
+                'time_bnds': tb, 
                 'source': 'PROMICE', 
                 'path': f
             })
@@ -262,17 +255,17 @@ def append_new_data(new_files):
 
     # --- STEP 3: Re-consolidate 1D metadata arrays into single chunks (Zarr v3 API) ---
     print("Re-consolidating 1D metadata arrays into single chunks...", flush=True)
-    z_root = zarr.open(OUTPUT_ZARR, mode='a')
+    z_root = zarr.open_group(OUTPUT_ZARR, mode='a')
 
     for var_name in ['time', 'time_bnds', 'data_source']:
         if var_name in z_root:
             arr = z_root[var_name]
             
-            # Read full updated array into memory and preserve attributes
+            # Read updated array into memory and preserve attributes
             full_data = arr[:]
             saved_attrs = dict(arr.attrs)
             
-            # Overwrite array as a single chunk covering full length
+            # Overwrite array as a single chunk covering full new length
             z_root.create_array(
                 name=var_name,
                 data=full_data,
@@ -281,9 +274,8 @@ def append_new_data(new_files):
                 overwrite=True
             )
 
-    # Consolidate the metadata
     zarr.consolidate_metadata(OUTPUT_ZARR)
-    print("Zarr metadata consolidated.")
+    print("Zarr v3 metadata consolidated.")
     
     # Update JSON catalog with whatever successfully appended
     build_json_catalog(OUTPUT_ZARR, "greenland")    
