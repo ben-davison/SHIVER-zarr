@@ -1,0 +1,908 @@
+
+
+<!DOCTYPE html>
+
+
+<html lang="en" data-content_root="" >
+
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" /><meta name="generator" content="Docutils 0.18.1: http://docutils.sourceforge.net/" />
+
+    <title>Strain across the Brunt Ice Shelf &#8212; SHeffield Ice Velocity ExploreR (SHIVER) - Cloud access to a unified dataset of satellite-derived ice surface velocity measurements for the Antarctica Ice Sheet and Greenland Ice Sheet</title>
+  
+  
+  
+  <script data-cfasync="false">
+    document.documentElement.dataset.mode = localStorage.getItem("mode") || "";
+    document.documentElement.dataset.theme = localStorage.getItem("theme") || "";
+  </script>
+  
+  <!-- Loaded before other Sphinx assets -->
+  <link href="../_static/styles/theme.css?digest=dfe6caa3a7d634c4db9b" rel="stylesheet" />
+<link href="../_static/styles/bootstrap.css?digest=dfe6caa3a7d634c4db9b" rel="stylesheet" />
+<link href="../_static/styles/pydata-sphinx-theme.css?digest=dfe6caa3a7d634c4db9b" rel="stylesheet" />
+
+  
+  <link href="../_static/vendor/fontawesome/6.5.2/css/all.min.css?digest=dfe6caa3a7d634c4db9b" rel="stylesheet" />
+  <link rel="preload" as="font" type="font/woff2" crossorigin href="../_static/vendor/fontawesome/6.5.2/webfonts/fa-solid-900.woff2" />
+<link rel="preload" as="font" type="font/woff2" crossorigin href="../_static/vendor/fontawesome/6.5.2/webfonts/fa-brands-400.woff2" />
+<link rel="preload" as="font" type="font/woff2" crossorigin href="../_static/vendor/fontawesome/6.5.2/webfonts/fa-regular-400.woff2" />
+
+    <link rel="stylesheet" type="text/css" href="../_static/pygments.css" />
+    <link rel="stylesheet" href="../_static/styles/sphinx-book-theme.css?digest=14f4ca6b54d191a8c7657f6c759bf11a5fb86285" type="text/css" />
+    <link rel="stylesheet" type="text/css" href="../_static/togglebutton.css" />
+    <link rel="stylesheet" type="text/css" href="../_static/copybutton.css" />
+    <link rel="stylesheet" type="text/css" href="../_static/mystnb.4510f1fc1dee50b3e5859aac5469c37c29e427902b24a333a5f9fcb2f0b3ac41.css" />
+    <link rel="stylesheet" type="text/css" href="../_static/sphinx-thebe.css" />
+    <link rel="stylesheet" type="text/css" href="../_static/design-style.4045f2051d55cab465a707391d5b2007.min.css" />
+  
+  <!-- Pre-loaded scripts that we'll load fully later -->
+  <link rel="preload" as="script" href="../_static/scripts/bootstrap.js?digest=dfe6caa3a7d634c4db9b" />
+<link rel="preload" as="script" href="../_static/scripts/pydata-sphinx-theme.js?digest=dfe6caa3a7d634c4db9b" />
+  <script src="../_static/vendor/fontawesome/6.5.2/js/all.min.js?digest=dfe6caa3a7d634c4db9b"></script>
+
+    <script data-url_root="../" id="documentation_options" src="../_static/documentation_options.js"></script>
+    <script src="../_static/jquery.js"></script>
+    <script src="../_static/underscore.js"></script>
+    <script src="../_static/_sphinx_javascript_frameworks_compat.js"></script>
+    <script src="../_static/doctools.js"></script>
+    <script src="../_static/clipboard.min.js"></script>
+    <script src="../_static/copybutton.js"></script>
+    <script src="../_static/scripts/sphinx-book-theme.js?digest=5a5c038af52cf7bc1a1ec88eea08e6366ee68824"></script>
+    <script>let toggleHintShow = 'Click to show';</script>
+    <script>let toggleHintHide = 'Click to hide';</script>
+    <script>let toggleOpenOnPrint = 'true';</script>
+    <script src="../_static/togglebutton.js"></script>
+    <script>var togglebuttonSelector = '.toggle, .admonition.dropdown';</script>
+    <script src="../_static/design-tabs.js"></script>
+    <script>const THEBE_JS_URL = "https://unpkg.com/thebe@0.8.2/lib/index.js"
+const thebe_selector = ".thebe,.cell"
+const thebe_selector_input = "pre"
+const thebe_selector_output = ".output, .cell_output"
+</script>
+    <script async="async" src="../_static/sphinx-thebe.js"></script>
+    <script>window.MathJax = {"options": {"processHtmlClass": "tex2jax_process|mathjax_process|math|output_area"}}</script>
+    <script defer="defer" src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-mml-chtml.js"></script>
+    <script>DOCUMENTATION_OPTIONS.pagename = 'examples/strain';</script>
+    <link rel="index" title="Index" href="../genindex.html" />
+    <link rel="search" title="Search" href="../search.html" />
+    <link rel="next" title="FAQ" href="../appendix/faq.html" />
+    <link rel="prev" title="Principal Component Analysis (advanced)" href="eof.html" />
+  <meta name="viewport" content="width=device-width, initial-scale=1"/>
+  <meta name="docsearch:language" content="en"/>
+  </head>
+  
+  
+  <body data-bs-spy="scroll" data-bs-target=".bd-toc-nav" data-offset="180" data-bs-root-margin="0px 0px -60%" data-default-mode="">
+
+  
+  
+  <div id="pst-skip-link" class="skip-link d-print-none"><a href="#main-content">Skip to main content</a></div>
+  
+  <div id="pst-scroll-pixel-helper"></div>
+  
+  <button type="button" class="btn rounded-pill" id="pst-back-to-top">
+    <i class="fa-solid fa-arrow-up"></i>Back to top</button>
+
+  
+  <input type="checkbox"
+          class="sidebar-toggle"
+          id="pst-primary-sidebar-checkbox"/>
+  <label class="overlay overlay-primary" for="pst-primary-sidebar-checkbox"></label>
+  
+  <input type="checkbox"
+          class="sidebar-toggle"
+          id="pst-secondary-sidebar-checkbox"/>
+  <label class="overlay overlay-secondary" for="pst-secondary-sidebar-checkbox"></label>
+  
+  <div class="search-button__wrapper">
+    <div class="search-button__overlay"></div>
+    <div class="search-button__search-container">
+<form class="bd-search d-flex align-items-center"
+      action="../search.html"
+      method="get">
+  <i class="fa-solid fa-magnifying-glass"></i>
+  <input type="search"
+         class="form-control"
+         name="q"
+         id="search-input"
+         placeholder="Search this book..."
+         aria-label="Search this book..."
+         autocomplete="off"
+         autocorrect="off"
+         autocapitalize="off"
+         spellcheck="false"/>
+  <span class="search-button__kbd-shortcut"><kbd class="kbd-shortcut__modifier">Ctrl</kbd>+<kbd>K</kbd></span>
+</form></div>
+  </div>
+
+  <div class="pst-async-banner-revealer d-none">
+  <aside id="bd-header-version-warning" class="d-none d-print-none" aria-label="Version warning"></aside>
+</div>
+
+  
+    <header class="bd-header navbar navbar-expand-lg bd-navbar d-print-none">
+    </header>
+  
+
+  <div class="bd-container">
+    <div class="bd-container__inner bd-page-width">
+      
+      
+      
+      <div class="bd-sidebar-primary bd-sidebar">
+        
+
+  
+  <div class="sidebar-header-items sidebar-primary__section">
+    
+    
+    
+    
+  </div>
+  
+    <div class="sidebar-primary-items__start sidebar-primary__section">
+        <div class="sidebar-primary-item">
+
+  
+    
+  
+
+<a class="navbar-brand logo" href="../index.html">
+  
+  
+  
+  
+  
+    
+    
+      
+    
+    
+    <img src="../_static/SHIVER_logo_stacked_v1_black_on_transparent_background_simplified.png" class="logo__image only-light" alt="SHeffield Ice Velocity ExploreR (SHIVER) - Cloud access to a unified dataset of satellite-derived ice surface velocity measurements for the Antarctica Ice Sheet and Greenland Ice Sheet - Home"/>
+    <script>document.write(`<img src="../_static/SHIVER_logo_stacked_v1_black_on_transparent_background_simplified.png" class="logo__image only-dark" alt="SHeffield Ice Velocity ExploreR (SHIVER) - Cloud access to a unified dataset of satellite-derived ice surface velocity measurements for the Antarctica Ice Sheet and Greenland Ice Sheet - Home"/>`);</script>
+  
+  
+</a></div>
+        <div class="sidebar-primary-item"><nav class="bd-links" id="bd-docs-nav" aria-label="Main">
+    <div class="bd-toc-item navbar-nav active">
+        
+        <ul class="nav bd-sidenav bd-sidenav__home-link">
+            <li class="toctree-l1">
+                <a class="reference internal" href="../index.html">
+                    SHeffield Ice Velocity ExploreR
+                </a>
+            </li>
+        </ul>
+        <p aria-level="2" class="caption" role="heading"><span class="caption-text">Getting Started</span></p>
+<ul class="nav bd-sidenav">
+<li class="toctree-l1"><a class="reference internal" href="../getting_started/why.html">Why SHIVER?</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../getting_started/cite.html">Cite</a></li>
+</ul>
+<p aria-level="2" class="caption" role="heading"><span class="caption-text">Data</span></p>
+<ul class="nav bd-sidenav">
+<li class="toctree-l1"><a class="reference internal" href="../zarr_data/what_is_zarr.html">What is Zarr?</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../zarr_data/contributing_data.html">Contributing Datasets</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../zarr_data/unified_data.html">Unified Datasets</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../zarr_data/comparison.html">Comparison of Contributing Datasets</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../zarr_data/zarr_structure.html">Inspecting the Zarr Structure</a></li>
+</ul>
+<p aria-level="2" class="caption" role="heading"><span class="caption-text">Examples</span></p>
+<ul class="current nav bd-sidenav">
+<li class="toctree-l1"><a class="reference internal" href="simple_timeseries.html">Timeseries extraction</a></li>
+<li class="toctree-l1"><a class="reference internal" href="generating_citations.html">Generating citations for Contributing Datasets</a></li>
+<li class="toctree-l1"><a class="reference internal" href="simple_layers.html">Large spatial scale extraction of velocity fields</a></li>
+<li class="toctree-l1"><a class="reference internal" href="simple_subset.html">Datacube subsetting</a></li>
+<li class="toctree-l1"><a class="reference internal" href="trend_change.html">Ice speed trends in west Greenland (advanced)</a></li>
+<li class="toctree-l1"><a class="reference internal" href="eof.html">Principal Component Analysis (advanced)</a></li>
+<li class="toctree-l1 current active"><a class="current reference internal" href="#">Strain across the Brunt Ice Shelf</a></li>
+</ul>
+<p aria-level="2" class="caption" role="heading"><span class="caption-text">Appendix</span></p>
+<ul class="nav bd-sidenav">
+<li class="toctree-l1"><a class="reference internal" href="../appendix/faq.html">FAQ</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../appendix/versions.html">Version Updates</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../appendix/references.html">References</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../appendix/acknowledgements.html">Acknowledgements</a></li>
+</ul>
+
+    </div>
+</nav></div>
+    </div>
+  
+  
+  <div class="sidebar-primary-items__end sidebar-primary__section">
+  </div>
+  
+  <div id="rtd-footer-container"></div>
+
+
+      </div>
+      
+      <main id="main-content" class="bd-main" role="main">
+        
+        
+
+<div class="sbt-scroll-pixel-helper"></div>
+
+          <div class="bd-content">
+            <div class="bd-article-container">
+              
+              <div class="bd-header-article d-print-none">
+<div class="header-article-items header-article__inner">
+  
+    <div class="header-article-items__start">
+      
+        <div class="header-article-item"><label class="sidebar-toggle primary-toggle btn btn-sm" for="__primary" title="Toggle primary sidebar" data-bs-placement="bottom" data-bs-toggle="tooltip">
+  <span class="fa-solid fa-bars"></span>
+</label></div>
+      
+    </div>
+  
+  
+    <div class="header-article-items__end">
+      
+        <div class="header-article-item">
+
+<div class="article-header-buttons">
+
+
+
+
+
+<div class="dropdown dropdown-source-buttons">
+  <button class="btn dropdown-toggle" type="button" data-bs-toggle="dropdown" aria-expanded="false" aria-label="Source repositories">
+    <i class="fab fa-github"></i>
+  </button>
+  <ul class="dropdown-menu">
+      
+      
+      
+      <li><a href="https://github.com/ben-davison/SHIVER-build-zarr" target="_blank"
+   class="btn btn-sm btn-source-repository-button dropdown-item"
+   title="Source repository"
+   data-bs-placement="left" data-bs-toggle="tooltip"
+>
+  
+
+<span class="btn__icon-container">
+  <i class="fab fa-github"></i>
+  </span>
+<span class="btn__text-container">Repository</span>
+</a>
+</li>
+      
+      
+      
+      
+      <li><a href="https://github.com/ben-davison/SHIVER-build-zarr/edit/main/docs/examples/strain.ipynb" target="_blank"
+   class="btn btn-sm btn-source-edit-button dropdown-item"
+   title="Suggest edit"
+   data-bs-placement="left" data-bs-toggle="tooltip"
+>
+  
+
+<span class="btn__icon-container">
+  <i class="fas fa-pencil-alt"></i>
+  </span>
+<span class="btn__text-container">Suggest edit</span>
+</a>
+</li>
+      
+      
+      
+      
+      <li><a href="https://github.com/ben-davison/SHIVER-build-zarr/issues/new?title=Issue%20on%20page%20%2Fexamples/strain.html&body=Your%20issue%20content%20here." target="_blank"
+   class="btn btn-sm btn-source-issues-button dropdown-item"
+   title="Open an issue"
+   data-bs-placement="left" data-bs-toggle="tooltip"
+>
+  
+
+<span class="btn__icon-container">
+  <i class="fas fa-lightbulb"></i>
+  </span>
+<span class="btn__text-container">Open issue</span>
+</a>
+</li>
+      
+  </ul>
+</div>
+
+
+
+
+
+
+<div class="dropdown dropdown-download-buttons">
+  <button class="btn dropdown-toggle" type="button" data-bs-toggle="dropdown" aria-expanded="false" aria-label="Download this page">
+    <i class="fas fa-download"></i>
+  </button>
+  <ul class="dropdown-menu">
+      
+      
+      
+      <li><a href="../_sources/examples/strain.ipynb" target="_blank"
+   class="btn btn-sm btn-download-source-button dropdown-item"
+   title="Download source file"
+   data-bs-placement="left" data-bs-toggle="tooltip"
+>
+  
+
+<span class="btn__icon-container">
+  <i class="fas fa-file"></i>
+  </span>
+<span class="btn__text-container">.ipynb</span>
+</a>
+</li>
+      
+      
+      
+      
+      <li>
+<button onclick="window.print()"
+  class="btn btn-sm btn-download-pdf-button dropdown-item"
+  title="Print to PDF"
+  data-bs-placement="left" data-bs-toggle="tooltip"
+>
+  
+
+<span class="btn__icon-container">
+  <i class="fas fa-file-pdf"></i>
+  </span>
+<span class="btn__text-container">.pdf</span>
+</button>
+</li>
+      
+  </ul>
+</div>
+
+
+
+
+<button onclick="toggleFullScreen()"
+  class="btn btn-sm btn-fullscreen-button"
+  title="Fullscreen mode"
+  data-bs-placement="bottom" data-bs-toggle="tooltip"
+>
+  
+
+<span class="btn__icon-container">
+  <i class="fas fa-expand"></i>
+  </span>
+
+</button>
+
+
+
+<script>
+document.write(`
+  <button class="btn btn-sm nav-link pst-navbar-icon theme-switch-button" title="light/dark" aria-label="light/dark" data-bs-placement="bottom" data-bs-toggle="tooltip">
+    <i class="theme-switch fa-solid fa-sun fa-lg" data-mode="light"></i>
+    <i class="theme-switch fa-solid fa-moon fa-lg" data-mode="dark"></i>
+    <i class="theme-switch fa-solid fa-circle-half-stroke fa-lg" data-mode="auto"></i>
+  </button>
+`);
+</script>
+
+
+<script>
+document.write(`
+  <button class="btn btn-sm pst-navbar-icon search-button search-button__button" title="Search" aria-label="Search" data-bs-placement="bottom" data-bs-toggle="tooltip">
+    <i class="fa-solid fa-magnifying-glass fa-lg"></i>
+  </button>
+`);
+</script>
+<label class="sidebar-toggle secondary-toggle btn btn-sm" for="__secondary"title="Toggle secondary sidebar" data-bs-placement="bottom" data-bs-toggle="tooltip">
+    <span class="fa-solid fa-list"></span>
+</label>
+</div></div>
+      
+    </div>
+  
+</div>
+</div>
+              
+              
+
+<div id="jb-print-docs-body" class="onlyprint">
+    <h1>Strain across the Brunt Ice Shelf</h1>
+    <!-- Table of contents -->
+    <div id="print-main-content">
+        <div id="jb-print-toc">
+            
+            <div>
+                <h2> Contents </h2>
+            </div>
+            <nav aria-label="Page">
+                <ul class="visible nav section-nav flex-column">
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#environment-setup-and-dask-configuration">1. Environment setup and Dask configuration</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#lazy-loading-and-spatial-cropping">2. Lazy loading and spatial cropping</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#defining-a-custom-function-for-winter-means">3. Defining a custom function for winter means</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#applying-the-function-with-dask">4. Applying the function with Dask</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#calculating-and-plotting-strain-rates">5. Calculating and plotting strain rates</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#zooming-in-on-chasm-1-and-iceberg-calving">6. Zooming in on Chasm-1 and iceberg calving</a></li>
+</ul>
+            </nav>
+        </div>
+    </div>
+</div>
+
+              
+                
+<div id="searchbox"></div>
+                <article class="bd-article">
+                  
+  <section class="tex2jax_ignore mathjax_ignore" id="strain-across-the-brunt-ice-shelf">
+<h1>Strain across the Brunt Ice Shelf<a class="headerlink" href="#strain-across-the-brunt-ice-shelf" title="Permalink to this heading">#</a></h1>
+<p>In this example, we will explore how strain rates have changed across the Brunt Ice Shelf from 2016 through 2025. Strain rates can be a useful indicator of where rifts are growing, so can help us to understand how Antarctica’s ice shelves are changing and may provide useful laboratories for studying rift propagation through ice in general.</p>
+<p>This analysis will require us to utilise ice speeds over a moderately large area and time period, so we will use the <em>cubed</em> Antarctica velocity zarr store, which has the optimium chunk definition for this. We will use <strong>Dask</strong> to parallelize our computations and <strong>Xarray</strong> to handle lazy loading.</p>
+<p>Finally, we will calculate the strain rates using Tom Chudley’s excellent <code class="docutils literal notranslate"><span class="pre">strain_tools</span></code> Python package (Chudley et al. 2026), which is documented in detail <a class="reference external" href="https://glacier-strain-tools.readthedocs.io/">here</a>.</p>
+<section id="environment-setup-and-dask-configuration">
+<h2>1. Environment setup and Dask configuration<a class="headerlink" href="#environment-setup-and-dask-configuration" title="Permalink to this heading">#</a></h2>
+<p>When working with cloud-native data formats like Zarr over AWS S3, I/O operations and network latency are often the biggest bottlenecks.</p>
+<p>In this first cell, we spin up a local Dask cluster to distribute our processing across multiple CPU cores. We also explicitly configure the S3 HTTP backend to allow more connections and retries. This ensures that when Dask requests hundreds of data chunks simultaneously, the connection doesn’t time out or drop.</p>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="kn">import</span><span class="w"> </span><span class="nn">warnings</span>
+<span class="kn">import</span><span class="w"> </span><span class="nn">xarray</span><span class="w"> </span><span class="k">as</span><span class="w"> </span><span class="nn">xr</span>
+<span class="kn">import</span><span class="w"> </span><span class="nn">numpy</span><span class="w"> </span><span class="k">as</span><span class="w"> </span><span class="nn">np</span>
+<span class="kn">import</span><span class="w"> </span><span class="nn">pandas</span><span class="w"> </span><span class="k">as</span><span class="w"> </span><span class="nn">pd</span>
+<span class="kn">import</span><span class="w"> </span><span class="nn">dask</span>
+<span class="kn">from</span><span class="w"> </span><span class="nn">dask.distributed</span><span class="w"> </span><span class="kn">import</span> <span class="n">LocalCluster</span><span class="p">,</span> <span class="n">Client</span>
+<span class="kn">import</span><span class="w"> </span><span class="nn">zarr</span>
+<span class="kn">import</span><span class="w"> </span><span class="nn">matplotlib.pyplot</span><span class="w"> </span><span class="k">as</span><span class="w"> </span><span class="nn">plt</span>
+<span class="kn">from</span><span class="w"> </span><span class="nn">matplotlib_scalebar.scalebar</span><span class="w"> </span><span class="kn">import</span> <span class="n">ScaleBar</span>
+<span class="kn">from</span><span class="w"> </span><span class="nn">pyproj</span><span class="w"> </span><span class="kn">import</span> <span class="n">Transformer</span>
+<span class="kn">import</span><span class="w"> </span><span class="nn">strain_tools</span><span class="w"> </span><span class="k">as</span><span class="w"> </span><span class="nn">st</span>
+
+<span class="c1"># Spin up a local Dask cluster, limiting the number of workers and the number of threads per work</span>
+<span class="n">cluster</span> <span class="o">=</span> <span class="n">LocalCluster</span><span class="p">(</span><span class="n">n_workers</span><span class="o">=</span><span class="mi">4</span><span class="p">,</span> <span class="n">threads_per_worker</span><span class="o">=</span><span class="mi">2</span><span class="p">)</span>
+<span class="n">client</span> <span class="o">=</span> <span class="n">Client</span><span class="p">(</span><span class="n">cluster</span><span class="p">)</span>
+
+<span class="c1"># 1. Cap Zarr&#39;s internal HTTP concurrency per worker</span>
+<span class="n">zarr</span><span class="o">.</span><span class="n">config</span><span class="o">.</span><span class="n">set</span><span class="p">({</span><span class="s2">&quot;async.concurrency&quot;</span><span class="p">:</span> <span class="mi">2</span><span class="p">})</span>
+
+<span class="c1"># Configure the HTTP backend to allow more time for large chunks</span>
+<span class="n">s3_options</span> <span class="o">=</span> <span class="p">{</span>
+    <span class="s2">&quot;anon&quot;</span><span class="p">:</span> <span class="kc">True</span><span class="p">,</span> 
+    <span class="s2">&quot;config_kwargs&quot;</span><span class="p">:</span> <span class="p">{</span>
+        <span class="s2">&quot;max_pool_connections&quot;</span><span class="p">:</span> <span class="mi">50</span><span class="p">,</span>  
+        <span class="s2">&quot;retries&quot;</span><span class="p">:</span> <span class="p">{</span>
+            <span class="s2">&quot;max_attempts&quot;</span><span class="p">:</span> <span class="mi">10</span><span class="p">,</span>      
+            <span class="s2">&quot;mode&quot;</span><span class="p">:</span> <span class="s2">&quot;standard&quot;</span>       
+        <span class="p">}</span>
+    <span class="p">}</span>
+<span class="p">}</span>
+
+<span class="c1"># Display the dashboard link so users can watch the processing graph</span>
+<span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;Dask Dashboard: </span><span class="si">{</span><span class="n">client</span><span class="o">.</span><span class="n">dashboard_link</span><span class="si">}</span><span class="s2">&quot;</span><span class="p">)</span>
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<div class="output stderr highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>C:\Users\gg1bjd\AppData\Local\anaconda3\envs\shiver_env\Lib\site-packages\distributed\node.py:188: UserWarning: Port 8787 is already in use.
+Perhaps you already have a cluster running?
+Hosting the HTTP server on port 52390 instead
+  warnings.warn(
+</pre></div>
+</div>
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>Dask Dashboard: http://127.0.0.1:52390/status
+</pre></div>
+</div>
+</div>
+</div>
+</section>
+<section id="lazy-loading-and-spatial-cropping">
+<h2>2. Lazy loading and spatial cropping<a class="headerlink" href="#lazy-loading-and-spatial-cropping" title="Permalink to this heading">#</a></h2>
+<p>Here we connect to the Zarr store using Xarray, load the metadata and crop the Zarr lazily to our area of interest, in exactly the same way we did in earlier examples. We use two areas of interest here - one covering the entire ice shelf, and another centred around the late Chasm-1.</p>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="c1"># Load and crop data</span>
+<span class="n">zarr_path</span> <span class="o">=</span> <span class="s2">&quot;s3://us-west-2.opendata.source.coop/uos-shiver/antarctica/antarctica_multisource_velocity_cubed.zarr&quot;</span>
+
+<span class="n">ds</span> <span class="o">=</span> <span class="n">xr</span><span class="o">.</span><span class="n">open_dataset</span><span class="p">(</span><span class="n">zarr_path</span><span class="p">,</span> <span class="n">engine</span><span class="o">=</span><span class="s2">&quot;zarr&quot;</span><span class="p">,</span> <span class="n">storage_options</span><span class="o">=</span><span class="n">s3_options</span><span class="p">)</span>
+
+<span class="c1"># Crop to the Brunt Ice Shelf</span>
+<span class="n">transformer</span> <span class="o">=</span> <span class="n">Transformer</span><span class="o">.</span><span class="n">from_crs</span><span class="p">(</span><span class="s2">&quot;EPSG:4326&quot;</span><span class="p">,</span> <span class="s2">&quot;EPSG:3031&quot;</span><span class="p">,</span> <span class="n">always_xy</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span>
+<span class="n">tl_x</span><span class="p">,</span> <span class="n">tl_y</span> <span class="o">=</span> <span class="n">transformer</span><span class="o">.</span><span class="n">transform</span><span class="p">(</span><span class="o">-</span><span class="mf">25.412</span><span class="p">,</span> <span class="o">-</span><span class="mf">73.356</span><span class="p">)</span>
+<span class="n">br_x</span><span class="p">,</span> <span class="n">br_y</span> <span class="o">=</span> <span class="n">transformer</span><span class="o">.</span><span class="n">transform</span><span class="p">(</span><span class="o">-</span><span class="mf">24.061</span><span class="p">,</span> <span class="o">-</span><span class="mf">76.620</span><span class="p">)</span>
+<span class="n">min_x</span><span class="p">,</span> <span class="n">max_x</span> <span class="o">=</span> <span class="nb">min</span><span class="p">(</span><span class="n">tl_x</span><span class="p">,</span> <span class="n">br_x</span><span class="p">),</span> <span class="nb">max</span><span class="p">(</span><span class="n">tl_x</span><span class="p">,</span> <span class="n">br_x</span><span class="p">)</span>
+<span class="n">min_y</span><span class="p">,</span> <span class="n">max_y</span> <span class="o">=</span> <span class="nb">min</span><span class="p">(</span><span class="n">tl_y</span><span class="p">,</span> <span class="n">br_y</span><span class="p">),</span> <span class="nb">max</span><span class="p">(</span><span class="n">tl_y</span><span class="p">,</span> <span class="n">br_y</span><span class="p">)</span>
+<span class="n">ds</span> <span class="o">=</span> <span class="n">ds</span><span class="o">.</span><span class="n">sel</span><span class="p">(</span>
+    <span class="n">x</span><span class="o">=</span><span class="nb">slice</span><span class="p">(</span><span class="n">min_x</span><span class="p">,</span> <span class="n">max_x</span><span class="p">),</span> 
+    <span class="n">y</span><span class="o">=</span><span class="nb">slice</span><span class="p">(</span><span class="n">max_y</span><span class="p">,</span> <span class="n">min_y</span><span class="p">)</span>
+<span class="p">)</span>
+
+<span class="c1"># Also define a zoomed in area around Chasm-1</span>
+<span class="n">tl_x_zoom</span><span class="p">,</span> <span class="n">tl_y_zoom</span> <span class="o">=</span> <span class="n">transformer</span><span class="o">.</span><span class="n">transform</span><span class="p">(</span><span class="o">-</span><span class="mf">27.0215</span><span class="p">,</span> <span class="o">-</span><span class="mf">75.2954</span><span class="p">)</span>
+<span class="n">br_x_zoom</span><span class="p">,</span> <span class="n">br_y_zoom</span> <span class="o">=</span> <span class="n">transformer</span><span class="o">.</span><span class="n">transform</span><span class="p">(</span><span class="o">-</span><span class="mf">26.0599</span><span class="p">,</span> <span class="o">-</span><span class="mf">76.1205</span><span class="p">)</span>
+<span class="n">min_x_zoom</span><span class="p">,</span> <span class="n">max_x_zoom</span> <span class="o">=</span> <span class="nb">min</span><span class="p">(</span><span class="n">tl_x_zoom</span><span class="p">,</span> <span class="n">br_x_zoom</span><span class="p">),</span> <span class="nb">max</span><span class="p">(</span><span class="n">tl_x_zoom</span><span class="p">,</span> <span class="n">br_x_zoom</span><span class="p">)</span>
+<span class="n">min_y_zoom</span><span class="p">,</span> <span class="n">max_y_zoom</span> <span class="o">=</span> <span class="nb">min</span><span class="p">(</span><span class="n">tl_y_zoom</span><span class="p">,</span> <span class="n">br_y_zoom</span><span class="p">),</span> <span class="nb">max</span><span class="p">(</span><span class="n">tl_y_zoom</span><span class="p">,</span> <span class="n">br_y_zoom</span><span class="p">)</span>
+
+<span class="c1"># Crop to target time period</span>
+<span class="n">years</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">arange</span><span class="p">(</span><span class="mi">2016</span><span class="p">,</span> <span class="mi">2026</span><span class="p">)</span>
+
+<span class="c1"># Set resolution and lengh scale</span>
+<span class="n">resolution</span> <span class="o">=</span> <span class="nb">abs</span><span class="p">(</span><span class="nb">float</span><span class="p">(</span><span class="n">ds</span><span class="o">.</span><span class="n">x</span><span class="p">[</span><span class="mi">1</span><span class="p">]</span> <span class="o">-</span> <span class="n">ds</span><span class="o">.</span><span class="n">x</span><span class="p">[</span><span class="mi">0</span><span class="p">]))</span>
+<span class="n">length_scale</span> <span class="o">=</span> <span class="mi">1000</span>
+
+<span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;Cropped dataset size: </span><span class="si">{</span><span class="n">ds</span><span class="o">.</span><span class="n">sizes</span><span class="si">}</span><span class="s2">&quot;</span><span class="p">)</span>
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>Cropped dataset size: Frozen({&#39;time&#39;: 2790, &#39;y&#39;: 1557, &#39;x&#39;: 930, &#39;bnds&#39;: 2})
+</pre></div>
+</div>
+</div>
+</div>
+</section>
+<section id="defining-a-custom-function-for-winter-means">
+<h2>3. Defining a custom function for winter means<a class="headerlink" href="#defining-a-custom-function-for-winter-means" title="Permalink to this heading">#</a></h2>
+<p>Ice velocity data derived from optical and SAR satellites can be noisy, and availability often fluctuates with the seasons. To create a stable, comparable velocity field for our strain calculations, we want to average the data over the austral winter (here we’ll use May to September) for each year.</p>
+<p>Below, we define a pure NumPy function to calculate these temporal means. We intentionally design this function to process the time axis last, and we use <code class="docutils literal notranslate"><span class="pre">warnings.catch_warnings</span></code> to silently handle grid cells that contain only NaNs.</p>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="k">def</span><span class="w"> </span><span class="nf">calc_winter_means_numpy</span><span class="p">(</span><span class="n">data</span><span class="p">,</span> <span class="n">time_vals</span><span class="p">,</span> <span class="n">start_year</span><span class="p">,</span> <span class="n">end_year</span><span class="p">):</span>
+<span class="w">    </span><span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">    Computes the temporal mean across May-September for each year.</span>
+<span class="sd">    Designed for xr.apply_ufunc: &#39;time&#39; is always the last axis of `data`.</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+    <span class="n">times</span> <span class="o">=</span> <span class="n">pd</span><span class="o">.</span><span class="n">DatetimeIndex</span><span class="p">(</span><span class="n">time_vals</span><span class="p">)</span>
+    <span class="n">n_years</span> <span class="o">=</span> <span class="n">end_year</span> <span class="o">-</span> <span class="n">start_year</span> <span class="o">+</span> <span class="mi">1</span>
+    
+    <span class="c1"># Pre-allocate output array -&gt; shape: (..., n_years)</span>
+    <span class="n">out_shape</span> <span class="o">=</span> <span class="n">data</span><span class="o">.</span><span class="n">shape</span><span class="p">[:</span><span class="o">-</span><span class="mi">1</span><span class="p">]</span> <span class="o">+</span> <span class="p">(</span><span class="n">n_years</span><span class="p">,)</span>
+    <span class="n">output</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">zeros</span><span class="p">(</span><span class="n">out_shape</span><span class="p">,</span> <span class="n">dtype</span><span class="o">=</span><span class="n">np</span><span class="o">.</span><span class="n">float32</span><span class="p">)</span>
+    
+    <span class="c1"># Suppress RuntimeWarnings for slices that are entirely NaN (open ocean/no data)</span>
+    <span class="k">with</span> <span class="n">warnings</span><span class="o">.</span><span class="n">catch_warnings</span><span class="p">():</span>
+        <span class="n">warnings</span><span class="o">.</span><span class="n">simplefilter</span><span class="p">(</span><span class="s2">&quot;ignore&quot;</span><span class="p">,</span> <span class="n">category</span><span class="o">=</span><span class="ne">RuntimeWarning</span><span class="p">)</span>
+        
+        <span class="k">for</span> <span class="n">i</span><span class="p">,</span> <span class="n">year</span> <span class="ow">in</span> <span class="nb">enumerate</span><span class="p">(</span><span class="nb">range</span><span class="p">(</span><span class="n">start_year</span><span class="p">,</span> <span class="n">end_year</span> <span class="o">+</span> <span class="mi">1</span><span class="p">)):</span>
+            <span class="c1"># Winter mask: specified year, months May (5) to Sept (9)</span>
+            <span class="n">mask</span> <span class="o">=</span> <span class="p">(</span><span class="n">times</span><span class="o">.</span><span class="n">year</span> <span class="o">==</span> <span class="n">year</span><span class="p">)</span> <span class="o">&amp;</span> <span class="p">(</span><span class="n">times</span><span class="o">.</span><span class="n">month</span> <span class="o">&gt;=</span> <span class="mi">5</span><span class="p">)</span> <span class="o">&amp;</span> <span class="p">(</span><span class="n">times</span><span class="o">.</span><span class="n">month</span> <span class="o">&lt;=</span> <span class="mi">9</span><span class="p">)</span>
+            
+            <span class="k">if</span> <span class="n">mask</span><span class="o">.</span><span class="n">any</span><span class="p">():</span>
+                <span class="n">output</span><span class="p">[</span><span class="o">...</span><span class="p">,</span> <span class="n">i</span><span class="p">]</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">nanmean</span><span class="p">(</span><span class="n">data</span><span class="p">[</span><span class="o">...</span><span class="p">,</span> <span class="n">mask</span><span class="p">],</span> <span class="n">axis</span><span class="o">=-</span><span class="mi">1</span><span class="p">)</span>
+            <span class="k">else</span><span class="p">:</span>
+                <span class="n">output</span><span class="p">[</span><span class="o">...</span><span class="p">,</span> <span class="n">i</span><span class="p">]</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">nan</span>
+            
+    <span class="k">return</span> <span class="n">output</span>
+</pre></div>
+</div>
+</div>
+</div>
+</section>
+<section id="applying-the-function-with-dask">
+<h2>4. Applying the function with Dask<a class="headerlink" href="#applying-the-function-with-dask" title="Permalink to this heading">#</a></h2>
+<p>To apply our custom NumPy function across our massive Xarray dataset, we use <code class="docutils literal notranslate"><span class="pre">xr.apply_ufunc</span></code>. This is a powerful Xarray feature that maps standard NumPy functions across chunked Dask arrays.</p>
+<p>By setting <code class="docutils literal notranslate"><span class="pre">dask='parallelized'</span></code>, we tell Dask to distribute this winter-mean calculation across all the workers we spun up in Step 1. After calculating the means for both our <span class="math notranslate nohighlight">\(vx\)</span> and <span class="math notranslate nohighlight">\(vy\)</span> velocities, we assign the <code class="docutils literal notranslate"><span class="pre">year</span></code> coordinate back to the outputs and slice out our Chasm-1 zoomed area.</p>
+<p><em>Note: Because Xarray is lazy, no computation actually happens here yet. We are simply building the Dask task graph.</em></p>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="c1"># Apply the custom ufunc to vx</span>
+<span class="n">mean_vx</span> <span class="o">=</span> <span class="n">xr</span><span class="o">.</span><span class="n">apply_ufunc</span><span class="p">(</span>
+    <span class="n">calc_winter_means_numpy</span><span class="p">,</span>
+    <span class="n">ds</span><span class="p">[</span><span class="s1">&#39;vx&#39;</span><span class="p">],</span>
+    <span class="n">ds</span><span class="p">[</span><span class="s1">&#39;time&#39;</span><span class="p">],</span>
+    <span class="n">kwargs</span><span class="o">=</span><span class="p">{</span><span class="s1">&#39;start_year&#39;</span><span class="p">:</span> <span class="n">years</span><span class="p">[</span><span class="mi">0</span><span class="p">],</span> <span class="s1">&#39;end_year&#39;</span><span class="p">:</span> <span class="n">years</span><span class="p">[</span><span class="o">-</span><span class="mi">1</span><span class="p">]},</span>
+    <span class="n">input_core_dims</span><span class="o">=</span><span class="p">[[</span><span class="s1">&#39;time&#39;</span><span class="p">],</span> <span class="p">[</span><span class="s1">&#39;time&#39;</span><span class="p">]],</span>
+    <span class="n">output_core_dims</span><span class="o">=</span><span class="p">[[</span><span class="s1">&#39;year&#39;</span><span class="p">]],</span>
+    <span class="n">vectorize</span><span class="o">=</span><span class="kc">False</span><span class="p">,</span>               
+    <span class="n">dask</span><span class="o">=</span><span class="s1">&#39;parallelized&#39;</span><span class="p">,</span>           
+    <span class="n">output_dtypes</span><span class="o">=</span><span class="p">[</span><span class="n">np</span><span class="o">.</span><span class="n">float32</span><span class="p">],</span>
+    <span class="n">dask_gufunc_kwargs</span><span class="o">=</span><span class="p">{</span><span class="s1">&#39;output_sizes&#39;</span><span class="p">:</span> <span class="p">{</span><span class="s1">&#39;year&#39;</span><span class="p">:</span> <span class="nb">len</span><span class="p">(</span><span class="n">years</span><span class="p">)}}</span>
+<span class="p">)</span>
+
+<span class="c1"># Apply the custom ufunc to vy</span>
+<span class="n">mean_vy</span> <span class="o">=</span> <span class="n">xr</span><span class="o">.</span><span class="n">apply_ufunc</span><span class="p">(</span>
+    <span class="n">calc_winter_means_numpy</span><span class="p">,</span>
+    <span class="n">ds</span><span class="p">[</span><span class="s1">&#39;vy&#39;</span><span class="p">],</span>
+    <span class="n">ds</span><span class="p">[</span><span class="s1">&#39;time&#39;</span><span class="p">],</span>
+    <span class="n">kwargs</span><span class="o">=</span><span class="p">{</span><span class="s1">&#39;start_year&#39;</span><span class="p">:</span> <span class="n">years</span><span class="p">[</span><span class="mi">0</span><span class="p">],</span> <span class="s1">&#39;end_year&#39;</span><span class="p">:</span> <span class="n">years</span><span class="p">[</span><span class="o">-</span><span class="mi">1</span><span class="p">]},</span>
+    <span class="n">input_core_dims</span><span class="o">=</span><span class="p">[[</span><span class="s1">&#39;time&#39;</span><span class="p">],</span> <span class="p">[</span><span class="s1">&#39;time&#39;</span><span class="p">]],</span>
+    <span class="n">output_core_dims</span><span class="o">=</span><span class="p">[[</span><span class="s1">&#39;year&#39;</span><span class="p">]],</span>
+    <span class="n">vectorize</span><span class="o">=</span><span class="kc">False</span><span class="p">,</span>
+    <span class="n">dask</span><span class="o">=</span><span class="s1">&#39;parallelized&#39;</span><span class="p">,</span>
+    <span class="n">output_dtypes</span><span class="o">=</span><span class="p">[</span><span class="n">np</span><span class="o">.</span><span class="n">float32</span><span class="p">],</span>
+    <span class="n">dask_gufunc_kwargs</span><span class="o">=</span><span class="p">{</span><span class="s1">&#39;output_sizes&#39;</span><span class="p">:</span> <span class="p">{</span><span class="s1">&#39;year&#39;</span><span class="p">:</span> <span class="nb">len</span><span class="p">(</span><span class="n">years</span><span class="p">)}}</span>
+<span class="p">)</span>
+
+<span class="c1"># Assign the &#39;year&#39; coordinate back to the reduced outputs</span>
+<span class="n">mean_vx</span> <span class="o">=</span> <span class="n">mean_vx</span><span class="o">.</span><span class="n">assign_coords</span><span class="p">(</span><span class="n">year</span><span class="o">=</span><span class="n">years</span><span class="p">)</span>
+<span class="n">mean_vy</span> <span class="o">=</span> <span class="n">mean_vy</span><span class="o">.</span><span class="n">assign_coords</span><span class="p">(</span><span class="n">year</span><span class="o">=</span><span class="n">years</span><span class="p">)</span>
+
+<span class="c1"># And get the zoomed in areas</span>
+<span class="n">mean_vx_zoom</span> <span class="o">=</span> <span class="n">mean_vx</span><span class="o">.</span><span class="n">sel</span><span class="p">(</span><span class="n">x</span><span class="o">=</span><span class="nb">slice</span><span class="p">(</span><span class="n">min_x_zoom</span><span class="p">,</span> <span class="n">max_x_zoom</span><span class="p">),</span> <span class="n">y</span><span class="o">=</span><span class="nb">slice</span><span class="p">(</span><span class="n">max_y_zoom</span><span class="p">,</span> <span class="n">min_y_zoom</span><span class="p">))</span>
+<span class="n">mean_vy_zoom</span> <span class="o">=</span> <span class="n">mean_vy</span><span class="o">.</span><span class="n">sel</span><span class="p">(</span><span class="n">x</span><span class="o">=</span><span class="nb">slice</span><span class="p">(</span><span class="n">min_x_zoom</span><span class="p">,</span> <span class="n">max_x_zoom</span><span class="p">),</span> <span class="n">y</span><span class="o">=</span><span class="nb">slice</span><span class="p">(</span><span class="n">max_y_zoom</span><span class="p">,</span> <span class="n">min_y_zoom</span><span class="p">))</span>
+</pre></div>
+</div>
+</div>
+</div>
+</section>
+<section id="calculating-and-plotting-strain-rates">
+<h2>5. Calculating and plotting strain rates<a class="headerlink" href="#calculating-and-plotting-strain-rates" title="Permalink to this heading">#</a></h2>
+<p>Now we bring it all together. For each year, we call <code class="docutils literal notranslate"><span class="pre">.compute()</span></code> to trigger Dask to execute the graph, download the cropped winter means into local memory, and pass them to <code class="docutils literal notranslate"><span class="pre">strain_tools</span></code>.</p>
+<p>We are specifically calculating the <strong>first principal strain rate</strong> (<span class="math notranslate nohighlight">\(e_1\)</span>). Positive values of <span class="math notranslate nohighlight">\(e_1\)</span> (shown in red) represent extending strain, which highlights areas where the ice shelf is pulling apart. We also apply a <code class="docutils literal notranslate"><span class="pre">length_scale</span></code> (in meters) to smooth the velocity gradients, which helps prevent small-scale noise from creating artificial spikes in our strain calculations.</p>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="c1"># calculate and plot strain rates</span>
+
+<span class="c1"># Create a 2x5 grid</span>
+<span class="n">fig</span><span class="p">,</span> <span class="n">axes</span> <span class="o">=</span> <span class="n">plt</span><span class="o">.</span><span class="n">subplots</span><span class="p">(</span><span class="mi">2</span><span class="p">,</span> <span class="mi">5</span><span class="p">,</span> <span class="n">figsize</span><span class="o">=</span><span class="p">(</span><span class="mi">22</span><span class="p">,</span> <span class="mi">10</span><span class="p">),</span> <span class="n">sharex</span><span class="o">=</span><span class="kc">True</span><span class="p">,</span> <span class="n">sharey</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span>
+<span class="n">axes</span> <span class="o">=</span> <span class="n">axes</span><span class="o">.</span><span class="n">flatten</span><span class="p">()</span>
+
+<span class="c1"># Set visual bounds for strain rates </span>
+<span class="n">strain_vmin</span><span class="p">,</span> <span class="n">strain_vmax</span> <span class="o">=</span> <span class="o">-</span><span class="mf">0.05</span><span class="p">,</span> <span class="mf">0.05</span> 
+
+<span class="k">for</span> <span class="n">i</span><span class="p">,</span> <span class="n">year</span> <span class="ow">in</span> <span class="nb">enumerate</span><span class="p">(</span><span class="n">years</span><span class="p">):</span>
+    <span class="n">ax</span> <span class="o">=</span> <span class="n">axes</span><span class="p">[</span><span class="n">i</span><span class="p">]</span>
+    <span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;Processing and plotting winter </span><span class="si">{</span><span class="n">year</span><span class="si">}</span><span class="s2">...&quot;</span><span class="p">)</span>
+    
+    <span class="c1"># Pul the 2D velocity components into memory</span>
+    <span class="n">vx_yr</span> <span class="o">=</span> <span class="n">mean_vx</span><span class="o">.</span><span class="n">sel</span><span class="p">(</span><span class="n">year</span><span class="o">=</span><span class="n">year</span><span class="p">)</span><span class="o">.</span><span class="n">compute</span><span class="p">()</span><span class="o">.</span><span class="n">values</span>
+    <span class="n">vy_yr</span> <span class="o">=</span> <span class="n">mean_vy</span><span class="o">.</span><span class="n">sel</span><span class="p">(</span><span class="n">year</span><span class="o">=</span><span class="n">year</span><span class="p">)</span><span class="o">.</span><span class="n">compute</span><span class="p">()</span><span class="o">.</span><span class="n">values</span>
+    
+    <span class="c1"># Calculate logarithmic strain</span>
+    <span class="n">e_xx</span><span class="p">,</span> <span class="n">e_yy</span><span class="p">,</span> <span class="n">e_xy</span> <span class="o">=</span> <span class="n">st</span><span class="o">.</span><span class="n">strain</span><span class="o">.</span><span class="n">logarithmic</span><span class="p">(</span><span class="n">vx_yr</span><span class="p">,</span> <span class="n">vy_yr</span><span class="p">,</span> 
+                                   <span class="n">pixel_size</span><span class="o">=</span><span class="n">resolution</span><span class="p">,</span> 
+                                   <span class="n">length_scale</span><span class="o">=</span><span class="n">length_scale</span><span class="p">,</span> 
+                                   <span class="n">unit_time</span><span class="o">=</span><span class="s1">&#39;a&#39;</span><span class="p">)</span>
+    
+    <span class="c1"># Calculate principal strain</span>
+    <span class="n">principal</span> <span class="o">=</span> <span class="n">st</span><span class="o">.</span><span class="n">strain</span><span class="o">.</span><span class="n">principal</span><span class="p">(</span><span class="n">e_xx</span><span class="p">,</span> <span class="n">e_yy</span><span class="p">,</span> <span class="n">e_xy</span><span class="p">)</span>
+    
+    <span class="c1"># Extract the first principal strain rate (e1)</span>
+    <span class="k">try</span><span class="p">:</span>
+        <span class="n">e1</span> <span class="o">=</span> <span class="n">principal</span><span class="o">.</span><span class="n">e1</span>
+    <span class="k">except</span> <span class="ne">AttributeError</span><span class="p">:</span>
+        <span class="n">e1</span> <span class="o">=</span> <span class="n">principal</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span>
+        
+    <span class="c1"># Re-wrap in xarray and plot</span>
+    <span class="n">da_e1</span> <span class="o">=</span> <span class="n">xr</span><span class="o">.</span><span class="n">DataArray</span><span class="p">(</span><span class="n">e1</span><span class="p">,</span> <span class="n">coords</span><span class="o">=</span><span class="p">[</span><span class="n">ds</span><span class="o">.</span><span class="n">y</span><span class="p">,</span> <span class="n">ds</span><span class="o">.</span><span class="n">x</span><span class="p">],</span> <span class="n">dims</span><span class="o">=</span><span class="p">[</span><span class="s1">&#39;y&#39;</span><span class="p">,</span> <span class="s1">&#39;x&#39;</span><span class="p">])</span>
+    <span class="n">im</span> <span class="o">=</span> <span class="n">da_e1</span><span class="o">.</span><span class="n">plot</span><span class="o">.</span><span class="n">imshow</span><span class="p">(</span><span class="n">ax</span><span class="o">=</span><span class="n">ax</span><span class="p">,</span> <span class="n">cmap</span><span class="o">=</span><span class="s1">&#39;RdBu_r&#39;</span><span class="p">,</span> <span class="n">vmin</span><span class="o">=</span><span class="n">strain_vmin</span><span class="p">,</span> <span class="n">vmax</span><span class="o">=</span><span class="n">strain_vmax</span><span class="p">,</span> <span class="n">add_colorbar</span><span class="o">=</span><span class="kc">False</span><span class="p">)</span>
+    
+    <span class="c1"># Format this axis</span>
+    <span class="n">ax</span><span class="o">.</span><span class="n">set_title</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;</span><span class="si">{</span><span class="n">year</span><span class="si">}</span><span class="s2">&quot;</span><span class="p">,</span> <span class="n">fontsize</span><span class="o">=</span><span class="mi">14</span><span class="p">)</span>
+    <span class="n">ax</span><span class="o">.</span><span class="n">set_aspect</span><span class="p">(</span><span class="s1">&#39;equal&#39;</span><span class="p">)</span>
+    <span class="n">ax</span><span class="o">.</span><span class="n">axis</span><span class="p">(</span><span class="s1">&#39;off&#39;</span><span class="p">)</span>
+
+<span class="c1"># Make it pretty</span>
+<span class="n">fig</span><span class="o">.</span><span class="n">subplots_adjust</span><span class="p">(</span><span class="n">bottom</span><span class="o">=</span><span class="mf">0.15</span><span class="p">)</span>
+<span class="n">cbar_ax</span> <span class="o">=</span> <span class="n">fig</span><span class="o">.</span><span class="n">add_axes</span><span class="p">([</span><span class="mf">0.15</span><span class="p">,</span> <span class="mf">0.06</span><span class="p">,</span> <span class="mf">0.7</span><span class="p">,</span> <span class="mf">0.03</span><span class="p">])</span>
+<span class="n">cbar</span> <span class="o">=</span> <span class="n">fig</span><span class="o">.</span><span class="n">colorbar</span><span class="p">(</span><span class="n">im</span><span class="p">,</span> <span class="n">cax</span><span class="o">=</span><span class="n">cbar_ax</span><span class="p">,</span> <span class="n">orientation</span><span class="o">=</span><span class="s1">&#39;horizontal&#39;</span><span class="p">)</span>
+<span class="n">cbar</span><span class="o">.</span><span class="n">set_label</span><span class="p">(</span><span class="s1">&#39;First Principal Strain Rate ($a^{-1}$)&#39;</span><span class="p">,</span> <span class="n">fontsize</span><span class="o">=</span><span class="mi">14</span><span class="p">)</span>
+
+<span class="n">plt</span><span class="o">.</span><span class="n">suptitle</span><span class="p">(</span><span class="s1">&#39;Brunt Ice Shelf - first principal strain rate during Winter (May-Sep)&#39;</span><span class="p">,</span> <span class="n">fontsize</span><span class="o">=</span><span class="mi">18</span><span class="p">,</span> <span class="n">y</span><span class="o">=</span><span class="mf">0.98</span><span class="p">)</span>
+<span class="n">plt</span><span class="o">.</span><span class="n">show</span><span class="p">()</span>
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>Processing and plotting winter 2016...
+Processing and plotting winter 2017...
+Processing and plotting winter 2018...
+Processing and plotting winter 2019...
+Processing and plotting winter 2020...
+Processing and plotting winter 2021...
+Processing and plotting winter 2022...
+Processing and plotting winter 2023...
+Processing and plotting winter 2024...
+Processing and plotting winter 2025...
+</pre></div>
+</div>
+<img alt="../_images/06ebf1361a0d9526e1a6fc8c7800df8cc6214efeb296a9a453d59c9d1874ae5b.png" src="../_images/06ebf1361a0d9526e1a6fc8c7800df8cc6214efeb296a9a453d59c9d1874ae5b.png" />
+</div>
+</div>
+</section>
+<section id="zooming-in-on-chasm-1-and-iceberg-calving">
+<h2>6. Zooming in on Chasm-1 and iceberg calving<a class="headerlink" href="#zooming-in-on-chasm-1-and-iceberg-calving" title="Permalink to this heading">#</a></h2>
+<p>The native data resolution, error and quality vary year-to-year, but these plots show quite nicely how the strain rates around ‘Chasm-1’ evolved year to year, eventually resulting in the calving of a very large iceberg (A-81) on 22 January 2023.</p>
+<p>You can read more about the creation of A-81 <a class="reference external" href="https://www.bas.ac.uk/news/brunt-ice-shelf-in-antarctica-calves-giant-iceberg/">here</a> and <a class="reference external" href="https://www.esa.int/Applications/Observing_the_Earth/Copernicus/Giant_iceberg_breaks_away_from_Antarctic_ice_shelf">here</a>.</p>
+<p>Below is a more detailed plot, focused specifically on the evolution of Chasm-1.</p>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="c1"># Show zoomed area</span>
+<span class="n">fig</span><span class="p">,</span> <span class="n">axes</span> <span class="o">=</span> <span class="n">plt</span><span class="o">.</span><span class="n">subplots</span><span class="p">(</span><span class="mi">2</span><span class="p">,</span> <span class="mi">5</span><span class="p">,</span> <span class="n">figsize</span><span class="o">=</span><span class="p">(</span><span class="mi">22</span><span class="p">,</span> <span class="mi">10</span><span class="p">),</span> <span class="n">sharex</span><span class="o">=</span><span class="kc">True</span><span class="p">,</span> <span class="n">sharey</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span>
+<span class="n">axes</span> <span class="o">=</span> <span class="n">axes</span><span class="o">.</span><span class="n">flatten</span><span class="p">()</span>
+
+<span class="c1"># Set visual bounds for strain rates </span>
+<span class="n">strain_vmin</span><span class="p">,</span> <span class="n">strain_vmax</span> <span class="o">=</span> <span class="o">-</span><span class="mf">0.15</span><span class="p">,</span> <span class="mf">0.15</span> 
+
+<span class="k">for</span> <span class="n">i</span><span class="p">,</span> <span class="n">year</span> <span class="ow">in</span> <span class="nb">enumerate</span><span class="p">(</span><span class="n">years</span><span class="p">):</span>
+    <span class="n">ax</span> <span class="o">=</span> <span class="n">axes</span><span class="p">[</span><span class="n">i</span><span class="p">]</span>
+    <span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;Processing and plotting winter </span><span class="si">{</span><span class="n">year</span><span class="si">}</span><span class="s2"> (Zoomed)...&quot;</span><span class="p">)</span>
+    
+    <span class="c1"># .compute() pulls only the small, zoomed 2D spatial array into local memory</span>
+    <span class="n">vx_yr</span> <span class="o">=</span> <span class="n">mean_vx_zoom</span><span class="o">.</span><span class="n">sel</span><span class="p">(</span><span class="n">year</span><span class="o">=</span><span class="n">year</span><span class="p">)</span><span class="o">.</span><span class="n">compute</span><span class="p">()</span><span class="o">.</span><span class="n">values</span>
+    <span class="n">vy_yr</span> <span class="o">=</span> <span class="n">mean_vy_zoom</span><span class="o">.</span><span class="n">sel</span><span class="p">(</span><span class="n">year</span><span class="o">=</span><span class="n">year</span><span class="p">)</span><span class="o">.</span><span class="n">compute</span><span class="p">()</span><span class="o">.</span><span class="n">values</span>
+    
+    <span class="c1"># Calculate logarithmic strain</span>
+    <span class="n">e_xx</span><span class="p">,</span> <span class="n">e_yy</span><span class="p">,</span> <span class="n">e_xy</span> <span class="o">=</span> <span class="n">st</span><span class="o">.</span><span class="n">strain</span><span class="o">.</span><span class="n">logarithmic</span><span class="p">(</span><span class="n">vx_yr</span><span class="p">,</span> <span class="n">vy_yr</span><span class="p">,</span> 
+                                             <span class="n">pixel_size</span><span class="o">=</span><span class="n">resolution</span><span class="p">,</span> 
+                                             <span class="n">length_scale</span><span class="o">=</span><span class="n">length_scale</span><span class="p">,</span> 
+                                             <span class="n">unit_time</span><span class="o">=</span><span class="s1">&#39;a&#39;</span><span class="p">)</span>
+    
+    <span class="c1"># Calculate principal strain</span>
+    <span class="n">principal</span> <span class="o">=</span> <span class="n">st</span><span class="o">.</span><span class="n">strain</span><span class="o">.</span><span class="n">principal</span><span class="p">(</span><span class="n">e_xx</span><span class="p">,</span> <span class="n">e_yy</span><span class="p">,</span> <span class="n">e_xy</span><span class="p">)</span>
+    
+    <span class="c1"># Extract the first principal strain rate (e1)</span>
+    <span class="k">try</span><span class="p">:</span>
+        <span class="n">e1</span> <span class="o">=</span> <span class="n">principal</span><span class="o">.</span><span class="n">e1</span>
+    <span class="k">except</span> <span class="ne">AttributeError</span><span class="p">:</span>
+        <span class="n">e1</span> <span class="o">=</span> <span class="n">principal</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span>
+        
+    <span class="c1"># Wrap in xarray and plot</span>
+    <span class="n">da_e1</span> <span class="o">=</span> <span class="n">xr</span><span class="o">.</span><span class="n">DataArray</span><span class="p">(</span><span class="n">e1</span><span class="p">,</span> <span class="n">coords</span><span class="o">=</span><span class="p">[</span><span class="n">mean_vx_zoom</span><span class="o">.</span><span class="n">y</span><span class="p">,</span> <span class="n">mean_vx_zoom</span><span class="o">.</span><span class="n">x</span><span class="p">],</span> <span class="n">dims</span><span class="o">=</span><span class="p">[</span><span class="s1">&#39;y&#39;</span><span class="p">,</span> <span class="s1">&#39;x&#39;</span><span class="p">])</span>
+    <span class="n">im</span> <span class="o">=</span> <span class="n">da_e1</span><span class="o">.</span><span class="n">plot</span><span class="o">.</span><span class="n">imshow</span><span class="p">(</span><span class="n">ax</span><span class="o">=</span><span class="n">ax</span><span class="p">,</span> <span class="n">cmap</span><span class="o">=</span><span class="s1">&#39;RdBu_r&#39;</span><span class="p">,</span> <span class="n">vmin</span><span class="o">=</span><span class="n">strain_vmin</span><span class="p">,</span> <span class="n">vmax</span><span class="o">=</span><span class="n">strain_vmax</span><span class="p">,</span> <span class="n">add_colorbar</span><span class="o">=</span><span class="kc">False</span><span class="p">)</span>
+    
+    <span class="c1"># Format this axis</span>
+    <span class="n">ax</span><span class="o">.</span><span class="n">set_title</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;</span><span class="si">{</span><span class="n">year</span><span class="si">}</span><span class="s2">&quot;</span><span class="p">,</span> <span class="n">fontsize</span><span class="o">=</span><span class="mi">14</span><span class="p">)</span>
+    <span class="n">ax</span><span class="o">.</span><span class="n">set_aspect</span><span class="p">(</span><span class="s1">&#39;equal&#39;</span><span class="p">)</span>
+    <span class="n">ax</span><span class="o">.</span><span class="n">axis</span><span class="p">(</span><span class="s1">&#39;off&#39;</span><span class="p">)</span>
+
+<span class="c1"># Make it pretty</span>
+<span class="n">fig</span><span class="o">.</span><span class="n">subplots_adjust</span><span class="p">(</span><span class="n">bottom</span><span class="o">=</span><span class="mf">0.15</span><span class="p">)</span>
+<span class="n">cbar_ax</span> <span class="o">=</span> <span class="n">fig</span><span class="o">.</span><span class="n">add_axes</span><span class="p">([</span><span class="mf">0.15</span><span class="p">,</span> <span class="mf">0.06</span><span class="p">,</span> <span class="mf">0.7</span><span class="p">,</span> <span class="mf">0.03</span><span class="p">])</span>
+<span class="n">cbar</span> <span class="o">=</span> <span class="n">fig</span><span class="o">.</span><span class="n">colorbar</span><span class="p">(</span><span class="n">im</span><span class="p">,</span> <span class="n">cax</span><span class="o">=</span><span class="n">cbar_ax</span><span class="p">,</span> <span class="n">orientation</span><span class="o">=</span><span class="s1">&#39;horizontal&#39;</span><span class="p">)</span>
+<span class="n">cbar</span><span class="o">.</span><span class="n">set_label</span><span class="p">(</span><span class="s1">&#39;First Principal Strain Rate ($a^{-1}$)&#39;</span><span class="p">,</span> <span class="n">fontsize</span><span class="o">=</span><span class="mi">14</span><span class="p">)</span>
+<span class="n">plt</span><span class="o">.</span><span class="n">suptitle</span><span class="p">(</span><span class="s1">&#39;Chasm-1 - First Principal Strain Rate (May-Sep)&#39;</span><span class="p">,</span> <span class="n">fontsize</span><span class="o">=</span><span class="mi">18</span><span class="p">,</span> <span class="n">y</span><span class="o">=</span><span class="mf">0.98</span><span class="p">)</span>
+<span class="n">plt</span><span class="o">.</span><span class="n">show</span><span class="p">()</span>
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>Processing and plotting winter 2016 (Zoomed)...
+Processing and plotting winter 2017 (Zoomed)...
+Processing and plotting winter 2018 (Zoomed)...
+Processing and plotting winter 2019 (Zoomed)...
+Processing and plotting winter 2020 (Zoomed)...
+Processing and plotting winter 2021 (Zoomed)...
+Processing and plotting winter 2022 (Zoomed)...
+Processing and plotting winter 2023 (Zoomed)...
+Processing and plotting winter 2024 (Zoomed)...
+Processing and plotting winter 2025 (Zoomed)...
+</pre></div>
+</div>
+<img alt="../_images/995f08b5c1b1ed57b7e3844d7ae5e07f7267a09e30d29f3f8ede7c4771b075d6.png" src="../_images/995f08b5c1b1ed57b7e3844d7ae5e07f7267a09e30d29f3f8ede7c4771b075d6.png" />
+</div>
+</div>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="c1"># Clean up local cluster</span>
+<span class="n">client</span><span class="o">.</span><span class="n">close</span><span class="p">()</span>
+<span class="n">cluster</span><span class="o">.</span><span class="n">close</span><span class="p">()</span>
+</pre></div>
+</div>
+</div>
+</div>
+</section>
+</section>
+
+    <script type="text/x-thebe-config">
+    {
+        requestKernel: true,
+        binderOptions: {
+            repo: "binder-examples/jupyter-stacks-datascience",
+            ref: "master",
+        },
+        codeMirrorConfig: {
+            theme: "abcdef",
+            mode: "shiver_env"
+        },
+        kernelOptions: {
+            name: "shiver_env",
+            path: "./examples"
+        },
+        predefinedOutput: true
+    }
+    </script>
+    <script>kernelName = 'shiver_env'</script>
+
+                </article>
+              
+
+              
+              
+              
+              
+                <footer class="prev-next-footer d-print-none">
+                  
+<div class="prev-next-area">
+    <a class="left-prev"
+       href="eof.html"
+       title="previous page">
+      <i class="fa-solid fa-angle-left"></i>
+      <div class="prev-next-info">
+        <p class="prev-next-subtitle">previous</p>
+        <p class="prev-next-title">Principal Component Analysis (advanced)</p>
+      </div>
+    </a>
+    <a class="right-next"
+       href="../appendix/faq.html"
+       title="next page">
+      <div class="prev-next-info">
+        <p class="prev-next-subtitle">next</p>
+        <p class="prev-next-title">FAQ</p>
+      </div>
+      <i class="fa-solid fa-angle-right"></i>
+    </a>
+</div>
+                </footer>
+              
+            </div>
+            
+            
+              
+                <div class="bd-sidebar-secondary bd-toc"><div class="sidebar-secondary-items sidebar-secondary__inner">
+
+
+  <div class="sidebar-secondary-item">
+  <div class="page-toc tocsection onthispage">
+    <i class="fa-solid fa-list"></i> Contents
+  </div>
+  <nav class="bd-toc-nav page-toc">
+    <ul class="visible nav section-nav flex-column">
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#environment-setup-and-dask-configuration">1. Environment setup and Dask configuration</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#lazy-loading-and-spatial-cropping">2. Lazy loading and spatial cropping</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#defining-a-custom-function-for-winter-means">3. Defining a custom function for winter means</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#applying-the-function-with-dask">4. Applying the function with Dask</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#calculating-and-plotting-strain-rates">5. Calculating and plotting strain rates</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#zooming-in-on-chasm-1-and-iceberg-calving">6. Zooming in on Chasm-1 and iceberg calving</a></li>
+</ul>
+  </nav></div>
+
+</div></div>
+              
+            
+          </div>
+          <footer class="bd-footer-content">
+            
+<div class="bd-footer-content__inner container">
+  
+  <div class="footer-item">
+    
+<p class="component-author">
+By Benjamin Davison
+</p>
+
+  </div>
+  
+  <div class="footer-item">
+    
+
+  <p class="copyright">
+    
+      © Copyright 2022.
+      <br/>
+    
+  </p>
+
+  </div>
+  
+  <div class="footer-item">
+    
+  </div>
+  
+  <div class="footer-item">
+    
+  </div>
+  
+</div>
+          </footer>
+        
+
+      </main>
+    </div>
+  </div>
+  
+  <!-- Scripts loaded after <body> so the DOM is not blocked -->
+  <script src="../_static/scripts/bootstrap.js?digest=dfe6caa3a7d634c4db9b"></script>
+<script src="../_static/scripts/pydata-sphinx-theme.js?digest=dfe6caa3a7d634c4db9b"></script>
+
+  <footer class="bd-footer">
+  </footer>
+  </body>
+</html>

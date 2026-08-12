@@ -192,7 +192,9 @@ const thebe_selector_output = ".output, .cell_output"
 <li class="toctree-l1"><a class="reference internal" href="../examples/generating_citations.html">Generating citations for Contributing Datasets</a></li>
 <li class="toctree-l1"><a class="reference internal" href="../examples/simple_layers.html">Large spatial scale extraction of velocity fields</a></li>
 <li class="toctree-l1"><a class="reference internal" href="../examples/simple_subset.html">Datacube subsetting</a></li>
-<li class="toctree-l1"><a class="reference internal" href="../examples/temporal_statistics.html">Calculating temporal statistics (advanced)</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../examples/trend_change.html">Ice speed trends in west Greenland (advanced)</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../examples/eof.html">Principal Component Analysis (advanced)</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../examples/strain.html">Strain across the Brunt Ice Shelf</a></li>
 </ul>
 <p aria-level="2" class="caption" role="heading"><span class="caption-text">Appendix</span></p>
 <ul class="nav bd-sidenav">
@@ -440,7 +442,7 @@ document.write(`
 <p><span class="caption-number">Fig. 2 </span><span class="caption-text">Zarr logo.</span><a class="headerlink" href="#zarr-logo-fig" title="Permalink to this image">#</a></p>
 </figcaption>
 </figure>
-<p>Zarr is specifically designed for tensor data (a.k.a multi-dimensional arrays) rather than tabular data. In a Zarr, structured data are stored in a compact binary columnar (or chunked) layout, with encoding and compression appled to each chunk separately. In this way, it eliminates all possible redundant information and is an ‘array-native’ data system. These chunks are small, manageable pieces of a large array or arrays that can be read and written independently. Crucially, Zarr chunks must be uniform, fixed-size blocks and the user must choose how large chunks should be in each dimension. The chunk size definition strongly influences the performance of the Zarr for certain tasks - for time-series extraction, one would choose chunks that resemble towers (i.e. spanning many elements in the time-dimension but few in the horizontal dimensions), whereas if the aim is to optimise spatial operations, flatter chunks would be more performant. Each chunk is saved as a separate binary file and is organized using a nested directory structure depending on the chunk position. Zarr also uses structured metadata that enabled rapid identification of the required chunk(s) and lazy loading of datasets.</p>
+<p>Zarr is specifically designed for tensor data (a.k.a multi-dimensional arrays) rather than tabular data. In a Zarr, structured data are stored in a compact binary columnar (or chunked) layout, with encoding and compression appled to each chunk separately. In this way, it eliminates all possible redundant information and is an ‘array-native’ data system. These chunks are small, manageable pieces of a large array or arrays that can be read and written independently. Crucially, Zarr chunks must be uniform, fixed-size blocks and the user must choose how large chunks should be in each dimension. The chunk size definition strongly influences the performance of the Zarr for certain tasks - for time-series extraction, one would choose chunks that resemble towers (i.e. spanning many elements in the time-dimension but few in the horizontal dimensions), whereas if the aim is to optimise spatial operations, flatter chunks would be more performant. Each chunk is saved as a separate binary file and is organized using a nested directory structure depending on the chunk position. Zarr also uses structured metadata that enables rapid identification of the required chunk(s) and lazy loading of datasets.</p>
 <figure class="align-default" id="zarr-chunk-fig">
 <img alt="Zarr chunk" src="../_images/zarr_chunk.png" />
 <figcaption>

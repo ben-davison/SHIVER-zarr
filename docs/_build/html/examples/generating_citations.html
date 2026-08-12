@@ -192,7 +192,9 @@ const thebe_selector_output = ".output, .cell_output"
 <li class="toctree-l1 current active"><a class="current reference internal" href="#">Generating citations for Contributing Datasets</a></li>
 <li class="toctree-l1"><a class="reference internal" href="simple_layers.html">Large spatial scale extraction of velocity fields</a></li>
 <li class="toctree-l1"><a class="reference internal" href="simple_subset.html">Datacube subsetting</a></li>
-<li class="toctree-l1"><a class="reference internal" href="temporal_statistics.html">Calculating temporal statistics (advanced)</a></li>
+<li class="toctree-l1"><a class="reference internal" href="trend_change.html">Ice speed trends in west Greenland (advanced)</a></li>
+<li class="toctree-l1"><a class="reference internal" href="eof.html">Principal Component Analysis (advanced)</a></li>
+<li class="toctree-l1"><a class="reference internal" href="strain.html">Strain across the Brunt Ice Shelf</a></li>
 </ul>
 <p aria-level="2" class="caption" role="heading"><span class="caption-text">Appendix</span></p>
 <ul class="nav bd-sidenav">
@@ -447,8 +449,6 @@ document.write(`
 
 <span class="c1"># Extract data lazily and compute the spatial median</span>
 <span class="n">subset</span> <span class="o">=</span> <span class="n">ds</span><span class="o">.</span><span class="n">sel</span><span class="p">(</span><span class="n">x</span><span class="o">=</span><span class="nb">slice</span><span class="p">(</span><span class="n">xmin</span><span class="p">,</span> <span class="n">xmax</span><span class="p">),</span> <span class="n">y</span><span class="o">=</span><span class="n">y_slice</span><span class="p">)</span>
-
-<span class="c1"># Compute the &#39;speed&#39; variable</span>
 <span class="n">spatial_median</span> <span class="o">=</span> <span class="n">subset</span><span class="p">[</span><span class="s1">&#39;speed&#39;</span><span class="p">]</span><span class="o">.</span><span class="n">median</span><span class="p">(</span><span class="n">dim</span><span class="o">=</span><span class="p">[</span><span class="s1">&#39;x&#39;</span><span class="p">,</span> <span class="s1">&#39;y&#39;</span><span class="p">])</span><span class="o">.</span><span class="n">compute</span><span class="p">()</span>
 
 <span class="c1"># Convert the in-memory array to a Pandas DataFrame</span>
@@ -479,21 +479,30 @@ document.write(`
 </div>
 </div>
 <p>Now we use a citation generation function, <code class="docutils literal notranslate"><span class="pre">generate_citation_table</span></code>, that accepts this list of sources.</p>
+<blockquote>
+<div><p><strong>Note: This relies on a hard-coded set of citations provided separately (<code class="docutils literal notranslate"><span class="pre">utils/citations.py</span></code>). Whilst we will endeavour to maintain this utility, it is possible for dataset citations to change as versions increment, which will not instantly be reflected in this utility. As the investigator, you are responsible for providing the correct citation(s) for the data used in your analysis.</strong></p>
+</div></blockquote>
 <div class="cell docutils container">
 <div class="cell_input docutils container">
 <div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="kn">from</span><span class="w"> </span><span class="nn">IPython.display</span><span class="w"> </span><span class="kn">import</span> <span class="n">display</span>
+<span class="kn">import</span><span class="w"> </span><span class="nn">pandas</span><span class="w"> </span><span class="k">as</span><span class="w"> </span><span class="nn">pd</span>
 <span class="kn">from</span><span class="w"> </span><span class="nn">utils.citations</span><span class="w"> </span><span class="kn">import</span> <span class="n">CITATIONS_CONFIG</span>
 
 <span class="k">def</span><span class="w"> </span><span class="nf">generate_citation_table</span><span class="p">(</span><span class="n">sources_list</span><span class="p">:</span> <span class="nb">list</span><span class="p">,</span> <span class="n">region</span><span class="p">:</span> <span class="nb">str</span><span class="p">):</span>
 <span class="w">    </span><span class="sd">&quot;&quot;&quot;</span>
 <span class="sd">    Takes a list of data sources and returns a styled Pandas DataFrame</span>
-<span class="sd">    containing the relevant citations.</span>
+<span class="sd">    containing the relevant citations, grouped with one row per source.</span>
 <span class="sd">    &quot;&quot;&quot;</span>
     <span class="n">table_data</span> <span class="o">=</span> <span class="p">[]</span>
     
     <span class="c1"># 1. Always append the SHIVER foundational citations</span>
-    <span class="k">for</span> <span class="n">cit</span> <span class="ow">in</span> <span class="n">CITATIONS_CONFIG</span><span class="p">[</span><span class="s2">&quot;common&quot;</span><span class="p">]</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s2">&quot;SHIVER&quot;</span><span class="p">,</span> <span class="p">[]):</span>
-        <span class="n">table_data</span><span class="o">.</span><span class="n">append</span><span class="p">({</span><span class="s2">&quot;Data Source&quot;</span><span class="p">:</span> <span class="s2">&quot;SHIVER (Tool/Method)&quot;</span><span class="p">,</span> <span class="s2">&quot;Citation&quot;</span><span class="p">:</span> <span class="n">cit</span><span class="p">})</span>
+    <span class="n">shiver_citations</span> <span class="o">=</span> <span class="n">CITATIONS_CONFIG</span><span class="p">[</span><span class="s2">&quot;common&quot;</span><span class="p">]</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s2">&quot;SHIVER&quot;</span><span class="p">,</span> <span class="p">[])</span>
+    <span class="k">if</span> <span class="n">shiver_citations</span><span class="p">:</span>
+        <span class="k">if</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">shiver_citations</span><span class="p">,</span> <span class="nb">str</span><span class="p">):</span>
+            <span class="n">shiver_citations</span> <span class="o">=</span> <span class="p">[</span><span class="n">shiver_citations</span><span class="p">]</span>
+        <span class="c1"># Join multiple citations with a double newline</span>
+        <span class="n">combined_shiver</span> <span class="o">=</span> <span class="s2">&quot;</span><span class="se">\n\n</span><span class="s2">&quot;</span><span class="o">.</span><span class="n">join</span><span class="p">(</span><span class="n">shiver_citations</span><span class="p">)</span>
+        <span class="n">table_data</span><span class="o">.</span><span class="n">append</span><span class="p">({</span><span class="s2">&quot;Data Source&quot;</span><span class="p">:</span> <span class="s2">&quot;SHIVER (Tool/Method)&quot;</span><span class="p">,</span> <span class="s2">&quot;Citation&quot;</span><span class="p">:</span> <span class="n">combined_shiver</span><span class="p">})</span>
         
     <span class="c1"># 2. Add the dynamic data citations</span>
     <span class="n">region_key</span> <span class="o">=</span> <span class="n">region</span><span class="o">.</span><span class="n">lower</span><span class="p">()</span>
@@ -504,8 +513,18 @@ document.write(`
             <span class="n">citations</span> <span class="o">=</span> <span class="n">region_citations</span><span class="p">[</span><span class="n">source</span><span class="p">]</span>
             <span class="k">if</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">citations</span><span class="p">,</span> <span class="nb">str</span><span class="p">):</span>
                 <span class="n">citations</span> <span class="o">=</span> <span class="p">[</span><span class="n">citations</span><span class="p">]</span>
-            <span class="k">for</span> <span class="n">cit</span> <span class="ow">in</span> <span class="n">citations</span><span class="p">:</span>
-                <span class="n">table_data</span><span class="o">.</span><span class="n">append</span><span class="p">({</span><span class="s2">&quot;Data Source&quot;</span><span class="p">:</span> <span class="n">source</span><span class="p">,</span> <span class="s2">&quot;Citation&quot;</span><span class="p">:</span> <span class="n">cit</span><span class="p">})</span>
+
+            <span class="c1">## One could filter the ESA_CCI_Sentinel-2 citations here, if desired</span>
+            <span class="c1">#if source == &quot;ESA_CCI_Sentinel-2&quot;:</span>
+            <span class="c1">#    if len(citations) &gt;= 3:</span>
+            <span class="c1">#        citations = [citations[2]]  # Index 2 corresponds to the 3rd item</span>
+            <span class="c1">#    else:</span>
+            <span class="c1">#        print(f&quot;Warning: &#39;ESA_CCI_Sentinel-2&#39; has fewer than 3 citations available.&quot;)</span>
+            
+            <span class="c1"># Join multiple citations for a single source with a double newline</span>
+            <span class="n">combined_citations</span> <span class="o">=</span> <span class="s2">&quot;</span><span class="se">\n\n</span><span class="s2">&quot;</span><span class="o">.</span><span class="n">join</span><span class="p">(</span><span class="n">citations</span><span class="p">)</span>
+            <span class="n">table_data</span><span class="o">.</span><span class="n">append</span><span class="p">({</span><span class="s2">&quot;Data Source&quot;</span><span class="p">:</span> <span class="n">source</span><span class="p">,</span> <span class="s2">&quot;Citation&quot;</span><span class="p">:</span> <span class="n">combined_citations</span><span class="p">})</span>
+            
         <span class="k">else</span><span class="p">:</span>
             <span class="n">table_data</span><span class="o">.</span><span class="n">append</span><span class="p">({</span>
                 <span class="s2">&quot;Data Source&quot;</span><span class="p">:</span> <span class="n">source</span><span class="p">,</span> 
@@ -514,6 +533,8 @@ document.write(`
             
     <span class="c1"># 3. Format as a readable table</span>
     <span class="n">df_citations</span> <span class="o">=</span> <span class="n">pd</span><span class="o">.</span><span class="n">DataFrame</span><span class="p">(</span><span class="n">table_data</span><span class="p">)</span>
+    
+    <span class="c1"># Apply styling</span>
     <span class="n">styled_df</span> <span class="o">=</span> <span class="n">df_citations</span><span class="o">.</span><span class="n">style</span><span class="o">.</span><span class="n">set_properties</span><span class="p">(</span><span class="o">**</span><span class="p">{</span>
         <span class="s1">&#39;text-align&#39;</span><span class="p">:</span> <span class="s1">&#39;left&#39;</span><span class="p">,</span>
         <span class="s1">&#39;white-space&#39;</span><span class="p">:</span> <span class="s1">&#39;pre-wrap&#39;</span><span class="p">,</span> 
@@ -547,158 +568,121 @@ document.write(`
 </pre></div>
 </div>
 <div class="output text_html"><style type="text/css">
-#T_5421b th {
+#T_cd4df th {
   text-align: left;
   font-size: 14px;
 }
-#T_5421b_row0_col0, #T_5421b_row0_col1, #T_5421b_row1_col0, #T_5421b_row1_col1, #T_5421b_row2_col0, #T_5421b_row2_col1, #T_5421b_row3_col0, #T_5421b_row3_col1, #T_5421b_row4_col0, #T_5421b_row4_col1, #T_5421b_row5_col0, #T_5421b_row5_col1, #T_5421b_row6_col0, #T_5421b_row6_col1, #T_5421b_row7_col0, #T_5421b_row7_col1, #T_5421b_row8_col0, #T_5421b_row8_col1, #T_5421b_row9_col0, #T_5421b_row9_col1, #T_5421b_row10_col0, #T_5421b_row10_col1, #T_5421b_row11_col0, #T_5421b_row11_col1, #T_5421b_row12_col0, #T_5421b_row12_col1, #T_5421b_row13_col0, #T_5421b_row13_col1, #T_5421b_row14_col0, #T_5421b_row14_col1, #T_5421b_row15_col0, #T_5421b_row15_col1, #T_5421b_row16_col0, #T_5421b_row16_col1, #T_5421b_row17_col0, #T_5421b_row17_col1, #T_5421b_row18_col0, #T_5421b_row18_col1, #T_5421b_row19_col0, #T_5421b_row19_col1, #T_5421b_row20_col0, #T_5421b_row20_col1, #T_5421b_row21_col0, #T_5421b_row21_col1, #T_5421b_row22_col0, #T_5421b_row22_col1, #T_5421b_row23_col0, #T_5421b_row23_col1, #T_5421b_row24_col0, #T_5421b_row24_col1, #T_5421b_row25_col0, #T_5421b_row25_col1, #T_5421b_row26_col0, #T_5421b_row26_col1, #T_5421b_row27_col0, #T_5421b_row27_col1, #T_5421b_row28_col0, #T_5421b_row28_col1, #T_5421b_row29_col0, #T_5421b_row29_col1, #T_5421b_row30_col0, #T_5421b_row30_col1, #T_5421b_row31_col0, #T_5421b_row31_col1 {
+#T_cd4df_row0_col0, #T_cd4df_row0_col1, #T_cd4df_row1_col0, #T_cd4df_row1_col1, #T_cd4df_row2_col0, #T_cd4df_row2_col1, #T_cd4df_row3_col0, #T_cd4df_row3_col1, #T_cd4df_row4_col0, #T_cd4df_row4_col1, #T_cd4df_row5_col0, #T_cd4df_row5_col1, #T_cd4df_row6_col0, #T_cd4df_row6_col1, #T_cd4df_row7_col0, #T_cd4df_row7_col1, #T_cd4df_row8_col0, #T_cd4df_row8_col1, #T_cd4df_row9_col0, #T_cd4df_row9_col1, #T_cd4df_row10_col0, #T_cd4df_row10_col1, #T_cd4df_row11_col0, #T_cd4df_row11_col1 {
   text-align: left;
   white-space: pre-wrap;
   vertical-align: top;
   padding: 10px;
 }
 </style>
-<table id="T_5421b">
+<table id="T_cd4df">
   <thead>
     <tr>
-      <th id="T_5421b_level0_col0" class="col_heading level0 col0" >Data Source</th>
-      <th id="T_5421b_level0_col1" class="col_heading level0 col1" >Citation</th>
+      <th id="T_cd4df_level0_col0" class="col_heading level0 col0" >Data Source</th>
+      <th id="T_cd4df_level0_col1" class="col_heading level0 col1" >Citation</th>
     </tr>
   </thead>
   <tbody>
     <tr>
-      <td id="T_5421b_row0_col0" class="data row0 col0" >SHIVER (Tool/Method)</td>
-      <td id="T_5421b_row0_col1" class="data row0 col1" >SHIVER tool: Davison, B. J. (2026). SHeffield Ice Velocity ExploreR (SHIVER): initial release (Version v1.0.0) [Computer software]. Zenodo. https://doi.org/10.5281/zenodo.21378057</td>
+      <td id="T_cd4df_row0_col0" class="data row0 col0" >SHIVER (Tool/Method)</td>
+      <td id="T_cd4df_row0_col1" class="data row0 col1" >SHIVER tool: Davison, B. J. (2026). The SHeffield Ice Velocity ExploreR (SHIVER): an online tool for low latency exploration, analysis and sub-setting of unified satellite-derived ice velocity data for Earth's ice sheets (Version v[specify version number]) [Computer software]. Zenodo. https://doi.org/10.5281/zenodo.21378057
+
+SHIVER data and compilation method: Davison, B. J. (2026). SHeffield Ice Velocity ExploreR (SHIVER): A unified satellite-derived ice velocity dataset for Earth's ice sheets (Version v[specify version number]) [Data set]. Zenodo. https://doi.org/10.5281/zenodo.21375859
+
+SHIVER method paper: Davison, B. J. et al. (in prep). The SHeffield Ice Velocity ExploreR (SHIVER): an online tool for low latency exploration, analysis and sub-setting of unified satellite-derived ice velocity data for Earth's ice sheets. [specify journal]. https://doi.org/10.xxxx/XXXXXXX</td>
     </tr>
     <tr>
-      <td id="T_5421b_row1_col0" class="data row1 col0" >SHIVER (Tool/Method)</td>
-      <td id="T_5421b_row1_col1" class="data row1 col1" >SHIVER zarr compilation method: Davison, B. J. (2026). SHeffield Ice Velocity ExploreR (SHIVER): initial release of Zarr creation code (Version [specify version number]) [Computer software]. Zenodo. https://doi.org/10.5281/zenodo.21375859</td>
+      <td id="T_cd4df_row1_col0" class="data row1 col0" >ENVEO_annual</td>
+      <td id="T_cd4df_row1_col1" class="data row1 col1" >ENVEO annual method: Wuite, J., (2026): Ice sheet velocity for Antarctica and Greenland derived from satellite observations. Copernicus Climate Change Service (C3S) Climate Data Store (CDS), DOI: 10.24381/cds.0b96b838 (Accessed on 26-Apr-2026).</td>
     </tr>
     <tr>
-      <td id="T_5421b_row2_col0" class="data row2 col0" >SHIVER (Tool/Method)</td>
-      <td id="T_5421b_row2_col1" class="data row2 col1" >SHIVER method paper: Davison, B. J. et al. (in prep). The SHeffield Ice Velocity ExploreR (SHIVER): an online tool for low latency exploration, analysis and sub-setting of unified satellite-derived ice velocity data for Earth's ice sheets. [specify journal]. https://doi.org/10.xxxx/XXXXXXX</td>
+      <td id="T_cd4df_row2_col0" class="data row2 col0" >ESA_CCI_Sentinel-2</td>
+      <td id="T_cd4df_row2_col1" class="data row2 col1" >ESA CCI Sentinel-2 (Petermann Glacier): ESA Greenland Ice Sheet CCI project team (2019): ESA Greenland Ice Sheet Climate Change Initiative (Greenland_Ice_Sheet_cci): Optical ice velocity of the Petermann Glacier between 2017-05-01 and 2017-09-14, generated using Sentinel-2 data, v1.1. Centre for Environmental Data Analysis, 16/04/2026. https://catalogue.ceda.ac.uk/uuid/94f3670150de4bac90773806e26646f2.
+
+ESA CCI Sentinel-2 (Kangerlussuaq Glacier): ESA Greenland Ice Sheet CCI project team (2018): ESA Greenland Ice Sheet Climate Change Initiative (Greenland_Ice_Sheet_cci): Optical ice velocity of the Kangerlussuaq Glacier between 2017-07-21 and 2017-08-20, generated using Sentinel-2 data, v1.1. Centre for Environmental Data Analysis, 16/04/2026. https://catalogue.ceda.ac.uk/uuid/aae643e1a7614c24b6b604dea82cad93.
+
+ESA CCI Sentinel-2 (Jakobshavn Isbrae): ESA Greenland Ice Sheet CCI project team (2018): ESA Greenland Ice Sheet Climate Change Initiative (Greenland_Ice_Sheet_cci): Optical ice velocity of the Jakobshavn Glacier between 2017-06-03 and 2017-09-08, generated using Sentinel-2 data, v1.1. Centre for Environmental Data Analysis, 16/04/2026. https://catalogue.ceda.ac.uk/uuid/cfe3102659f34d33b123b2a0043e4068.
+
+ESA CCI Sentinel-2 (Helheim Glacier): ESA Greenland Ice Sheet CCI project team (2019): ESA Greenland Ice Sheet Climate Change Initiative (Greenland_Ice_Sheet_cci): Optical ice velocity of the Helheim Glacier between 2017-05-01 and 2017-08-29, generated using Sentinel-2 data, v1.1. Centre for Environmental Data Analysis, 16/04/2026. https://catalogue.ceda.ac.uk/uuid/1e3fcdc14e2246c69fc54f0e1fe7a6ca.
+
+ESA CCI Sentinel-2 (Zachariae Isstrom): ESA Greenland Ice Sheet CCI project team (2019): ESA Greenland Ice Sheet Climate Change Initiative (Greenland_Ice_Sheet_cci): Optical ice velocity of the Zachariae Glacier between 2017-06-25 and 2017-08-10, generated using Sentinel-2 data, v1.1. Centre for Environmental Data Analysis, 16/04/2026. https://catalogue.ceda.ac.uk/uuid/ada968fd392d49fbbb07ac84eeb23ac6.
+
+ESA CCI Sentinel-2 (Hagen Brae): ESA Greenland Ice Sheet CCI project team (2018): ESA Greenland Ice Sheet Climate Change Initiative (Greenland_Ice_Sheet_cci): Optical ice velocity of the Hagen Glacier between 2017-06-30 and 2017-08-14, generated using Sentinel-2 data, v1.1. Centre for Environmental Data Analysis, 16/04/2026. https://catalogue.ceda.ac.uk/uuid/e7fa45e785a64481960c3b140038c948.
+
+ESA CCI Sentinel-2 (Docker Smith): ESA Greenland Ice Sheet CCI project team (2019): ESA Greenland Ice Sheet Climate Change Initiative (Greenland_Ice_Sheet_cci): Optical ice velocity of the Døcker Smith Glacier between 2016-05-08 and 2016-05-18, generated using Sentinel-2 data, v1.0. Centre for Environmental Data Analysis, 16/04/2026 https://catalogue.ceda.ac.uk/uuid/88d02eb5a6c14952aa88028894d8a69c.
+
+ESA CCI Sentinel-2 (79N): ESA Greenland Ice Sheet CCI project team (2018): ESA Greenland Ice Sheet Climate Change Initiative (Greenland_Ice_Sheet_cci): Optical ice velocity of the 79Fjord Glacier between 2017-06-25 and 2017-08-10, generated using Sentinel-2 data, v1.1. Centre for Environmental Data Analysis, 16/04/2026. https://catalogue.ceda.ac.uk/uuid/f31e8e988c4144bebe13892b53d08e42.
+
+ESA CCI Sentinel-2 (Upernavik Isstrom): ESA Greenland Ice Sheet CCI project team (2018): ESA Greenland Ice Sheet Climate Change Initiative (Greenland_Ice_Sheet_cci): Optical ice velocity of the Upernavik Glacier between 2017-07-15 and 2017-08-14, generated using Sentinel-2 data, v1.1. Centre for Environmental Data Analysis, 16/04/2026. https://catalogue.ceda.ac.uk/uuid/84faf575c8e841a3a16476b05cbd657d.</td>
     </tr>
     <tr>
-      <td id="T_5421b_row3_col0" class="data row3 col0" >ENVEO_annual</td>
-      <td id="T_5421b_row3_col1" class="data row3 col1" >ENVEO annual method: Wuite, J., (2026): Ice sheet velocity for Antarctica and Greenland derived from satellite observations. Copernicus Climate Change Service (C3S) Climate Data Store (CDS), DOI: 10.24381/cds.0b96b838 (Accessed on 26-Apr-2026).</td>
+      <td id="T_cd4df_row3_col0" class="data row3 col0" >ESA_CCI_winter</td>
+      <td id="T_cd4df_row3_col1" class="data row3 col1" >ESA CCI winter data: ESA Greenland Ice Sheet CCI project team (2018): ESA Greenland Ice Sheet Climate Change Initiative (Greenland_Ice_Sheet_cci): Greenland Ice Velocity Map, Winter 2017-2018, v1.0. Centre for Environmental Data Analysis, 16/04/2026. https://catalogue.ceda.ac.uk/uuid/eaed9fba86c44e9c854dfbdec9d16b99.</td>
     </tr>
     <tr>
-      <td id="T_5421b_row4_col0" class="data row4 col0" >ESA_CCI_Sentinel-2</td>
-      <td id="T_5421b_row4_col1" class="data row4 col1" >ESA CCI Sentinel-2 (Petermann Glacier): ESA Greenland Ice Sheet CCI project team (2019): ESA Greenland Ice Sheet Climate Change Initiative (Greenland_Ice_Sheet_cci): Optical ice velocity of the Petermann Glacier between 2017-05-01 and 2017-09-14, generated using Sentinel-2 data, v1.1. Centre for Environmental Data Analysis, 16/04/2026. https://catalogue.ceda.ac.uk/uuid/94f3670150de4bac90773806e26646f2.</td>
+      <td id="T_cd4df_row4_col0" class="data row4 col0" >ITS_LIVE_annual</td>
+      <td id="T_cd4df_row4_col1" class="data row4 col1" >ITS_LIVE observations: Gardner, A.S., Greene, C.A., Kennedy, J.H., Fahnestock, M.A., Liukis, M., López, L.A., Lei, Y., Scambos, T.A. and Dehecq, A., 2025. ITS_LIVE global glacier velocity data in near-real time. The Cryosphere, 19(9), pp.3517-3533. DOI: https://doi.org/10.5194/tc-19-3517-2025. </td>
     </tr>
     <tr>
-      <td id="T_5421b_row5_col0" class="data row5 col0" >ESA_CCI_Sentinel-2</td>
-      <td id="T_5421b_row5_col1" class="data row5 col1" >ESA CCI Sentinel-2 (Kangerlussuaq Glacier): ESA Greenland Ice Sheet CCI project team (2018): ESA Greenland Ice Sheet Climate Change Initiative (Greenland_Ice_Sheet_cci): Optical ice velocity of the Kangerlussuaq Glacier between 2017-07-21 and 2017-08-20, generated using Sentinel-2 data, v1.1. Centre for Environmental Data Analysis, 16/04/2026. https://catalogue.ceda.ac.uk/uuid/aae643e1a7614c24b6b604dea82cad93.</td>
+      <td id="T_cd4df_row5_col0" class="data row5 col0" >MEaSUREs_annual</td>
+      <td id="T_cd4df_row5_col1" class="data row5 col1" >MEaSUREs annual data: Joughin, I. (2023). MEaSUREs Greenland Annual Ice Sheet Velocity Mosaics from SAR and Landsat. (NSIDC-0725, Version 5). [Data Set]. Boulder, Colorado USA. NASA National Snow and Ice Data Center Distributed Active Archive Center. https://doi.org/10.5067/USBL3Z8KF9C3. Date Accessed 04-21-2026.
+
+MEaSUREs annual method: Joughin, I., B. Smith, I. Howat, T. Scambos, and T. Moon. 2010. Greenland flow variability from icesheet-wide velocity mapping, Journal of Glaciology. 56. 415-430. https://doi.org/10.3189/002214310792447734
+
+MEaSUREs annual method: Joughin, I., B. Smith, and I. Howat. 2018. Greenland Ice Mapping Project: ice flow velocity variation at sub-monthly to decadal timescales, The Cryosphere. 12. 2211-2227. https://doi.org/10.5194/tc-12-2211-2018.</td>
     </tr>
     <tr>
-      <td id="T_5421b_row6_col0" class="data row6 col0" >ESA_CCI_Sentinel-2</td>
-      <td id="T_5421b_row6_col1" class="data row6 col1" >ESA CCI Sentinel-2 (Jakobshavn Isbrae): ESA Greenland Ice Sheet CCI project team (2018): ESA Greenland Ice Sheet Climate Change Initiative (Greenland_Ice_Sheet_cci): Optical ice velocity of the Jakobshavn Glacier between 2017-06-03 and 2017-09-08, generated using Sentinel-2 data, v1.1. Centre for Environmental Data Analysis, 16/04/2026. https://catalogue.ceda.ac.uk/uuid/cfe3102659f34d33b123b2a0043e4068.</td>
+      <td id="T_cd4df_row6_col0" class="data row6 col0" >MEaSUREs_monthly</td>
+      <td id="T_cd4df_row6_col1" class="data row6 col1" >MEaSUREs monthly data: Joughin, I. (2023). MEaSUREs Greenland Monthly Ice Sheet Velocity Mosaics from SAR and Landsat. (NSIDC-0731, Version 5). [Data Set]. Boulder, Colorado USA. NASA National Snow and Ice Data Center Distributed Active Archive Center. https://doi.org/10.5067/EGKZX6FXXM4P. Date Accessed 04-21-2026.
+
+MEaSUREs monthly method: Joughin, I., B. Smith, I. Howat, T. Scambos, and T. Moon. 2010. Greenland flow variability from icesheet-wide velocity mapping, Journal of Glaciology. 56. 415-430. https://doi.org/10.3189/002214310792447734
+
+MEaSUREs monthly method: Joughin, I., B. Smith, and I. Howat. 2018. Greenland Ice Mapping Project: ice flow velocity variation at sub-monthly to decadal timescales, The Cryosphere. 12. 2211-2227. https://doi.org/10.5194/tc-12-2211-2018.</td>
     </tr>
     <tr>
-      <td id="T_5421b_row7_col0" class="data row7 col0" >ESA_CCI_Sentinel-2</td>
-      <td id="T_5421b_row7_col1" class="data row7 col1" >ESA CCI Sentinel-2 (Helheim Glacier): ESA Greenland Ice Sheet CCI project team (2019): ESA Greenland Ice Sheet Climate Change Initiative (Greenland_Ice_Sheet_cci): Optical ice velocity of the Helheim Glacier between 2017-05-01 and 2017-08-29, generated using Sentinel-2 data, v1.1. Centre for Environmental Data Analysis, 16/04/2026. https://catalogue.ceda.ac.uk/uuid/1e3fcdc14e2246c69fc54f0e1fe7a6ca.</td>
+      <td id="T_cd4df_row7_col0" class="data row7 col0" >MEaSUREs_quarterly</td>
+      <td id="T_cd4df_row7_col1" class="data row7 col1" >MEaSUREs quarterly data: Joughin, I. (2023). MEaSUREs Greenland Quarterly Ice Sheet Velocity Mosaics from SAR and Landsat. (NSIDC-0727, Version 5). [Data Set]. Boulder, Colorado USA. NASA National Snow and Ice Data Center Distributed Active Archive Center. https://doi.org/10.5067/V5KW64S63OSN. Date Accessed 04-21-2026.
+
+MEaSUREs quarterly method: Joughin, I., B. Smith, I. Howat, T. Scambos, and T. Moon. 2010. Greenland flow variability from icesheet-wide velocity mapping, Journal of Glaciology. 56. 415-430. https://doi.org/10.3189/002214310792447734
+
+MEaSUREs quarterly method: Joughin, I., B. Smith, and I. Howat. 2018. Greenland Ice Mapping Project: ice flow velocity variation at sub-monthly to decadal timescales, The Cryosphere. 12. 2211-2227. https://doi.org/10.5194/tc-12-2211-2018.</td>
     </tr>
     <tr>
-      <td id="T_5421b_row8_col0" class="data row8 col0" >ESA_CCI_Sentinel-2</td>
-      <td id="T_5421b_row8_col1" class="data row8 col1" >ESA CCI Sentinel-2 (Zachariae Isstrom): ESA Greenland Ice Sheet CCI project team (2019): ESA Greenland Ice Sheet Climate Change Initiative (Greenland_Ice_Sheet_cci): Optical ice velocity of the Zachariae Glacier between 2017-06-25 and 2017-08-10, generated using Sentinel-2 data, v1.1. Centre for Environmental Data Analysis, 16/04/2026. https://catalogue.ceda.ac.uk/uuid/ada968fd392d49fbbb07ac84eeb23ac6.</td>
+      <td id="T_cd4df_row8_col0" class="data row8 col0" >MEaSUREs_winter</td>
+      <td id="T_cd4df_row8_col1" class="data row8 col1" >MEaSUREs winter data: Joughin, I., Smith, B., Howat, I. & Scambos, T. (2015). MEaSUREs Greenland Ice Sheet Velocity Map from InSAR Data. (NSIDC-0478, Version 2). [Data Set]. Boulder, Colorado USA. NASA National Snow and Ice Data Center Distributed Active Archive Center. https://doi.org/10.5067/OC7B04ZM9G6Q. Date Accessed 04-23-2026.
+
+MEaSUREs winter method: Joughin, I., B. Smith, I. Howat, T. Scambos, and T. Moon. 2010. Greenland flow variability from icesheet-wide velocity mapping, Journal of Glaciology. 56. 415-430. https://doi.org/10.3189/002214310792447734
+
+MEaSUREs winter method: Joughin, I., B. Smith, and I. Howat. 2018. Greenland Ice Mapping Project: ice flow velocity variation at sub-monthly to decadal timescales, The Cryosphere. 12. 2211-2227. https://doi.org/10.5194/tc-12-2211-2018.</td>
     </tr>
     <tr>
-      <td id="T_5421b_row9_col0" class="data row9 col0" >ESA_CCI_Sentinel-2</td>
-      <td id="T_5421b_row9_col1" class="data row9 col1" >ESA CCI Sentinel-2 (Hagen Brae): ESA Greenland Ice Sheet CCI project team (2018): ESA Greenland Ice Sheet Climate Change Initiative (Greenland_Ice_Sheet_cci): Optical ice velocity of the Hagen Glacier between 2017-06-30 and 2017-08-14, generated using Sentinel-2 data, v1.1. Centre for Environmental Data Analysis, 16/04/2026. https://catalogue.ceda.ac.uk/uuid/e7fa45e785a64481960c3b140038c948.</td>
+      <td id="T_cd4df_row9_col0" class="data row9 col0" >Mouginot_annual</td>
+      <td id="T_cd4df_row9_col1" class="data row9 col1" >Mouginot annual method: Mouginot, J., Rignot, E., Scheuchl, B. and Millan, R., 2017. Comprehensive annual ice sheet velocity mapping using Landsat-8, Sentinel-1, and RADARSAT-2 data. Remote Sensing, 9(4), p.364. DOI: https://doi.org/10.3390/rs9040364. </td>
     </tr>
     <tr>
-      <td id="T_5421b_row10_col0" class="data row10 col0" >ESA_CCI_Sentinel-2</td>
-      <td id="T_5421b_row10_col1" class="data row10 col1" >ESA CCI Sentinel-2 (Docker Smith): ESA Greenland Ice Sheet CCI project team (2019): ESA Greenland Ice Sheet Climate Change Initiative (Greenland_Ice_Sheet_cci): Optical ice velocity of the Døcker Smith Glacier between 2016-05-08 and 2016-05-18, generated using Sentinel-2 data, v1.0. Centre for Environmental Data Analysis, 16/04/2026 https://catalogue.ceda.ac.uk/uuid/88d02eb5a6c14952aa88028894d8a69c.</td>
+      <td id="T_cd4df_row10_col0" class="data row10 col0" >PROMICE</td>
+      <td id="T_cd4df_row10_col1" class="data row10 col1" >PROMICE data: Solgaard, Anne Munck; Kusk, Anders, 2026, Greenland Ice Velocity from Sentinel-1 Edition 5, https://doi.org/10.22008/FK2/K70OPK, GEUS Dataverse, V6
+
+PROMICE method: Solgaard, A., Kusk, A., Merryman Boncori, J.P., Dall, J., Mankoff, K.D., Ahlstrøm, A.P., Andersen, S.B., Citterio, M., Karlsson, N.B., Kjeldsen, K.K. and Korsgaard, N.J., 2021. Greenland ice velocity maps from the PROMICE project. Earth System Science Data, 13(7), pp.3491-3512. DOI: https://doi.org/10.5194/essd-13-3491-2021.</td>
     </tr>
     <tr>
-      <td id="T_5421b_row11_col0" class="data row11 col0" >ESA_CCI_Sentinel-2</td>
-      <td id="T_5421b_row11_col1" class="data row11 col1" >ESA CCI Sentinel-2 (79N): ESA Greenland Ice Sheet CCI project team (2018): ESA Greenland Ice Sheet Climate Change Initiative (Greenland_Ice_Sheet_cci): Optical ice velocity of the 79Fjord Glacier between 2017-06-25 and 2017-08-10, generated using Sentinel-2 data, v1.1. Centre for Environmental Data Analysis, 16/04/2026. https://catalogue.ceda.ac.uk/uuid/f31e8e988c4144bebe13892b53d08e42.</td>
-    </tr>
-    <tr>
-      <td id="T_5421b_row12_col0" class="data row12 col0" >ESA_CCI_Sentinel-2</td>
-      <td id="T_5421b_row12_col1" class="data row12 col1" >ESA CCI Sentinel-2 (Upernavik Isstrom): ESA Greenland Ice Sheet CCI project team (2018): ESA Greenland Ice Sheet Climate Change Initiative (Greenland_Ice_Sheet_cci): Optical ice velocity of the Upernavik Glacier between 2017-07-15 and 2017-08-14, generated using Sentinel-2 data, v1.1. Centre for Environmental Data Analysis, 16/04/2026. https://catalogue.ceda.ac.uk/uuid/84faf575c8e841a3a16476b05cbd657d.</td>
-    </tr>
-    <tr>
-      <td id="T_5421b_row13_col0" class="data row13 col0" >ESA_CCI_winter</td>
-      <td id="T_5421b_row13_col1" class="data row13 col1" >ESA CCI winter data: ESA Greenland Ice Sheet CCI project team (2018): ESA Greenland Ice Sheet Climate Change Initiative (Greenland_Ice_Sheet_cci): Greenland Ice Velocity Map, Winter 2017-2018, v1.0. Centre for Environmental Data Analysis, 16/04/2026. https://catalogue.ceda.ac.uk/uuid/eaed9fba86c44e9c854dfbdec9d16b99.</td>
-    </tr>
-    <tr>
-      <td id="T_5421b_row14_col0" class="data row14 col0" >ITS_LIVE_annual</td>
-      <td id="T_5421b_row14_col1" class="data row14 col1" >ITS_LIVE observations: Gardner, A.S., Greene, C.A., Kennedy, J.H., Fahnestock, M.A., Liukis, M., López, L.A., Lei, Y., Scambos, T.A. and Dehecq, A., 2025. ITS_LIVE global glacier velocity data in near-real time. The Cryosphere, 19(9), pp.3517-3533. DOI: https://doi.org/10.5194/tc-19-3517-2025. </td>
-    </tr>
-    <tr>
-      <td id="T_5421b_row15_col0" class="data row15 col0" >MEaSUREs_annual</td>
-      <td id="T_5421b_row15_col1" class="data row15 col1" >MEaSUREs annual data: Joughin, I. (2023). MEaSUREs Greenland Annual Ice Sheet Velocity Mosaics from SAR and Landsat. (NSIDC-0725, Version 5). [Data Set]. Boulder, Colorado USA. NASA National Snow and Ice Data Center Distributed Active Archive Center. https://doi.org/10.5067/USBL3Z8KF9C3. Date Accessed 04-21-2026.</td>
-    </tr>
-    <tr>
-      <td id="T_5421b_row16_col0" class="data row16 col0" >MEaSUREs_annual</td>
-      <td id="T_5421b_row16_col1" class="data row16 col1" >MEaSUREs annual method: Joughin, I., B. Smith, I. Howat, T. Scambos, and T. Moon. 2010. Greenland flow variability from icesheet-wide velocity mapping, Journal of Glaciology. 56. 415-430. https://doi.org/10.3189/002214310792447734</td>
-    </tr>
-    <tr>
-      <td id="T_5421b_row17_col0" class="data row17 col0" >MEaSUREs_annual</td>
-      <td id="T_5421b_row17_col1" class="data row17 col1" >MEaSUREs annual method: Joughin, I., B. Smith, and I. Howat. 2018. Greenland Ice Mapping Project: ice flow velocity variation at sub-monthly to decadal timescales, The Cryosphere. 12. 2211-2227. https://doi.org/10.5194/tc-12-2211-2018.</td>
-    </tr>
-    <tr>
-      <td id="T_5421b_row18_col0" class="data row18 col0" >MEaSUREs_monthly</td>
-      <td id="T_5421b_row18_col1" class="data row18 col1" >MEaSUREs monthly data: Joughin, I. (2023). MEaSUREs Greenland Monthly Ice Sheet Velocity Mosaics from SAR and Landsat. (NSIDC-0731, Version 5). [Data Set]. Boulder, Colorado USA. NASA National Snow and Ice Data Center Distributed Active Archive Center. https://doi.org/10.5067/EGKZX6FXXM4P. Date Accessed 04-21-2026.</td>
-    </tr>
-    <tr>
-      <td id="T_5421b_row19_col0" class="data row19 col0" >MEaSUREs_monthly</td>
-      <td id="T_5421b_row19_col1" class="data row19 col1" >MEaSUREs monthly method: Joughin, I., B. Smith, I. Howat, T. Scambos, and T. Moon. 2010. Greenland flow variability from icesheet-wide velocity mapping, Journal of Glaciology. 56. 415-430. https://doi.org/10.3189/002214310792447734</td>
-    </tr>
-    <tr>
-      <td id="T_5421b_row20_col0" class="data row20 col0" >MEaSUREs_monthly</td>
-      <td id="T_5421b_row20_col1" class="data row20 col1" >MEaSUREs monthly method: Joughin, I., B. Smith, and I. Howat. 2018. Greenland Ice Mapping Project: ice flow velocity variation at sub-monthly to decadal timescales, The Cryosphere. 12. 2211-2227. https://doi.org/10.5194/tc-12-2211-2018.</td>
-    </tr>
-    <tr>
-      <td id="T_5421b_row21_col0" class="data row21 col0" >MEaSUREs_quarterly</td>
-      <td id="T_5421b_row21_col1" class="data row21 col1" >MEaSUREs quarterly data: Joughin, I. (2023). MEaSUREs Greenland Quarterly Ice Sheet Velocity Mosaics from SAR and Landsat. (NSIDC-0727, Version 5). [Data Set]. Boulder, Colorado USA. NASA National Snow and Ice Data Center Distributed Active Archive Center. https://doi.org/10.5067/V5KW64S63OSN. Date Accessed 04-21-2026.</td>
-    </tr>
-    <tr>
-      <td id="T_5421b_row22_col0" class="data row22 col0" >MEaSUREs_quarterly</td>
-      <td id="T_5421b_row22_col1" class="data row22 col1" >MEaSUREs quarterly method: Joughin, I., B. Smith, I. Howat, T. Scambos, and T. Moon. 2010. Greenland flow variability from icesheet-wide velocity mapping, Journal of Glaciology. 56. 415-430. https://doi.org/10.3189/002214310792447734</td>
-    </tr>
-    <tr>
-      <td id="T_5421b_row23_col0" class="data row23 col0" >MEaSUREs_quarterly</td>
-      <td id="T_5421b_row23_col1" class="data row23 col1" >MEaSUREs quarterly method: Joughin, I., B. Smith, and I. Howat. 2018. Greenland Ice Mapping Project: ice flow velocity variation at sub-monthly to decadal timescales, The Cryosphere. 12. 2211-2227. https://doi.org/10.5194/tc-12-2211-2018.</td>
-    </tr>
-    <tr>
-      <td id="T_5421b_row24_col0" class="data row24 col0" >MEaSUREs_winter</td>
-      <td id="T_5421b_row24_col1" class="data row24 col1" >MEaSUREs winter data: Joughin, I., Smith, B., Howat, I. & Scambos, T. (2015). MEaSUREs Greenland Ice Sheet Velocity Map from InSAR Data. (NSIDC-0478, Version 2). [Data Set]. Boulder, Colorado USA. NASA National Snow and Ice Data Center Distributed Active Archive Center. https://doi.org/10.5067/OC7B04ZM9G6Q. Date Accessed 04-23-2026.</td>
-    </tr>
-    <tr>
-      <td id="T_5421b_row25_col0" class="data row25 col0" >MEaSUREs_winter</td>
-      <td id="T_5421b_row25_col1" class="data row25 col1" >MEaSUREs winter method: Joughin, I., B. Smith, I. Howat, T. Scambos, and T. Moon. 2010. Greenland flow variability from icesheet-wide velocity mapping, Journal of Glaciology. 56. 415-430. https://doi.org/10.3189/002214310792447734</td>
-    </tr>
-    <tr>
-      <td id="T_5421b_row26_col0" class="data row26 col0" >MEaSUREs_winter</td>
-      <td id="T_5421b_row26_col1" class="data row26 col1" >MEaSUREs winter method: Joughin, I., B. Smith, and I. Howat. 2018. Greenland Ice Mapping Project: ice flow velocity variation at sub-monthly to decadal timescales, The Cryosphere. 12. 2211-2227. https://doi.org/10.5194/tc-12-2211-2018.</td>
-    </tr>
-    <tr>
-      <td id="T_5421b_row27_col0" class="data row27 col0" >Mouginot_annual</td>
-      <td id="T_5421b_row27_col1" class="data row27 col1" >Mouginot annual method: Mouginot, J., Rignot, E., Scheuchl, B. and Millan, R., 2017. Comprehensive annual ice sheet velocity mapping using Landsat-8, Sentinel-1, and RADARSAT-2 data. Remote Sensing, 9(4), p.364. DOI: https://doi.org/10.3390/rs9040364. </td>
-    </tr>
-    <tr>
-      <td id="T_5421b_row28_col0" class="data row28 col0" >PROMICE</td>
-      <td id="T_5421b_row28_col1" class="data row28 col1" >PROMICE data: Solgaard, Anne Munck; Kusk, Anders, 2026, Greenland Ice Velocity from Sentinel-1 Edition 5, https://doi.org/10.22008/FK2/K70OPK, GEUS Dataverse, V6</td>
-    </tr>
-    <tr>
-      <td id="T_5421b_row29_col0" class="data row29 col0" >PROMICE</td>
-      <td id="T_5421b_row29_col1" class="data row29 col1" >PROMICE method: Solgaard, A., Kusk, A., Merryman Boncori, J.P., Dall, J., Mankoff, K.D., Ahlstrøm, A.P., Andersen, S.B., Citterio, M., Karlsson, N.B., Kjeldsen, K.K. and Korsgaard, N.J., 2021. Greenland ice velocity maps from the PROMICE project. Earth System Science Data, 13(7), pp.3491-3512. DOI: https://doi.org/10.5194/essd-13-3491-2021.</td>
-    </tr>
-    <tr>
-      <td id="T_5421b_row30_col0" class="data row30 col0" >SHIFT</td>
-      <td id="T_5421b_row30_col1" class="data row30 col1" >SHIFT Greenland data: Sole, A. J. and Davison, B. J. 2026. SHeffield Ice Flow Tracker (SHIFT) velocity data: West Greenland ice surface velocity fields derived from intensity tracking of Sentinel-1 Synthetic Aperture Radar image pairs. [Online]. Available from: https://doi.org/10.15131/shef.data.33113009.v1 [Accessed: DD MMM YYYY].</td>
-    </tr>
-    <tr>
-      <td id="T_5421b_row31_col0" class="data row31 col0" >SHIFT</td>
-      <td id="T_5421b_row31_col1" class="data row31 col1" >SHIFT method: Davison, B.J., Sole, A.J., Cowton, T.R., Lea, J.M., Slater, D.A., Fahrner, D. and Nienow, P.W., 2020. Subglacial drainage evolution modulates seasonal ice flow variability of three tidewater glaciers in southwest Greenland. Journal of Geophysical Research: Earth Surface, 125(9), p.e2019JF005492. DOI: https://doi.org/10.1029/2019JF005492.</td>
+      <td id="T_cd4df_row11_col0" class="data row11 col0" >SHIFT</td>
+      <td id="T_cd4df_row11_col1" class="data row11 col1" >SHIFT Greenland data: Sole, A. J. and Davison, B. J. 2026. SHeffield Ice Flow Tracker (SHIFT) velocity data: West Greenland ice surface velocity fields derived from intensity tracking of Sentinel-1 Synthetic Aperture Radar image pairs. [Online]. Available from: https://doi.org/10.15131/shef.data.33113009.v1.
+
+SHIFT method: Davison, B.J., Sole, A.J., Cowton, T.R., Lea, J.M., Slater, D.A., Fahrner, D. and Nienow, P.W., 2020. Subglacial drainage evolution modulates seasonal ice flow variability of three tidewater glaciers in southwest Greenland. Journal of Geophysical Research: Earth Surface, 125(9), p.e2019JF005492. DOI: https://doi.org/10.1029/2019JF005492.</td>
     </tr>
   </tbody>
 </table>
 </div></div>
 </div>
 <p>Of course you may wish to use a more compact format for your citation table.</p>
+<blockquote>
+<div><p><em>Note: The ESA_CCI_Sentinel-1, ESA_CCI_Sentinel-2 and ESA_CCI_ERS1-2_Envisat over selected glacier sites in Greenland require separate citations for each glacier site. Our dataset compilation method combines all of those glacier sites into one Contributing Dataset. This automated citation generator will therefore provide the citation information for all glacier sites even if only one is intersected (as was the case in this example). You should remove the unnecessary citations when incorporating them into your work.</em></p>
+</div></blockquote>
 </section>
 
     <script type="text/x-thebe-config">

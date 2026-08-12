@@ -192,7 +192,9 @@ const thebe_selector_output = ".output, .cell_output"
 <li class="toctree-l1"><a class="reference internal" href="generating_citations.html">Generating citations for Contributing Datasets</a></li>
 <li class="toctree-l1"><a class="reference internal" href="simple_layers.html">Large spatial scale extraction of velocity fields</a></li>
 <li class="toctree-l1"><a class="reference internal" href="simple_subset.html">Datacube subsetting</a></li>
-<li class="toctree-l1"><a class="reference internal" href="temporal_statistics.html">Calculating temporal statistics (advanced)</a></li>
+<li class="toctree-l1"><a class="reference internal" href="trend_change.html">Ice speed trends in west Greenland (advanced)</a></li>
+<li class="toctree-l1"><a class="reference internal" href="eof.html">Principal Component Analysis (advanced)</a></li>
+<li class="toctree-l1"><a class="reference internal" href="strain.html">Strain across the Brunt Ice Shelf</a></li>
 </ul>
 <p aria-level="2" class="caption" role="heading"><span class="caption-text">Appendix</span></p>
 <ul class="nav bd-sidenav">
@@ -2251,7 +2253,7 @@ Data variables:
     </tr>
 </table></div></li></ul></div></li></ul></div></div></div></div>
 </div>
-<p>We can similarly examine the structure of the timeseries optimized Zarr store for Antarctica. Since this is an OME-Zarr, there is no need to specify the group level.</p>
+<p>We can similarly examine the structure of the timeseries optimized Zarr store for Antarctica. Since this is a standard Zarr (rather than an OME-Zarr, there is no need to specify the group level.</p>
 <div class="cell docutils container">
 <div class="cell_input docutils container">
 <div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">url</span> <span class="o">=</span> <span class="s2">&quot;https://data.source.coop/uos-shiver/antarctica/antarctica_multisource_velocity_timeseries.zarr&quot;</span>

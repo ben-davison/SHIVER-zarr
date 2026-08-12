@@ -1,0 +1,1216 @@
+
+
+<!DOCTYPE html>
+
+
+<html lang="en" data-content_root="" >
+
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" /><meta name="generator" content="Docutils 0.18.1: http://docutils.sourceforge.net/" />
+
+    <title>Principal Component Analysis (advanced) &#8212; SHeffield Ice Velocity ExploreR (SHIVER) - Cloud access to a unified dataset of satellite-derived ice surface velocity measurements for the Antarctica Ice Sheet and Greenland Ice Sheet</title>
+  
+  
+  
+  <script data-cfasync="false">
+    document.documentElement.dataset.mode = localStorage.getItem("mode") || "";
+    document.documentElement.dataset.theme = localStorage.getItem("theme") || "";
+  </script>
+  
+  <!-- Loaded before other Sphinx assets -->
+  <link href="../_static/styles/theme.css?digest=dfe6caa3a7d634c4db9b" rel="stylesheet" />
+<link href="../_static/styles/bootstrap.css?digest=dfe6caa3a7d634c4db9b" rel="stylesheet" />
+<link href="../_static/styles/pydata-sphinx-theme.css?digest=dfe6caa3a7d634c4db9b" rel="stylesheet" />
+
+  
+  <link href="../_static/vendor/fontawesome/6.5.2/css/all.min.css?digest=dfe6caa3a7d634c4db9b" rel="stylesheet" />
+  <link rel="preload" as="font" type="font/woff2" crossorigin href="../_static/vendor/fontawesome/6.5.2/webfonts/fa-solid-900.woff2" />
+<link rel="preload" as="font" type="font/woff2" crossorigin href="../_static/vendor/fontawesome/6.5.2/webfonts/fa-brands-400.woff2" />
+<link rel="preload" as="font" type="font/woff2" crossorigin href="../_static/vendor/fontawesome/6.5.2/webfonts/fa-regular-400.woff2" />
+
+    <link rel="stylesheet" type="text/css" href="../_static/pygments.css" />
+    <link rel="stylesheet" href="../_static/styles/sphinx-book-theme.css?digest=14f4ca6b54d191a8c7657f6c759bf11a5fb86285" type="text/css" />
+    <link rel="stylesheet" type="text/css" href="../_static/togglebutton.css" />
+    <link rel="stylesheet" type="text/css" href="../_static/copybutton.css" />
+    <link rel="stylesheet" type="text/css" href="../_static/mystnb.4510f1fc1dee50b3e5859aac5469c37c29e427902b24a333a5f9fcb2f0b3ac41.css" />
+    <link rel="stylesheet" type="text/css" href="../_static/sphinx-thebe.css" />
+    <link rel="stylesheet" type="text/css" href="../_static/design-style.4045f2051d55cab465a707391d5b2007.min.css" />
+  
+  <!-- Pre-loaded scripts that we'll load fully later -->
+  <link rel="preload" as="script" href="../_static/scripts/bootstrap.js?digest=dfe6caa3a7d634c4db9b" />
+<link rel="preload" as="script" href="../_static/scripts/pydata-sphinx-theme.js?digest=dfe6caa3a7d634c4db9b" />
+  <script src="../_static/vendor/fontawesome/6.5.2/js/all.min.js?digest=dfe6caa3a7d634c4db9b"></script>
+
+    <script data-url_root="../" id="documentation_options" src="../_static/documentation_options.js"></script>
+    <script src="../_static/jquery.js"></script>
+    <script src="../_static/underscore.js"></script>
+    <script src="../_static/_sphinx_javascript_frameworks_compat.js"></script>
+    <script src="../_static/doctools.js"></script>
+    <script src="../_static/clipboard.min.js"></script>
+    <script src="../_static/copybutton.js"></script>
+    <script src="../_static/scripts/sphinx-book-theme.js?digest=5a5c038af52cf7bc1a1ec88eea08e6366ee68824"></script>
+    <script>let toggleHintShow = 'Click to show';</script>
+    <script>let toggleHintHide = 'Click to hide';</script>
+    <script>let toggleOpenOnPrint = 'true';</script>
+    <script src="../_static/togglebutton.js"></script>
+    <script>var togglebuttonSelector = '.toggle, .admonition.dropdown';</script>
+    <script src="../_static/design-tabs.js"></script>
+    <script>const THEBE_JS_URL = "https://unpkg.com/thebe@0.8.2/lib/index.js"
+const thebe_selector = ".thebe,.cell"
+const thebe_selector_input = "pre"
+const thebe_selector_output = ".output, .cell_output"
+</script>
+    <script async="async" src="../_static/sphinx-thebe.js"></script>
+    <script>DOCUMENTATION_OPTIONS.pagename = 'examples/eof';</script>
+    <link rel="index" title="Index" href="../genindex.html" />
+    <link rel="search" title="Search" href="../search.html" />
+    <link rel="next" title="Strain across the Brunt Ice Shelf" href="strain.html" />
+    <link rel="prev" title="Ice speed trends in west Greenland (advanced)" href="trend_change.html" />
+  <meta name="viewport" content="width=device-width, initial-scale=1"/>
+  <meta name="docsearch:language" content="en"/>
+  </head>
+  
+  
+  <body data-bs-spy="scroll" data-bs-target=".bd-toc-nav" data-offset="180" data-bs-root-margin="0px 0px -60%" data-default-mode="">
+
+  
+  
+  <div id="pst-skip-link" class="skip-link d-print-none"><a href="#main-content">Skip to main content</a></div>
+  
+  <div id="pst-scroll-pixel-helper"></div>
+  
+  <button type="button" class="btn rounded-pill" id="pst-back-to-top">
+    <i class="fa-solid fa-arrow-up"></i>Back to top</button>
+
+  
+  <input type="checkbox"
+          class="sidebar-toggle"
+          id="pst-primary-sidebar-checkbox"/>
+  <label class="overlay overlay-primary" for="pst-primary-sidebar-checkbox"></label>
+  
+  <input type="checkbox"
+          class="sidebar-toggle"
+          id="pst-secondary-sidebar-checkbox"/>
+  <label class="overlay overlay-secondary" for="pst-secondary-sidebar-checkbox"></label>
+  
+  <div class="search-button__wrapper">
+    <div class="search-button__overlay"></div>
+    <div class="search-button__search-container">
+<form class="bd-search d-flex align-items-center"
+      action="../search.html"
+      method="get">
+  <i class="fa-solid fa-magnifying-glass"></i>
+  <input type="search"
+         class="form-control"
+         name="q"
+         id="search-input"
+         placeholder="Search this book..."
+         aria-label="Search this book..."
+         autocomplete="off"
+         autocorrect="off"
+         autocapitalize="off"
+         spellcheck="false"/>
+  <span class="search-button__kbd-shortcut"><kbd class="kbd-shortcut__modifier">Ctrl</kbd>+<kbd>K</kbd></span>
+</form></div>
+  </div>
+
+  <div class="pst-async-banner-revealer d-none">
+  <aside id="bd-header-version-warning" class="d-none d-print-none" aria-label="Version warning"></aside>
+</div>
+
+  
+    <header class="bd-header navbar navbar-expand-lg bd-navbar d-print-none">
+    </header>
+  
+
+  <div class="bd-container">
+    <div class="bd-container__inner bd-page-width">
+      
+      
+      
+      <div class="bd-sidebar-primary bd-sidebar">
+        
+
+  
+  <div class="sidebar-header-items sidebar-primary__section">
+    
+    
+    
+    
+  </div>
+  
+    <div class="sidebar-primary-items__start sidebar-primary__section">
+        <div class="sidebar-primary-item">
+
+  
+    
+  
+
+<a class="navbar-brand logo" href="../index.html">
+  
+  
+  
+  
+  
+    
+    
+      
+    
+    
+    <img src="../_static/SHIVER_logo_stacked_v1_black_on_transparent_background_simplified.png" class="logo__image only-light" alt="SHeffield Ice Velocity ExploreR (SHIVER) - Cloud access to a unified dataset of satellite-derived ice surface velocity measurements for the Antarctica Ice Sheet and Greenland Ice Sheet - Home"/>
+    <script>document.write(`<img src="../_static/SHIVER_logo_stacked_v1_black_on_transparent_background_simplified.png" class="logo__image only-dark" alt="SHeffield Ice Velocity ExploreR (SHIVER) - Cloud access to a unified dataset of satellite-derived ice surface velocity measurements for the Antarctica Ice Sheet and Greenland Ice Sheet - Home"/>`);</script>
+  
+  
+</a></div>
+        <div class="sidebar-primary-item"><nav class="bd-links" id="bd-docs-nav" aria-label="Main">
+    <div class="bd-toc-item navbar-nav active">
+        
+        <ul class="nav bd-sidenav bd-sidenav__home-link">
+            <li class="toctree-l1">
+                <a class="reference internal" href="../index.html">
+                    SHeffield Ice Velocity ExploreR
+                </a>
+            </li>
+        </ul>
+        <p aria-level="2" class="caption" role="heading"><span class="caption-text">Getting Started</span></p>
+<ul class="nav bd-sidenav">
+<li class="toctree-l1"><a class="reference internal" href="../getting_started/why.html">Why SHIVER?</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../getting_started/cite.html">Cite</a></li>
+</ul>
+<p aria-level="2" class="caption" role="heading"><span class="caption-text">Data</span></p>
+<ul class="nav bd-sidenav">
+<li class="toctree-l1"><a class="reference internal" href="../zarr_data/what_is_zarr.html">What is Zarr?</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../zarr_data/contributing_data.html">Contributing Datasets</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../zarr_data/unified_data.html">Unified Datasets</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../zarr_data/comparison.html">Comparison of Contributing Datasets</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../zarr_data/zarr_structure.html">Inspecting the Zarr Structure</a></li>
+</ul>
+<p aria-level="2" class="caption" role="heading"><span class="caption-text">Examples</span></p>
+<ul class="current nav bd-sidenav">
+<li class="toctree-l1"><a class="reference internal" href="simple_timeseries.html">Timeseries extraction</a></li>
+<li class="toctree-l1"><a class="reference internal" href="generating_citations.html">Generating citations for Contributing Datasets</a></li>
+<li class="toctree-l1"><a class="reference internal" href="simple_layers.html">Large spatial scale extraction of velocity fields</a></li>
+<li class="toctree-l1"><a class="reference internal" href="simple_subset.html">Datacube subsetting</a></li>
+<li class="toctree-l1"><a class="reference internal" href="trend_change.html">Ice speed trends in west Greenland (advanced)</a></li>
+<li class="toctree-l1 current active"><a class="current reference internal" href="#">Principal Component Analysis (advanced)</a></li>
+<li class="toctree-l1"><a class="reference internal" href="strain.html">Strain across the Brunt Ice Shelf</a></li>
+</ul>
+<p aria-level="2" class="caption" role="heading"><span class="caption-text">Appendix</span></p>
+<ul class="nav bd-sidenav">
+<li class="toctree-l1"><a class="reference internal" href="../appendix/faq.html">FAQ</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../appendix/versions.html">Version Updates</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../appendix/references.html">References</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../appendix/acknowledgements.html">Acknowledgements</a></li>
+</ul>
+
+    </div>
+</nav></div>
+    </div>
+  
+  
+  <div class="sidebar-primary-items__end sidebar-primary__section">
+  </div>
+  
+  <div id="rtd-footer-container"></div>
+
+
+      </div>
+      
+      <main id="main-content" class="bd-main" role="main">
+        
+        
+
+<div class="sbt-scroll-pixel-helper"></div>
+
+          <div class="bd-content">
+            <div class="bd-article-container">
+              
+              <div class="bd-header-article d-print-none">
+<div class="header-article-items header-article__inner">
+  
+    <div class="header-article-items__start">
+      
+        <div class="header-article-item"><label class="sidebar-toggle primary-toggle btn btn-sm" for="__primary" title="Toggle primary sidebar" data-bs-placement="bottom" data-bs-toggle="tooltip">
+  <span class="fa-solid fa-bars"></span>
+</label></div>
+      
+    </div>
+  
+  
+    <div class="header-article-items__end">
+      
+        <div class="header-article-item">
+
+<div class="article-header-buttons">
+
+
+
+
+
+<div class="dropdown dropdown-source-buttons">
+  <button class="btn dropdown-toggle" type="button" data-bs-toggle="dropdown" aria-expanded="false" aria-label="Source repositories">
+    <i class="fab fa-github"></i>
+  </button>
+  <ul class="dropdown-menu">
+      
+      
+      
+      <li><a href="https://github.com/ben-davison/SHIVER-build-zarr" target="_blank"
+   class="btn btn-sm btn-source-repository-button dropdown-item"
+   title="Source repository"
+   data-bs-placement="left" data-bs-toggle="tooltip"
+>
+  
+
+<span class="btn__icon-container">
+  <i class="fab fa-github"></i>
+  </span>
+<span class="btn__text-container">Repository</span>
+</a>
+</li>
+      
+      
+      
+      
+      <li><a href="https://github.com/ben-davison/SHIVER-build-zarr/edit/main/docs/examples/eof.ipynb" target="_blank"
+   class="btn btn-sm btn-source-edit-button dropdown-item"
+   title="Suggest edit"
+   data-bs-placement="left" data-bs-toggle="tooltip"
+>
+  
+
+<span class="btn__icon-container">
+  <i class="fas fa-pencil-alt"></i>
+  </span>
+<span class="btn__text-container">Suggest edit</span>
+</a>
+</li>
+      
+      
+      
+      
+      <li><a href="https://github.com/ben-davison/SHIVER-build-zarr/issues/new?title=Issue%20on%20page%20%2Fexamples/eof.html&body=Your%20issue%20content%20here." target="_blank"
+   class="btn btn-sm btn-source-issues-button dropdown-item"
+   title="Open an issue"
+   data-bs-placement="left" data-bs-toggle="tooltip"
+>
+  
+
+<span class="btn__icon-container">
+  <i class="fas fa-lightbulb"></i>
+  </span>
+<span class="btn__text-container">Open issue</span>
+</a>
+</li>
+      
+  </ul>
+</div>
+
+
+
+
+
+
+<div class="dropdown dropdown-download-buttons">
+  <button class="btn dropdown-toggle" type="button" data-bs-toggle="dropdown" aria-expanded="false" aria-label="Download this page">
+    <i class="fas fa-download"></i>
+  </button>
+  <ul class="dropdown-menu">
+      
+      
+      
+      <li><a href="../_sources/examples/eof.ipynb" target="_blank"
+   class="btn btn-sm btn-download-source-button dropdown-item"
+   title="Download source file"
+   data-bs-placement="left" data-bs-toggle="tooltip"
+>
+  
+
+<span class="btn__icon-container">
+  <i class="fas fa-file"></i>
+  </span>
+<span class="btn__text-container">.ipynb</span>
+</a>
+</li>
+      
+      
+      
+      
+      <li>
+<button onclick="window.print()"
+  class="btn btn-sm btn-download-pdf-button dropdown-item"
+  title="Print to PDF"
+  data-bs-placement="left" data-bs-toggle="tooltip"
+>
+  
+
+<span class="btn__icon-container">
+  <i class="fas fa-file-pdf"></i>
+  </span>
+<span class="btn__text-container">.pdf</span>
+</button>
+</li>
+      
+  </ul>
+</div>
+
+
+
+
+<button onclick="toggleFullScreen()"
+  class="btn btn-sm btn-fullscreen-button"
+  title="Fullscreen mode"
+  data-bs-placement="bottom" data-bs-toggle="tooltip"
+>
+  
+
+<span class="btn__icon-container">
+  <i class="fas fa-expand"></i>
+  </span>
+
+</button>
+
+
+
+<script>
+document.write(`
+  <button class="btn btn-sm nav-link pst-navbar-icon theme-switch-button" title="light/dark" aria-label="light/dark" data-bs-placement="bottom" data-bs-toggle="tooltip">
+    <i class="theme-switch fa-solid fa-sun fa-lg" data-mode="light"></i>
+    <i class="theme-switch fa-solid fa-moon fa-lg" data-mode="dark"></i>
+    <i class="theme-switch fa-solid fa-circle-half-stroke fa-lg" data-mode="auto"></i>
+  </button>
+`);
+</script>
+
+
+<script>
+document.write(`
+  <button class="btn btn-sm pst-navbar-icon search-button search-button__button" title="Search" aria-label="Search" data-bs-placement="bottom" data-bs-toggle="tooltip">
+    <i class="fa-solid fa-magnifying-glass fa-lg"></i>
+  </button>
+`);
+</script>
+<label class="sidebar-toggle secondary-toggle btn btn-sm" for="__secondary"title="Toggle secondary sidebar" data-bs-placement="bottom" data-bs-toggle="tooltip">
+    <span class="fa-solid fa-list"></span>
+</label>
+</div></div>
+      
+    </div>
+  
+</div>
+</div>
+              
+              
+
+<div id="jb-print-docs-body" class="onlyprint">
+    <h1>Principal Component Analysis (advanced)</h1>
+    <!-- Table of contents -->
+    <div id="print-main-content">
+        <div id="jb-print-toc">
+            
+            <div>
+                <h2> Contents </h2>
+            </div>
+            <nav aria-label="Page">
+                <ul class="visible nav section-nav flex-column">
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#configuration-and-parameters">1. Configuration and Parameters</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#helper-functions">2. Helper Functions</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#data-loading-and-time-separations">3. Data Loading and Time Separations</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#temporal-distribution-and-gap-filling">4. Temporal Distribution and Gap Filling</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#diagnostic-check-verifying-the-pre-processing">5. Diagnostic Check: Verifying the pre-processing</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#masking-detrending-and-principal-component-analysis">6. Masking, Detrending, and Principal Component Analysis</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#visualising-and-interpreting-the-pca-modes">7. Visualising and Interpreting the PCA Modes</a></li>
+</ul>
+            </nav>
+        </div>
+    </div>
+</div>
+
+              
+                
+<div id="searchbox"></div>
+                <article class="bd-article">
+                  
+  <section class="tex2jax_ignore mathjax_ignore" id="principal-component-analysis-advanced">
+<h1>Principal Component Analysis (advanced)<a class="headerlink" href="#principal-component-analysis-advanced" title="Permalink to this heading">#</a></h1>
+<p>In this example, we will use the Zarr stores to examine the modes of speed variability at a glacier on the Antarctica Peninsula.</p>
+<p>It is now well known that glaciers along the west coast of the Antarctic Peninsula undergo seasonal changes in speed. This has been shown through the presentation of speed timeseries extracted in Eulerian reference frame from fixed locations relatively close (a few kilometres upstream) to glacier termini. The interpretation of the resulting timeseries is muddied somewhat because glacier terminus position also varies seasonally, which means that the distance between the fixed extraction location and the moving glacier terminus varies seasonally. On glaciers with steep gradients in speed near the terminus (i.e. most glaciers), this extraction strategy could alias speed gradients as temporal variations in ice speed - as the terminus retreats in summer, faster speeds will be recorded at the extraction location which is now closer to the terminus.</p>
+<p>Of course, the most direct way to avoid aliasing would be to migrate the extraction location up- or downstream as the terminus retreats or advances. However, terminus position delineation is the devil’s own job and even the most enthusiastic digitiser would (should!) baulk at the idea of digitising every glacier terminus around the Antarctic Peninsula every week since 2015 (when imagery became frequent enough to resolve seasonal speed changes).</p>
+<p>One way to help clarify this interpretation is to examine how glacier speed changes (seasonally or over some other timescale) across the whole glacier. Perhaps the simplest way to do that is to extract speed data along a flowline - i.e. examine multiple timeseries a different distances upstream. However, with relatively complete velocity data, we can go a step further and perform a Principal Component Analysis (PCA) on the data.</p>
+<p>If you are unfamiliar with PCA and related analysis, Ashmore et al. (2021) presents a compelling example of its utility when applied to a fast-flowing glacier in west Greenland and Chad Greene produced a great introduction to Empirical Orthogonal Functions (EOFs) in MATLAB <a class="reference external" href="https://www.chadagreene.com/CDT/eof_documentation.html">here</a>.</p>
+<blockquote>
+<div><p>Ashmore, D.W., Mair, D.W., Higham, J.E., Brough, S., Lea, J.M. and Nias, I.J., 2022. Proper orthogonal decomposition of ice velocity identifies drivers of flow variability at Sermeq Kujalleq (Jakobshavn Isbræ). The Cryosphere, 16, 219-236. DOI: <a class="reference external" href="https://doi.org/10.5194/tc-16-219-2022">https://doi.org/10.5194/tc-16-219-2022</a></p>
+</div></blockquote>
+<p>Let’s setup our work station to do this.</p>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="kn">import</span><span class="w"> </span><span class="nn">sys</span>
+<span class="kn">import</span><span class="w"> </span><span class="nn">xarray</span><span class="w"> </span><span class="k">as</span><span class="w"> </span><span class="nn">xr</span>
+<span class="kn">import</span><span class="w"> </span><span class="nn">rioxarray</span>
+<span class="kn">import</span><span class="w"> </span><span class="nn">geopandas</span><span class="w"> </span><span class="k">as</span><span class="w"> </span><span class="nn">gpd</span>
+<span class="kn">import</span><span class="w"> </span><span class="nn">pandas</span><span class="w"> </span><span class="k">as</span><span class="w"> </span><span class="nn">pd</span>
+<span class="kn">import</span><span class="w"> </span><span class="nn">numpy</span><span class="w"> </span><span class="k">as</span><span class="w"> </span><span class="nn">np</span>
+<span class="kn">from</span><span class="w"> </span><span class="nn">pathlib</span><span class="w"> </span><span class="kn">import</span> <span class="n">Path</span>
+<span class="kn">from</span><span class="w"> </span><span class="nn">pyproj</span><span class="w"> </span><span class="kn">import</span> <span class="n">Transformer</span>
+<span class="kn">from</span><span class="w"> </span><span class="nn">sklearn.decomposition</span><span class="w"> </span><span class="kn">import</span> <span class="n">PCA</span>
+<span class="kn">from</span><span class="w"> </span><span class="nn">scipy.signal</span><span class="w"> </span><span class="kn">import</span> <span class="n">savgol_filter</span><span class="p">,</span> <span class="n">detrend</span>
+<span class="kn">import</span><span class="w"> </span><span class="nn">matplotlib.pyplot</span><span class="w"> </span><span class="k">as</span><span class="w"> </span><span class="nn">plt</span>
+<span class="kn">import</span><span class="w"> </span><span class="nn">matplotlib.colors</span><span class="w"> </span><span class="k">as</span><span class="w"> </span><span class="nn">mcolors</span>
+<span class="kn">from</span><span class="w"> </span><span class="nn">matplotlib.colors</span><span class="w"> </span><span class="kn">import</span> <span class="n">LightSource</span>
+<span class="kn">from</span><span class="w"> </span><span class="nn">matplotlib_scalebar.scalebar</span><span class="w"> </span><span class="kn">import</span> <span class="n">ScaleBar</span>
+<span class="kn">import</span><span class="w"> </span><span class="nn">zarr</span>
+<span class="kn">import</span><span class="w"> </span><span class="nn">cmcrameri.cm</span><span class="w"> </span><span class="k">as</span><span class="w"> </span><span class="nn">cmc</span>
+<span class="kn">from</span><span class="w"> </span><span class="nn">dask.distributed</span><span class="w"> </span><span class="kn">import</span> <span class="n">Client</span><span class="p">,</span> <span class="n">LocalCluster</span>
+
+<span class="c1"># Spin up a local Dask cluster</span>
+<span class="n">cluster</span> <span class="o">=</span> <span class="n">LocalCluster</span><span class="p">(</span><span class="n">n_workers</span><span class="o">=</span><span class="mi">4</span><span class="p">,</span> <span class="n">threads_per_worker</span><span class="o">=</span><span class="mi">2</span><span class="p">)</span>
+<span class="n">client</span> <span class="o">=</span> <span class="n">Client</span><span class="p">(</span><span class="n">cluster</span><span class="p">)</span>
+
+<span class="c1"># Cap Zarr&#39;s internal HTTP concurrency per worker</span>
+<span class="n">zarr</span><span class="o">.</span><span class="n">config</span><span class="o">.</span><span class="n">set</span><span class="p">({</span><span class="s2">&quot;async.concurrency&quot;</span><span class="p">:</span> <span class="mi">2</span><span class="p">})</span>
+
+<span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;Dask Dashboard link: </span><span class="si">{</span><span class="n">client</span><span class="o">.</span><span class="n">dashboard_link</span><span class="si">}</span><span class="s2">&quot;</span><span class="p">)</span>
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>Dask Dashboard link: http://127.0.0.1:8787/status
+</pre></div>
+</div>
+</div>
+</div>
+<section id="configuration-and-parameters">
+<h2>1. Configuration and Parameters<a class="headerlink" href="#configuration-and-parameters" title="Permalink to this heading">#</a></h2>
+<p>First, we need to set up our paths, processing parameters, and quality thresholds.</p>
+<p>Because PCA is highly sensitive to noise and missing data, we define thresholds here to mask out pixels that have too many data gaps (<code class="docutils literal notranslate"><span class="pre">MAX_PROP_FILLED</span></code>, <code class="docutils literal notranslate"><span class="pre">MAX_GAP_ALLOWED</span></code>). We also define our Savitzky-Golay smoothing windows, which we will use to gently interpolate through periods of missing data without significantly modifying real changes in speed over longer timescales.</p>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="c1"># --- CONFIGURATION ---</span>
+<span class="n">TARGET_BASIN</span> <span class="o">=</span> <span class="s2">&quot;Leonardo Glacier&quot;</span>
+
+<span class="c1"># Paths</span>
+<span class="n">AUX_DIR</span> <span class="o">=</span> <span class="n">Path</span><span class="p">(</span><span class="sa">r</span><span class="s2">&quot;/no/one/wants/to/see/my/directory/structure/aux_data&quot;</span><span class="p">)</span>
+<span class="n">ZARR_PATH</span> <span class="o">=</span> <span class="s2">&quot;s3://us-west-2.opendata.source.coop/uos-shiver/antarctica/antarctica_multisource_velocity_cubed.zarr&quot;</span>
+<span class="n">BASINS_PATH</span> <span class="o">=</span> <span class="n">AUX_DIR</span> <span class="o">/</span> <span class="s2">&quot;NEB_Basins_reproject_fixed.shp&quot;</span>
+
+<span class="n">ROCK_MASK_PATH</span> <span class="o">=</span> <span class="n">AUX_DIR</span> <span class="o">/</span> <span class="s2">&quot;rock_mask_Antarctica_EPSG3031_30m_peninsula.tif&quot;</span>
+<span class="n">ICE_MASK_PATH</span> <span class="o">=</span> <span class="n">AUX_DIR</span> <span class="o">/</span> <span class="s2">&quot;ice_mask_peninsula_EPSG3031_200m.tif&quot;</span>
+<span class="n">BEDMACHINE_PATH</span> <span class="o">=</span> <span class="n">AUX_DIR</span> <span class="o">/</span>  <span class="s2">&quot;BedMachine_mask.tif&quot;</span>
+<span class="n">BEDMAP3_PATH</span> <span class="o">=</span> <span class="n">AUX_DIR</span> <span class="o">/</span>  <span class="s2">&quot;BedMap3_mask.tif&quot;</span>
+<span class="n">DEM_PATH</span> <span class="o">=</span> <span class="s2">&quot;/no/one/wants/to/see/my/directory/structure/REMA_100m_peninsula_dem_filled.tif&quot;</span>
+<span class="n">GL_PATH</span> <span class="o">=</span> <span class="s2">&quot;/no/one/wants/to/see/my/directory/structure/AP_GL_TMOC_2019_2020.shp&quot;</span>
+
+<span class="c1"># VELOCITY REFERENCE MAPS - I precomputed these to make the code easier to digest</span>
+<span class="n">U_PATH</span> <span class="o">=</span> <span class="n">AUX_DIR</span> <span class="o">/</span> <span class="s2">&quot;U_median_20141125_20250805_200m_raw.tif&quot;</span>
+<span class="n">V_PATH</span> <span class="o">=</span> <span class="n">AUX_DIR</span> <span class="o">/</span> <span class="s2">&quot;V_median_20141125_20250805_200m_raw.tif&quot;</span>
+<span class="n">S_PATH</span> <span class="o">=</span> <span class="n">AUX_DIR</span> <span class="o">/</span> <span class="s2">&quot;S_median_20141125_20250805_200m_raw.tif&quot;</span>
+
+<span class="c1"># --- PROCESSING PARAMETERS ---</span>
+<span class="c1"># Let&#39;s focus on a period where velocity data are frequent enough to give us a chance of resolving seasonality</span>
+<span class="n">START_DATE</span> <span class="o">=</span> <span class="s1">&#39;2016-10-01&#39;</span>
+<span class="n">END_DATE</span> <span class="o">=</span> <span class="s1">&#39;2025-03-01&#39;</span>
+<span class="n">PCA_FREQ</span> <span class="o">=</span> <span class="s1">&#39;12D&#39;</span>     
+<span class="n">NUM_MODES</span> <span class="o">=</span> <span class="mi">3</span>   <span class="c1"># Restricted to first 3 modes</span>
+<span class="n">MIN_MEAN_SPEED</span> <span class="o">=</span> <span class="mi">80</span>   
+
+<span class="c1"># --- DUAL SMOOTHING &amp; FILLING ---</span>
+<span class="n">PRE_FILL_LIMIT</span> <span class="o">=</span> <span class="mi">24</span>   
+<span class="n">SAVGOL_WINDOW_PRE</span> <span class="o">=</span> <span class="mi">25</span> 
+<span class="n">SAVGOL_WINDOW_POST</span> <span class="o">=</span> <span class="mi">35</span> 
+<span class="n">SAVGOL_POLY</span> <span class="o">=</span> <span class="mi">2</span>
+
+<span class="c1"># --- PCA QUALITY MASKING ---</span>
+<span class="n">MAX_PROP_FILLED</span> <span class="o">=</span> <span class="mf">0.75</span>  
+<span class="n">MAX_GAP_ALLOWED</span> <span class="o">=</span> <span class="mi">150</span>
+</pre></div>
+</div>
+</div>
+</div>
+</section>
+<section id="helper-functions">
+<h2>2. Helper Functions<a class="headerlink" href="#helper-functions" title="Permalink to this heading">#</a></h2>
+<p>Next, we define a few helper functions to keep our main processing blocks clean. This includes a custom colormap function that centres around zero (crucial for visualising PCA anomalies where positive and negative values represent opposite phases of a signal), a function to calculate the maximum consecutive data gap for quality control, and our plotting routines.</p>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="k">def</span><span class="w"> </span><span class="nf">get_clim_and_cmap</span><span class="p">(</span><span class="n">data_values</span><span class="p">):</span>
+    <span class="n">valid</span> <span class="o">=</span> <span class="n">data_values</span><span class="p">[</span><span class="o">~</span><span class="n">np</span><span class="o">.</span><span class="n">isnan</span><span class="p">(</span><span class="n">data_values</span><span class="p">)]</span>
+    <span class="k">if</span> <span class="nb">len</span><span class="p">(</span><span class="n">valid</span><span class="p">)</span> <span class="o">==</span> <span class="mi">0</span><span class="p">:</span>
+        <span class="k">return</span> <span class="s1">&#39;RdBu_r&#39;</span><span class="p">,</span> <span class="o">-</span><span class="mi">1</span><span class="p">,</span> <span class="mi">1</span> 
+    
+    <span class="n">p5</span><span class="p">,</span> <span class="n">p95</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">nanpercentile</span><span class="p">(</span><span class="n">valid</span><span class="p">,</span> <span class="p">[</span><span class="mi">5</span><span class="p">,</span> <span class="mi">95</span><span class="p">])</span>
+    
+    <span class="k">if</span> <span class="n">cmc</span> <span class="ow">is</span> <span class="kc">None</span><span class="p">:</span> 
+        <span class="n">cmap</span> <span class="o">=</span> <span class="s1">&#39;RdBu_r&#39;</span>
+        <span class="n">vmax</span> <span class="o">=</span> <span class="nb">max</span><span class="p">(</span><span class="nb">abs</span><span class="p">(</span><span class="n">p5</span><span class="p">),</span> <span class="nb">abs</span><span class="p">(</span><span class="n">p95</span><span class="p">))</span>
+        <span class="n">vmin</span> <span class="o">=</span> <span class="o">-</span><span class="n">vmax</span>
+    <span class="k">else</span><span class="p">:</span>
+        <span class="n">is_positive</span> <span class="o">=</span> <span class="n">p5</span> <span class="o">&gt;=</span> <span class="mi">0</span>
+        <span class="n">is_negative</span> <span class="o">=</span> <span class="n">p95</span> <span class="o">&lt;=</span> <span class="mi">0</span>
+        
+        <span class="k">if</span> <span class="n">is_positive</span><span class="p">:</span>
+            <span class="n">cmap</span> <span class="o">=</span> <span class="n">cmc</span><span class="o">.</span><span class="n">bilbao_r</span>
+            <span class="n">vmin</span><span class="p">,</span> <span class="n">vmax</span> <span class="o">=</span> <span class="n">p5</span><span class="p">,</span> <span class="n">p95</span>
+        <span class="k">elif</span> <span class="n">is_negative</span><span class="p">:</span>
+            <span class="n">cmap</span> <span class="o">=</span> <span class="n">cmc</span><span class="o">.</span><span class="n">lapaz_r</span>
+            <span class="n">vmin</span><span class="p">,</span> <span class="n">vmax</span> <span class="o">=</span> <span class="n">p5</span><span class="p">,</span> <span class="n">p95</span> 
+        <span class="k">else</span><span class="p">:</span>
+            <span class="n">cmap</span> <span class="o">=</span> <span class="n">cmc</span><span class="o">.</span><span class="n">vik</span>
+            <span class="n">limit</span> <span class="o">=</span> <span class="nb">max</span><span class="p">(</span><span class="nb">abs</span><span class="p">(</span><span class="n">p5</span><span class="p">),</span> <span class="nb">abs</span><span class="p">(</span><span class="n">p95</span><span class="p">))</span>
+            <span class="n">vmin</span> <span class="o">=</span> <span class="o">-</span><span class="n">limit</span>
+            <span class="n">vmax</span> <span class="o">=</span> <span class="n">limit</span>
+            
+    <span class="k">return</span> <span class="n">cmap</span><span class="p">,</span> <span class="n">vmin</span><span class="p">,</span> <span class="n">vmax</span>
+
+<span class="k">def</span><span class="w"> </span><span class="nf">calc_max_gap_1d</span><span class="p">(</span><span class="n">data_1d</span><span class="p">):</span>
+    <span class="n">valid_indices</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">flatnonzero</span><span class="p">(</span><span class="o">~</span><span class="n">np</span><span class="o">.</span><span class="n">isnan</span><span class="p">(</span><span class="n">data_1d</span><span class="p">))</span>
+    <span class="n">total_len</span> <span class="o">=</span> <span class="nb">len</span><span class="p">(</span><span class="n">data_1d</span><span class="p">)</span>
+    
+    <span class="k">if</span> <span class="nb">len</span><span class="p">(</span><span class="n">valid_indices</span><span class="p">)</span> <span class="o">==</span> <span class="mi">0</span><span class="p">:</span>
+        <span class="k">return</span> <span class="n">total_len</span> 
+    
+    <span class="n">max_internal</span> <span class="o">=</span> <span class="mi">0</span>
+    <span class="k">if</span> <span class="nb">len</span><span class="p">(</span><span class="n">valid_indices</span><span class="p">)</span> <span class="o">&gt;</span> <span class="mi">1</span><span class="p">:</span>
+        <span class="n">max_internal</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">max</span><span class="p">(</span><span class="n">np</span><span class="o">.</span><span class="n">diff</span><span class="p">(</span><span class="n">valid_indices</span><span class="p">))</span> <span class="o">-</span> <span class="mi">1</span>
+        
+    <span class="n">start_gap</span> <span class="o">=</span> <span class="n">valid_indices</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span>
+    <span class="n">end_gap</span> <span class="o">=</span> <span class="p">(</span><span class="n">total_len</span> <span class="o">-</span> <span class="mi">1</span><span class="p">)</span> <span class="o">-</span> <span class="n">valid_indices</span><span class="p">[</span><span class="o">-</span><span class="mi">1</span><span class="p">]</span>
+    
+    <span class="k">return</span> <span class="nb">max</span><span class="p">(</span><span class="n">max_internal</span><span class="p">,</span> <span class="n">start_gap</span><span class="p">,</span> <span class="n">end_gap</span><span class="p">)</span>
+
+<span class="k">def</span><span class="w"> </span><span class="nf">plot_quality_map</span><span class="p">(</span><span class="n">prop_filled_da</span><span class="p">,</span> <span class="n">max_gap_da</span><span class="p">,</span> <span class="n">dem_da</span><span class="p">,</span> <span class="n">basin_geom</span><span class="p">,</span> <span class="n">glacier_name</span><span class="p">):</span>
+    <span class="n">fig</span><span class="p">,</span> <span class="n">axes</span> <span class="o">=</span> <span class="n">plt</span><span class="o">.</span><span class="n">subplots</span><span class="p">(</span><span class="mi">1</span><span class="p">,</span> <span class="mi">2</span><span class="p">,</span> <span class="n">figsize</span><span class="o">=</span><span class="p">(</span><span class="mi">16</span><span class="p">,</span> <span class="mi">8</span><span class="p">))</span>
+    
+    <span class="n">ls</span> <span class="o">=</span> <span class="n">LightSource</span><span class="p">(</span><span class="n">azdeg</span><span class="o">=</span><span class="mi">315</span><span class="p">,</span> <span class="n">altdeg</span><span class="o">=</span><span class="mi">45</span><span class="p">)</span>
+    <span class="n">dem_filled</span> <span class="o">=</span> <span class="n">dem_da</span><span class="o">.</span><span class="n">fillna</span><span class="p">(</span><span class="mi">0</span><span class="p">)</span><span class="o">.</span><span class="n">values</span>
+    <span class="n">hillshade</span> <span class="o">=</span> <span class="n">ls</span><span class="o">.</span><span class="n">hillshade</span><span class="p">(</span><span class="n">dem_filled</span><span class="p">,</span> <span class="n">vert_exag</span><span class="o">=</span><span class="mi">1</span><span class="p">)</span>
+    
+    <span class="c1"># Panel 1: Proportion Filled</span>
+    <span class="n">ax</span> <span class="o">=</span> <span class="n">axes</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span>
+    <span class="n">ax</span><span class="o">.</span><span class="n">imshow</span><span class="p">(</span><span class="n">hillshade</span><span class="p">,</span> <span class="n">cmap</span><span class="o">=</span><span class="s1">&#39;gray&#39;</span><span class="p">,</span> <span class="n">extent</span><span class="o">=</span><span class="p">[</span><span class="n">dem_da</span><span class="o">.</span><span class="n">x</span><span class="o">.</span><span class="n">min</span><span class="p">(),</span> <span class="n">dem_da</span><span class="o">.</span><span class="n">x</span><span class="o">.</span><span class="n">max</span><span class="p">(),</span> <span class="n">dem_da</span><span class="o">.</span><span class="n">y</span><span class="o">.</span><span class="n">min</span><span class="p">(),</span> <span class="n">dem_da</span><span class="o">.</span><span class="n">y</span><span class="o">.</span><span class="n">max</span><span class="p">()],</span> <span class="n">origin</span><span class="o">=</span><span class="s1">&#39;upper&#39;</span><span class="p">)</span>
+    <span class="n">im1</span> <span class="o">=</span> <span class="n">prop_filled_da</span><span class="o">.</span><span class="n">plot</span><span class="p">(</span><span class="n">ax</span><span class="o">=</span><span class="n">ax</span><span class="p">,</span> <span class="n">cmap</span><span class="o">=</span><span class="s1">&#39;viridis&#39;</span><span class="p">,</span> <span class="n">vmin</span><span class="o">=</span><span class="mi">0</span><span class="p">,</span> <span class="n">vmax</span><span class="o">=</span><span class="mi">1</span><span class="p">,</span> <span class="n">alpha</span><span class="o">=</span><span class="mf">0.8</span><span class="p">,</span> <span class="n">add_colorbar</span><span class="o">=</span><span class="kc">False</span><span class="p">)</span>
+    <span class="n">gpd</span><span class="o">.</span><span class="n">GeoSeries</span><span class="p">([</span><span class="n">basin_geom</span><span class="p">])</span><span class="o">.</span><span class="n">plot</span><span class="p">(</span><span class="n">ax</span><span class="o">=</span><span class="n">ax</span><span class="p">,</span> <span class="n">facecolor</span><span class="o">=</span><span class="s1">&#39;none&#39;</span><span class="p">,</span> <span class="n">edgecolor</span><span class="o">=</span><span class="s1">&#39;white&#39;</span><span class="p">,</span> <span class="n">linewidth</span><span class="o">=</span><span class="mf">1.5</span><span class="p">)</span>
+    <span class="n">plt</span><span class="o">.</span><span class="n">colorbar</span><span class="p">(</span><span class="n">im1</span><span class="p">,</span> <span class="n">ax</span><span class="o">=</span><span class="n">ax</span><span class="p">,</span> <span class="n">label</span><span class="o">=</span><span class="s2">&quot;Proportion Interpolated (0-1)&quot;</span><span class="p">,</span> <span class="n">orientation</span><span class="o">=</span><span class="s1">&#39;horizontal&#39;</span><span class="p">,</span> <span class="n">pad</span><span class="o">=</span><span class="mf">0.05</span><span class="p">)</span>
+    <span class="n">ax</span><span class="o">.</span><span class="n">set_title</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;Metric 1: Proportion Synthetic</span><span class="se">\n</span><span class="s2">(Threshold &gt; </span><span class="si">{</span><span class="n">MAX_PROP_FILLED</span><span class="si">}</span><span class="s2">)&quot;</span><span class="p">)</span>
+
+    <span class="c1"># Panel 2: Max Gap</span>
+    <span class="n">ax</span> <span class="o">=</span> <span class="n">axes</span><span class="p">[</span><span class="mi">1</span><span class="p">]</span>
+    <span class="n">ax</span><span class="o">.</span><span class="n">imshow</span><span class="p">(</span><span class="n">hillshade</span><span class="p">,</span> <span class="n">cmap</span><span class="o">=</span><span class="s1">&#39;gray&#39;</span><span class="p">,</span> <span class="n">extent</span><span class="o">=</span><span class="p">[</span><span class="n">dem_da</span><span class="o">.</span><span class="n">x</span><span class="o">.</span><span class="n">min</span><span class="p">(),</span> <span class="n">dem_da</span><span class="o">.</span><span class="n">x</span><span class="o">.</span><span class="n">max</span><span class="p">(),</span> <span class="n">dem_da</span><span class="o">.</span><span class="n">y</span><span class="o">.</span><span class="n">min</span><span class="p">(),</span> <span class="n">dem_da</span><span class="o">.</span><span class="n">y</span><span class="o">.</span><span class="n">max</span><span class="p">()],</span> <span class="n">origin</span><span class="o">=</span><span class="s1">&#39;upper&#39;</span><span class="p">)</span>
+    <span class="n">im2</span> <span class="o">=</span> <span class="n">max_gap_da</span><span class="o">.</span><span class="n">plot</span><span class="p">(</span><span class="n">ax</span><span class="o">=</span><span class="n">ax</span><span class="p">,</span> <span class="n">cmap</span><span class="o">=</span><span class="s1">&#39;magma&#39;</span><span class="p">,</span> <span class="n">vmin</span><span class="o">=</span><span class="mi">0</span><span class="p">,</span> <span class="n">vmax</span><span class="o">=</span><span class="mi">365</span><span class="p">,</span> <span class="n">alpha</span><span class="o">=</span><span class="mf">0.8</span><span class="p">,</span> <span class="n">add_colorbar</span><span class="o">=</span><span class="kc">False</span><span class="p">)</span>
+    <span class="n">gpd</span><span class="o">.</span><span class="n">GeoSeries</span><span class="p">([</span><span class="n">basin_geom</span><span class="p">])</span><span class="o">.</span><span class="n">plot</span><span class="p">(</span><span class="n">ax</span><span class="o">=</span><span class="n">ax</span><span class="p">,</span> <span class="n">facecolor</span><span class="o">=</span><span class="s1">&#39;none&#39;</span><span class="p">,</span> <span class="n">edgecolor</span><span class="o">=</span><span class="s1">&#39;white&#39;</span><span class="p">,</span> <span class="n">linewidth</span><span class="o">=</span><span class="mf">1.5</span><span class="p">)</span>
+    <span class="n">plt</span><span class="o">.</span><span class="n">colorbar</span><span class="p">(</span><span class="n">im2</span><span class="p">,</span> <span class="n">ax</span><span class="o">=</span><span class="n">ax</span><span class="p">,</span> <span class="n">label</span><span class="o">=</span><span class="s2">&quot;Max Consecutive Gap (Days)&quot;</span><span class="p">,</span> <span class="n">orientation</span><span class="o">=</span><span class="s1">&#39;horizontal&#39;</span><span class="p">,</span> <span class="n">pad</span><span class="o">=</span><span class="mf">0.05</span><span class="p">)</span>
+    <span class="n">ax</span><span class="o">.</span><span class="n">set_title</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;Metric 2: Max Gap</span><span class="se">\n</span><span class="s2">(Threshold &gt; </span><span class="si">{</span><span class="n">MAX_GAP_ALLOWED</span><span class="si">}</span><span class="s2"> days)&quot;</span><span class="p">)</span>
+
+    <span class="n">plt</span><span class="o">.</span><span class="n">suptitle</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;</span><span class="si">{</span><span class="n">glacier_name</span><span class="si">}</span><span class="s2">: PCA Input Quality Masks&quot;</span><span class="p">,</span> <span class="n">fontsize</span><span class="o">=</span><span class="mi">16</span><span class="p">)</span>
+    <span class="n">plt</span><span class="o">.</span><span class="n">tight_layout</span><span class="p">()</span>
+    <span class="n">plt</span><span class="o">.</span><span class="n">show</span><span class="p">()</span>
+
+<span class="k">def</span><span class="w"> </span><span class="nf">plot_mode_figure</span><span class="p">(</span><span class="n">mode_num</span><span class="p">,</span> <span class="n">pct_var</span><span class="p">,</span> <span class="n">pc_series</span><span class="p">,</span> <span class="n">eof_map_da</span><span class="p">,</span> <span class="n">dem_da</span><span class="p">,</span> <span class="n">gl_gdf</span><span class="p">,</span> <span class="n">basin_geom</span><span class="p">,</span> <span class="n">glacier_name</span><span class="p">):</span>
+    <span class="n">fig</span> <span class="o">=</span> <span class="n">plt</span><span class="o">.</span><span class="n">figure</span><span class="p">(</span><span class="n">figsize</span><span class="o">=</span><span class="p">(</span><span class="mi">12</span><span class="p">,</span> <span class="mi">6</span><span class="p">),</span> <span class="n">constrained_layout</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span>
+    <span class="n">gs</span> <span class="o">=</span> <span class="n">fig</span><span class="o">.</span><span class="n">add_gridspec</span><span class="p">(</span><span class="mi">1</span><span class="p">,</span> <span class="mi">2</span><span class="p">,</span> <span class="n">width_ratios</span><span class="o">=</span><span class="p">[</span><span class="mf">1.5</span><span class="p">,</span> <span class="mi">1</span><span class="p">])</span>
+    
+    <span class="c1"># Panel 1: Time Series</span>
+    <span class="n">ax_ts</span> <span class="o">=</span> <span class="n">fig</span><span class="o">.</span><span class="n">add_subplot</span><span class="p">(</span><span class="n">gs</span><span class="p">[</span><span class="mi">0</span><span class="p">])</span>
+    <span class="n">dates</span> <span class="o">=</span> <span class="n">pd</span><span class="o">.</span><span class="n">to_datetime</span><span class="p">(</span><span class="n">pc_series</span><span class="o">.</span><span class="n">time</span><span class="o">.</span><span class="n">values</span><span class="p">)</span>
+    <span class="n">vals</span> <span class="o">=</span> <span class="n">pc_series</span><span class="o">.</span><span class="n">values</span>
+    
+    <span class="n">ax_ts</span><span class="o">.</span><span class="n">axhline</span><span class="p">(</span><span class="mi">0</span><span class="p">,</span> <span class="n">color</span><span class="o">=</span><span class="s1">&#39;k&#39;</span><span class="p">,</span> <span class="n">linewidth</span><span class="o">=</span><span class="mf">0.5</span><span class="p">)</span>
+    <span class="n">ax_ts</span><span class="o">.</span><span class="n">fill_between</span><span class="p">(</span><span class="n">dates</span><span class="p">,</span> <span class="n">vals</span><span class="p">,</span> <span class="mi">0</span><span class="p">,</span> <span class="n">where</span><span class="o">=</span><span class="p">(</span><span class="n">vals</span> <span class="o">&gt;=</span> <span class="mi">0</span><span class="p">),</span> <span class="n">facecolor</span><span class="o">=</span><span class="s1">&#39;red&#39;</span><span class="p">,</span> <span class="n">alpha</span><span class="o">=</span><span class="mf">0.6</span><span class="p">,</span> <span class="n">interpolate</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span>
+    <span class="n">ax_ts</span><span class="o">.</span><span class="n">fill_between</span><span class="p">(</span><span class="n">dates</span><span class="p">,</span> <span class="n">vals</span><span class="p">,</span> <span class="mi">0</span><span class="p">,</span> <span class="n">where</span><span class="o">=</span><span class="p">(</span><span class="n">vals</span> <span class="o">&lt;=</span> <span class="mi">0</span><span class="p">),</span> <span class="n">facecolor</span><span class="o">=</span><span class="s1">&#39;blue&#39;</span><span class="p">,</span> <span class="n">alpha</span><span class="o">=</span><span class="mf">0.6</span><span class="p">,</span> <span class="n">interpolate</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span>
+    <span class="n">ax_ts</span><span class="o">.</span><span class="n">plot</span><span class="p">(</span><span class="n">dates</span><span class="p">,</span> <span class="n">vals</span><span class="p">,</span> <span class="n">color</span><span class="o">=</span><span class="s1">&#39;k&#39;</span><span class="p">,</span> <span class="n">linewidth</span><span class="o">=</span><span class="mf">0.8</span><span class="p">)</span>
+    <span class="n">ax_ts</span><span class="o">.</span><span class="n">set_ylabel</span><span class="p">(</span><span class="s2">&quot;Normalized Amplitude (Max=1)&quot;</span><span class="p">)</span>
+    <span class="n">ax_ts</span><span class="o">.</span><span class="n">grid</span><span class="p">(</span><span class="kc">True</span><span class="p">,</span> <span class="n">linestyle</span><span class="o">=</span><span class="s1">&#39;:&#39;</span><span class="p">,</span> <span class="n">alpha</span><span class="o">=</span><span class="mf">0.5</span><span class="p">)</span>
+    <span class="n">ax_ts</span><span class="o">.</span><span class="n">set_xlim</span><span class="p">(</span><span class="n">pd</span><span class="o">.</span><span class="n">to_datetime</span><span class="p">(</span><span class="n">START_DATE</span><span class="p">),</span> <span class="n">pd</span><span class="o">.</span><span class="n">to_datetime</span><span class="p">(</span><span class="n">END_DATE</span><span class="p">))</span>
+
+    <span class="c1"># Panel 2: Spatial Map</span>
+    <span class="n">ax_map</span> <span class="o">=</span> <span class="n">fig</span><span class="o">.</span><span class="n">add_subplot</span><span class="p">(</span><span class="n">gs</span><span class="p">[</span><span class="mi">1</span><span class="p">])</span>
+    <span class="n">ax_map</span><span class="o">.</span><span class="n">set_aspect</span><span class="p">(</span><span class="s1">&#39;equal&#39;</span><span class="p">)</span>
+    
+    <span class="n">ls</span> <span class="o">=</span> <span class="n">LightSource</span><span class="p">(</span><span class="n">azdeg</span><span class="o">=</span><span class="mi">315</span><span class="p">,</span> <span class="n">altdeg</span><span class="o">=</span><span class="mi">45</span><span class="p">)</span>
+    <span class="n">dem_filled</span> <span class="o">=</span> <span class="n">dem_da</span><span class="o">.</span><span class="n">fillna</span><span class="p">(</span><span class="mi">0</span><span class="p">)</span><span class="o">.</span><span class="n">values</span>
+    <span class="n">hillshade</span> <span class="o">=</span> <span class="n">ls</span><span class="o">.</span><span class="n">hillshade</span><span class="p">(</span><span class="n">dem_filled</span><span class="p">,</span> <span class="n">vert_exag</span><span class="o">=</span><span class="mi">1</span><span class="p">)</span>
+    <span class="n">ax_map</span><span class="o">.</span><span class="n">imshow</span><span class="p">(</span><span class="n">hillshade</span><span class="p">,</span> <span class="n">cmap</span><span class="o">=</span><span class="s1">&#39;gray&#39;</span><span class="p">,</span> <span class="n">extent</span><span class="o">=</span><span class="p">[</span><span class="n">dem_da</span><span class="o">.</span><span class="n">x</span><span class="o">.</span><span class="n">min</span><span class="p">(),</span> <span class="n">dem_da</span><span class="o">.</span><span class="n">x</span><span class="o">.</span><span class="n">max</span><span class="p">(),</span> <span class="n">dem_da</span><span class="o">.</span><span class="n">y</span><span class="o">.</span><span class="n">min</span><span class="p">(),</span> <span class="n">dem_da</span><span class="o">.</span><span class="n">y</span><span class="o">.</span><span class="n">max</span><span class="p">()],</span> <span class="n">origin</span><span class="o">=</span><span class="s1">&#39;upper&#39;</span><span class="p">)</span>
+
+    <span class="n">vals_flat</span> <span class="o">=</span> <span class="n">eof_map_da</span><span class="o">.</span><span class="n">values</span><span class="o">.</span><span class="n">flatten</span><span class="p">()</span>
+    <span class="n">cmap_name</span><span class="p">,</span> <span class="n">vmin</span><span class="p">,</span> <span class="n">vmax</span> <span class="o">=</span> <span class="n">get_clim_and_cmap</span><span class="p">(</span><span class="n">vals_flat</span><span class="p">)</span>
+
+    <span class="k">if</span> <span class="n">cmap_name</span> <span class="o">==</span> <span class="n">cmc</span><span class="o">.</span><span class="n">vik</span> <span class="ow">or</span> <span class="n">cmap_name</span> <span class="o">==</span> <span class="s1">&#39;RdBu_r&#39;</span><span class="p">:</span>
+        <span class="n">norm</span> <span class="o">=</span> <span class="n">mcolors</span><span class="o">.</span><span class="n">TwoSlopeNorm</span><span class="p">(</span><span class="n">vmin</span><span class="o">=</span><span class="n">vmin</span><span class="p">,</span> <span class="n">vcenter</span><span class="o">=</span><span class="mi">0</span><span class="p">,</span> <span class="n">vmax</span><span class="o">=</span><span class="n">vmax</span><span class="p">)</span>
+    <span class="k">else</span><span class="p">:</span>
+        <span class="n">norm</span> <span class="o">=</span> <span class="n">mcolors</span><span class="o">.</span><span class="n">Normalize</span><span class="p">(</span><span class="n">vmin</span><span class="o">=</span><span class="n">vmin</span><span class="p">,</span> <span class="n">vmax</span><span class="o">=</span><span class="n">vmax</span><span class="p">)</span>
+
+    <span class="n">im</span> <span class="o">=</span> <span class="n">eof_map_da</span><span class="o">.</span><span class="n">plot</span><span class="p">(</span><span class="n">ax</span><span class="o">=</span><span class="n">ax_map</span><span class="p">,</span> <span class="n">cmap</span><span class="o">=</span><span class="n">cmap_name</span><span class="p">,</span> <span class="n">norm</span><span class="o">=</span><span class="n">norm</span><span class="p">,</span> <span class="n">add_colorbar</span><span class="o">=</span><span class="kc">False</span><span class="p">,</span> <span class="n">alpha</span><span class="o">=</span><span class="mf">0.9</span><span class="p">,</span> <span class="n">zorder</span><span class="o">=</span><span class="mi">2</span><span class="p">)</span>
+
+    <span class="n">brown_rgb</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">array</span><span class="p">([</span><span class="mi">150</span><span class="p">,</span> <span class="mi">75</span><span class="p">,</span> <span class="mi">0</span><span class="p">])</span> <span class="o">/</span> <span class="mf">255.0</span>
+    <span class="n">levels_all</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">arange</span><span class="p">(</span><span class="mi">0</span><span class="p">,</span> <span class="mi">3000</span><span class="p">,</span> <span class="mi">100</span><span class="p">)</span>
+    <span class="n">levels_solid</span> <span class="o">=</span> <span class="p">[</span><span class="n">l</span> <span class="k">for</span> <span class="n">l</span> <span class="ow">in</span> <span class="n">levels_all</span> <span class="k">if</span> <span class="n">l</span> <span class="o">&lt;</span> <span class="mi">700</span> <span class="ow">or</span> <span class="n">l</span> <span class="o">&gt;</span> <span class="mi">1500</span><span class="p">]</span>
+    <span class="n">levels_trans</span> <span class="o">=</span> <span class="p">[</span><span class="n">l</span> <span class="k">for</span> <span class="n">l</span> <span class="ow">in</span> <span class="n">levels_all</span> <span class="k">if</span> <span class="mi">700</span> <span class="o">&lt;=</span> <span class="n">l</span> <span class="o">&lt;=</span> <span class="mi">1500</span><span class="p">]</span>
+    
+    <span class="k">if</span> <span class="n">levels_solid</span><span class="p">:</span>
+        <span class="n">ax_map</span><span class="o">.</span><span class="n">contour</span><span class="p">(</span><span class="n">dem_da</span><span class="o">.</span><span class="n">x</span><span class="p">,</span> <span class="n">dem_da</span><span class="o">.</span><span class="n">y</span><span class="p">,</span> <span class="n">dem_da</span><span class="p">,</span> <span class="n">levels</span><span class="o">=</span><span class="n">levels_solid</span><span class="p">,</span> <span class="n">colors</span><span class="o">=</span><span class="p">[</span><span class="n">brown_rgb</span><span class="p">],</span> <span class="n">linewidths</span><span class="o">=</span><span class="mf">0.5</span><span class="p">,</span> <span class="n">alpha</span><span class="o">=</span><span class="mf">1.0</span><span class="p">,</span> <span class="n">zorder</span><span class="o">=</span><span class="mi">3</span><span class="p">)</span>
+    <span class="k">if</span> <span class="n">levels_trans</span><span class="p">:</span>
+        <span class="n">ax_map</span><span class="o">.</span><span class="n">contour</span><span class="p">(</span><span class="n">dem_da</span><span class="o">.</span><span class="n">x</span><span class="p">,</span> <span class="n">dem_da</span><span class="o">.</span><span class="n">y</span><span class="p">,</span> <span class="n">dem_da</span><span class="p">,</span> <span class="n">levels</span><span class="o">=</span><span class="n">levels_trans</span><span class="p">,</span> <span class="n">colors</span><span class="o">=</span><span class="p">[</span><span class="n">brown_rgb</span><span class="p">],</span> <span class="n">linewidths</span><span class="o">=</span><span class="mf">0.5</span><span class="p">,</span> <span class="n">alpha</span><span class="o">=</span><span class="mf">0.3</span><span class="p">,</span> <span class="n">zorder</span><span class="o">=</span><span class="mi">3</span><span class="p">)</span>
+
+    <span class="k">if</span> <span class="ow">not</span> <span class="n">gl_gdf</span><span class="o">.</span><span class="n">empty</span><span class="p">:</span>
+        <span class="n">gl_gdf</span><span class="o">.</span><span class="n">plot</span><span class="p">(</span><span class="n">ax</span><span class="o">=</span><span class="n">ax_map</span><span class="p">,</span> <span class="n">color</span><span class="o">=</span><span class="s1">&#39;magenta&#39;</span><span class="p">,</span> <span class="n">linewidth</span><span class="o">=</span><span class="mf">1.5</span><span class="p">,</span> <span class="n">zorder</span><span class="o">=</span><span class="mi">5</span><span class="p">)</span>
+    <span class="n">gpd</span><span class="o">.</span><span class="n">GeoSeries</span><span class="p">([</span><span class="n">basin_geom</span><span class="p">])</span><span class="o">.</span><span class="n">plot</span><span class="p">(</span><span class="n">ax</span><span class="o">=</span><span class="n">ax_map</span><span class="p">,</span> <span class="n">facecolor</span><span class="o">=</span><span class="s1">&#39;none&#39;</span><span class="p">,</span> <span class="n">edgecolor</span><span class="o">=</span><span class="s1">&#39;black&#39;</span><span class="p">,</span> <span class="n">linewidth</span><span class="o">=</span><span class="mf">1.5</span><span class="p">,</span> <span class="n">zorder</span><span class="o">=</span><span class="mi">5</span><span class="p">)</span>
+
+    <span class="k">def</span><span class="w"> </span><span class="nf">fmt_km</span><span class="p">(</span><span class="n">x</span><span class="p">,</span> <span class="n">pos</span><span class="p">):</span> <span class="k">return</span> <span class="sa">f</span><span class="s2">&quot;</span><span class="si">{</span><span class="n">x</span><span class="o">/</span><span class="mi">1000</span><span class="si">:</span><span class="s2">.0f</span><span class="si">}</span><span class="s2">&quot;</span>
+    <span class="n">ax_map</span><span class="o">.</span><span class="n">xaxis</span><span class="o">.</span><span class="n">set_major_formatter</span><span class="p">(</span><span class="n">fmt_km</span><span class="p">)</span>
+    <span class="n">ax_map</span><span class="o">.</span><span class="n">yaxis</span><span class="o">.</span><span class="n">set_major_formatter</span><span class="p">(</span><span class="n">fmt_km</span><span class="p">)</span>
+    <span class="n">ax_map</span><span class="o">.</span><span class="n">set_xlabel</span><span class="p">(</span><span class="s2">&quot;Easting (km)&quot;</span><span class="p">)</span>
+    <span class="n">ax_map</span><span class="o">.</span><span class="n">set_ylabel</span><span class="p">(</span><span class="s2">&quot;Northing (km)&quot;</span><span class="p">)</span>
+    <span class="n">ax_map</span><span class="o">.</span><span class="n">add_artist</span><span class="p">(</span><span class="n">ScaleBar</span><span class="p">(</span><span class="mi">1</span><span class="p">,</span> <span class="n">units</span><span class="o">=</span><span class="s2">&quot;m&quot;</span><span class="p">,</span> <span class="n">location</span><span class="o">=</span><span class="s2">&quot;lower right&quot;</span><span class="p">,</span> <span class="n">box_alpha</span><span class="o">=</span><span class="mf">0.5</span><span class="p">))</span>
+
+    <span class="n">plt</span><span class="o">.</span><span class="n">colorbar</span><span class="p">(</span><span class="n">im</span><span class="p">,</span> <span class="n">ax</span><span class="o">=</span><span class="n">ax_map</span><span class="p">,</span> <span class="n">orientation</span><span class="o">=</span><span class="s1">&#39;horizontal&#39;</span><span class="p">,</span> <span class="n">pad</span><span class="o">=</span><span class="mf">0.1</span><span class="p">,</span> <span class="n">label</span><span class="o">=</span><span class="s2">&quot;EOF (m/yr)&quot;</span><span class="p">)</span>
+    
+    <span class="n">ax_map</span><span class="o">.</span><span class="n">set_title</span><span class="p">(</span><span class="s2">&quot;&quot;</span><span class="p">)</span>
+    <span class="n">ax_ts</span><span class="o">.</span><span class="n">set_title</span><span class="p">(</span><span class="s2">&quot;&quot;</span><span class="p">)</span>
+    <span class="n">fig</span><span class="o">.</span><span class="n">suptitle</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;</span><span class="si">{</span><span class="n">glacier_name</span><span class="si">}</span><span class="s2">: Mode </span><span class="si">{</span><span class="n">mode_num</span><span class="si">}</span><span class="s2"> (</span><span class="si">{</span><span class="n">pct_var</span><span class="si">:</span><span class="s2">.1f</span><span class="si">}</span><span class="s2">%)&quot;</span><span class="p">,</span> <span class="n">fontsize</span><span class="o">=</span><span class="mi">14</span><span class="p">,</span> <span class="n">fontweight</span><span class="o">=</span><span class="s1">&#39;bold&#39;</span><span class="p">)</span>
+    <span class="n">plt</span><span class="o">.</span><span class="n">show</span><span class="p">()</span>
+</pre></div>
+</div>
+</div>
+</div>
+</section>
+<section id="data-loading-and-time-separations">
+<h2>3. Data Loading and Time Separations<a class="headerlink" href="#data-loading-and-time-separations" title="Permalink to this heading">#</a></h2>
+<p>Now we connect to the Zarr store.</p>
+<p>As has been mentioned earlier in this book, one important quirk of satellite-derived velocity data is that each velocity map represents an <em>average</em> speed over a specific time window (the time between two satellite acquisitions), not an instantaneous snapshot. To accurately map this data to a daily timeseries, we need to know account for that time separation.</p>
+<p>We extract this time separation from the <code class="docutils literal notranslate"><span class="pre">time_bnds</span></code> variable then clip the data to our target glacier basin and load it into memory.</p>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="c1"># 1. Load Basin Geometry</span>
+<span class="n">all_basins</span> <span class="o">=</span> <span class="n">gpd</span><span class="o">.</span><span class="n">read_file</span><span class="p">(</span><span class="n">BASINS_PATH</span><span class="p">)</span>
+<span class="n">basin_row</span> <span class="o">=</span> <span class="n">all_basins</span><span class="p">[</span><span class="n">all_basins</span><span class="p">[</span><span class="s1">&#39;name&#39;</span><span class="p">]</span> <span class="o">==</span> <span class="n">TARGET_BASIN</span><span class="p">]</span><span class="o">.</span><span class="n">iloc</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span>
+<span class="n">basin_geom</span> <span class="o">=</span> <span class="n">basin_row</span><span class="o">.</span><span class="n">geometry</span>
+
+<span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;Loaded geometry for </span><span class="si">{</span><span class="n">TARGET_BASIN</span><span class="si">}</span><span class="s2">&quot;</span><span class="p">)</span>
+
+<span class="c1"># 2. Configure HTTP Backend for S3</span>
+<span class="n">s3_options</span> <span class="o">=</span> <span class="p">{</span>
+    <span class="s2">&quot;anon&quot;</span><span class="p">:</span> <span class="kc">True</span><span class="p">,</span> 
+    <span class="s2">&quot;config_kwargs&quot;</span><span class="p">:</span> <span class="p">{</span>
+        <span class="s2">&quot;max_pool_connections&quot;</span><span class="p">:</span> <span class="mi">50</span><span class="p">,</span>  
+        <span class="s2">&quot;retries&quot;</span><span class="p">:</span> <span class="p">{</span>
+            <span class="s2">&quot;max_attempts&quot;</span><span class="p">:</span> <span class="mi">10</span><span class="p">,</span>      
+            <span class="s2">&quot;mode&quot;</span><span class="p">:</span> <span class="s2">&quot;standard&quot;</span>       
+        <span class="p">}</span>
+    <span class="p">}</span>
+<span class="p">}</span>
+
+<span class="c1"># 3. Open Zarr Store &amp; Filter for SHIFT</span>
+<span class="nb">print</span><span class="p">(</span><span class="s2">&quot;Connecting to Zarr store...&quot;</span><span class="p">)</span>
+<span class="n">ds</span> <span class="o">=</span> <span class="n">xr</span><span class="o">.</span><span class="n">open_dataset</span><span class="p">(</span><span class="n">ZARR_PATH</span><span class="p">,</span> <span class="n">engine</span><span class="o">=</span><span class="s2">&quot;zarr&quot;</span><span class="p">,</span> <span class="n">storage_options</span><span class="o">=</span><span class="n">s3_options</span><span class="p">,</span> <span class="n">chunks</span><span class="o">=</span><span class="s1">&#39;auto&#39;</span><span class="p">)</span>
+
+<span class="k">if</span> <span class="s2">&quot;data_source&quot;</span> <span class="ow">in</span> <span class="n">ds</span><span class="o">.</span><span class="n">coords</span> <span class="ow">or</span> <span class="s2">&quot;data_source&quot;</span> <span class="ow">in</span> <span class="n">ds</span><span class="o">.</span><span class="n">dims</span><span class="p">:</span>
+    <span class="n">ds</span> <span class="o">=</span> <span class="n">ds</span><span class="o">.</span><span class="n">sel</span><span class="p">(</span><span class="n">data_source</span><span class="o">=</span><span class="s2">&quot;SHIFT&quot;</span><span class="p">)</span>
+
+<span class="k">if</span> <span class="n">ds</span><span class="o">.</span><span class="n">rio</span><span class="o">.</span><span class="n">crs</span> <span class="ow">is</span> <span class="kc">None</span><span class="p">:</span> 
+    <span class="n">ds</span><span class="o">.</span><span class="n">rio</span><span class="o">.</span><span class="n">write_crs</span><span class="p">(</span><span class="s2">&quot;EPSG:3031&quot;</span><span class="p">,</span> <span class="n">inplace</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span>
+
+<span class="c1"># Slice by time first</span>
+<span class="n">ds</span> <span class="o">=</span> <span class="n">ds</span><span class="o">.</span><span class="n">sortby</span><span class="p">(</span><span class="s1">&#39;time&#39;</span><span class="p">)</span><span class="o">.</span><span class="n">sel</span><span class="p">(</span><span class="n">time</span><span class="o">=</span><span class="nb">slice</span><span class="p">(</span><span class="n">START_DATE</span><span class="p">,</span> <span class="n">END_DATE</span><span class="p">))</span>
+
+<span class="c1"># Extract time_bnds and calculate separation </span>
+<span class="nb">print</span><span class="p">(</span><span class="s2">&quot;Extracting time bounds...&quot;</span><span class="p">)</span>
+<span class="n">tb</span> <span class="o">=</span> <span class="n">ds</span><span class="p">[</span><span class="s1">&#39;time_bnds&#39;</span><span class="p">]</span><span class="o">.</span><span class="n">load</span><span class="p">()</span>  <span class="c1"># Load just the time_bnds into memory</span>
+<span class="n">time_diff</span> <span class="o">=</span> <span class="n">tb</span><span class="o">.</span><span class="n">isel</span><span class="p">({</span><span class="n">tb</span><span class="o">.</span><span class="n">dims</span><span class="p">[</span><span class="o">-</span><span class="mi">1</span><span class="p">]:</span> <span class="mi">1</span><span class="p">})</span> <span class="o">-</span> <span class="n">tb</span><span class="o">.</span><span class="n">isel</span><span class="p">({</span><span class="n">tb</span><span class="o">.</span><span class="n">dims</span><span class="p">[</span><span class="o">-</span><span class="mi">1</span><span class="p">]:</span> <span class="mi">0</span><span class="p">})</span>
+<span class="n">raw_seps_da</span> <span class="o">=</span> <span class="p">(</span><span class="n">time_diff</span> <span class="o">/</span> <span class="n">np</span><span class="o">.</span><span class="n">timedelta64</span><span class="p">(</span><span class="mi">1</span><span class="p">,</span> <span class="s1">&#39;D&#39;</span><span class="p">))</span><span class="o">.</span><span class="n">fillna</span><span class="p">(</span><span class="mi">12</span><span class="p">)</span>
+<span class="n">raw_seps</span> <span class="o">=</span> <span class="n">raw_seps_da</span><span class="o">.</span><span class="n">values</span>
+
+<span class="c1"># 4. clip to basin and load into memory</span>
+<span class="nb">print</span><span class="p">(</span><span class="s2">&quot;Clipping to basin and loading into memory...&quot;</span><span class="p">)</span>
+<span class="n">clipped</span> <span class="o">=</span> <span class="n">ds</span><span class="o">.</span><span class="n">rio</span><span class="o">.</span><span class="n">clip_box</span><span class="p">(</span><span class="o">*</span><span class="n">basin_geom</span><span class="o">.</span><span class="n">bounds</span><span class="p">)</span><span class="o">.</span><span class="n">rio</span><span class="o">.</span><span class="n">clip</span><span class="p">([</span><span class="n">basin_geom</span><span class="p">],</span> <span class="n">all_basins</span><span class="o">.</span><span class="n">crs</span><span class="p">,</span> <span class="n">drop</span><span class="o">=</span><span class="kc">True</span><span class="p">,</span> <span class="n">all_touched</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span>
+<span class="n">clipped</span> <span class="o">=</span> <span class="n">clipped</span><span class="o">.</span><span class="n">load</span><span class="p">()</span>
+<span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;Data successfully loaded into memory: </span><span class="si">{</span><span class="n">clipped</span><span class="o">.</span><span class="n">sizes</span><span class="si">}</span><span class="s2">&quot;</span><span class="p">)</span>
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>Loaded geometry for Leonardo Glacier
+Connecting to Zarr store...
+Extracting time bounds...
+Clipping to basin and loading into memory...
+</pre></div>
+</div>
+<div class="output stderr highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>C:\Users\gg1bjd\AppData\Local\anaconda3\envs\shiver_env\Lib\site-packages\distributed\client.py:3429: UserWarning: Sending large graph of size 49.76 MiB.
+This may cause some slowdown.
+Consider loading the data with Dask directly
+ or using futures or delayed objects to embed the data into the graph without repetition.
+See also https://docs.dask.org/en/stable/best-practices.html#load-data-with-dask for more information.
+  warnings.warn(
+</pre></div>
+</div>
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>Data successfully loaded into memory: Frozen({&#39;time&#39;: 2203, &#39;x&#39;: 65, &#39;y&#39;: 51})
+</pre></div>
+</div>
+</div>
+</div>
+</section>
+<section id="temporal-distribution-and-gap-filling">
+<h2>4. Temporal Distribution and Gap Filling<a class="headerlink" href="#temporal-distribution-and-gap-filling" title="Permalink to this heading">#</a></h2>
+<p><strong>Why gap filling is necessary for PCA:</strong>
+Standard Principal Component Analysis requires a continuous, complete data matrix. It works by computing the covariance between every single pixel across time. If even a single <code class="docutils literal notranslate"><span class="pre">NaN</span></code> (missing value) exists in a pixel’s timeseries, the algorithm cannot compute the covariance, and that pixel must be dropped entirely.</p>
+<p>Given that optical and radar satellite data are inherently gappy due to cloud cover, polar night and changes to surface conditions between image acquisitons, a raw velocity timeseries is riddled with missing data (and sometimes data that really ought to be missing). If we ran PCA on raw data, we would likely be left with zero valid pixels.</p>
+<p>To ensure our computation works, we perform a three-step pre-processing pipeline:</p>
+<ol class="arabic simple">
+<li><p><strong>Temporal Distribution:</strong> We take the multi-day average speed from the satellite and distribute it evenly across a daily grid for the duration of the image pair’s time separation.</p></li>
+<li><p><strong>Linear Interpolation:</strong> We fill small gaps linearly to provide a baseline for the filter.</p></li>
+<li><p><strong>Dual-Phase Savitzky-Golay Filtering:</strong> We apply a smoothing filter that acts as a low-pass filter, retaining the broader seasonal/multi-annual signals while smoothing over short-term high-frequency noise and filling the remaining gaps with dynamically sound estimates. Finally, we downsample to a manageable frequency (e.g., 12 days) to speed up the PCA math.</p></li>
+</ol>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="c1"># Extract target speed </span>
+<span class="n">raw_s</span> <span class="o">=</span> <span class="n">clipped</span><span class="p">[</span><span class="s1">&#39;speed&#39;</span><span class="p">]</span>
+
+<span class="n">target_dates</span> <span class="o">=</span> <span class="n">pd</span><span class="o">.</span><span class="n">date_range</span><span class="p">(</span><span class="n">START_DATE</span><span class="p">,</span> <span class="n">END_DATE</span><span class="p">,</span> <span class="n">freq</span><span class="o">=</span><span class="s1">&#39;D&#39;</span><span class="p">)</span>
+<span class="n">ny</span><span class="p">,</span> <span class="n">nx</span> <span class="o">=</span> <span class="n">raw_s</span><span class="o">.</span><span class="n">shape</span><span class="p">[</span><span class="mi">1</span><span class="p">],</span> <span class="n">raw_s</span><span class="o">.</span><span class="n">shape</span><span class="p">[</span><span class="mi">2</span><span class="p">]</span>
+<span class="n">daily_sum</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">zeros</span><span class="p">((</span><span class="nb">len</span><span class="p">(</span><span class="n">target_dates</span><span class="p">),</span> <span class="n">ny</span><span class="p">,</span> <span class="n">nx</span><span class="p">),</span> <span class="n">dtype</span><span class="o">=</span><span class="n">np</span><span class="o">.</span><span class="n">float32</span><span class="p">)</span>
+<span class="n">daily_count</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">zeros</span><span class="p">((</span><span class="nb">len</span><span class="p">(</span><span class="n">target_dates</span><span class="p">),</span> <span class="n">ny</span><span class="p">,</span> <span class="n">nx</span><span class="p">),</span> <span class="n">dtype</span><span class="o">=</span><span class="n">np</span><span class="o">.</span><span class="n">int16</span><span class="p">)</span>
+
+<span class="n">raw_times</span> <span class="o">=</span> <span class="n">pd</span><span class="o">.</span><span class="n">to_datetime</span><span class="p">(</span><span class="n">raw_s</span><span class="o">.</span><span class="n">time</span><span class="o">.</span><span class="n">values</span><span class="p">)</span>
+<span class="n">target_date_map</span> <span class="o">=</span> <span class="p">{</span><span class="n">d</span><span class="p">:</span> <span class="n">i</span> <span class="k">for</span> <span class="n">i</span><span class="p">,</span> <span class="n">d</span> <span class="ow">in</span> <span class="nb">enumerate</span><span class="p">(</span><span class="n">target_dates</span><span class="p">)}</span>
+
+<span class="nb">print</span><span class="p">(</span><span class="s2">&quot;Distributing multi-day averages to daily grid...&quot;</span><span class="p">)</span>
+<span class="k">for</span> <span class="n">t_idx</span><span class="p">,</span> <span class="n">t_val</span> <span class="ow">in</span> <span class="nb">enumerate</span><span class="p">(</span><span class="n">raw_times</span><span class="p">):</span>
+    <span class="n">sep_days</span> <span class="o">=</span> <span class="n">raw_seps</span><span class="p">[</span><span class="n">t_idx</span><span class="p">]</span>
+    <span class="n">half_window</span> <span class="o">=</span> <span class="n">pd</span><span class="o">.</span><span class="n">Timedelta</span><span class="p">(</span><span class="n">days</span><span class="o">=</span><span class="n">sep_days</span><span class="o">/</span><span class="mi">2</span><span class="p">)</span>
+    <span class="n">start_d</span> <span class="o">=</span> <span class="p">(</span><span class="n">t_val</span> <span class="o">-</span> <span class="n">half_window</span><span class="p">)</span><span class="o">.</span><span class="n">floor</span><span class="p">(</span><span class="s1">&#39;D&#39;</span><span class="p">)</span>
+    <span class="n">end_d</span> <span class="o">=</span> <span class="p">(</span><span class="n">t_val</span> <span class="o">+</span> <span class="n">half_window</span><span class="p">)</span><span class="o">.</span><span class="n">ceil</span><span class="p">(</span><span class="s1">&#39;D&#39;</span><span class="p">)</span>
+    
+    <span class="n">start_target</span> <span class="o">=</span> <span class="nb">max</span><span class="p">(</span><span class="n">start_d</span><span class="p">,</span> <span class="n">target_dates</span><span class="p">[</span><span class="mi">0</span><span class="p">])</span>
+    <span class="n">end_target</span> <span class="o">=</span> <span class="nb">min</span><span class="p">(</span><span class="n">end_d</span><span class="p">,</span> <span class="n">target_dates</span><span class="p">[</span><span class="o">-</span><span class="mi">1</span><span class="p">])</span>
+    <span class="k">if</span> <span class="n">start_target</span> <span class="o">&gt;</span> <span class="n">end_target</span><span class="p">:</span> <span class="k">continue</span>
+    
+    <span class="n">idx_start</span> <span class="o">=</span> <span class="n">target_date_map</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="n">start_target</span><span class="p">)</span>
+    <span class="n">idx_end</span> <span class="o">=</span> <span class="n">target_date_map</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="n">end_target</span><span class="p">)</span>
+    
+    <span class="k">if</span> <span class="n">idx_start</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span> <span class="ow">and</span> <span class="n">idx_end</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span><span class="p">:</span>
+        <span class="n">slice_data</span> <span class="o">=</span> <span class="n">raw_s</span><span class="o">.</span><span class="n">values</span><span class="p">[</span><span class="n">t_idx</span><span class="p">,</span> <span class="p">:,</span> <span class="p">:]</span>
+        <span class="n">valid_mask</span> <span class="o">=</span> <span class="o">~</span><span class="n">np</span><span class="o">.</span><span class="n">isnan</span><span class="p">(</span><span class="n">slice_data</span><span class="p">)</span>
+        <span class="k">if</span> <span class="ow">not</span> <span class="n">np</span><span class="o">.</span><span class="n">any</span><span class="p">(</span><span class="n">valid_mask</span><span class="p">):</span> <span class="k">continue</span>
+        
+        <span class="n">safe_data</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">nan_to_num</span><span class="p">(</span><span class="n">slice_data</span><span class="p">,</span> <span class="n">nan</span><span class="o">=</span><span class="mf">0.0</span><span class="p">)</span>
+        <span class="n">daily_sum</span><span class="p">[</span><span class="n">idx_start</span> <span class="p">:</span> <span class="n">idx_end</span> <span class="o">+</span> <span class="mi">1</span><span class="p">,</span> <span class="p">:,</span> <span class="p">:]</span> <span class="o">+=</span> <span class="n">safe_data</span>
+        <span class="n">daily_count</span><span class="p">[</span><span class="n">idx_start</span> <span class="p">:</span> <span class="n">idx_end</span> <span class="o">+</span> <span class="mi">1</span><span class="p">,</span> <span class="p">:,</span> <span class="p">:]</span> <span class="o">+=</span> <span class="n">valid_mask</span>
+
+<span class="k">with</span> <span class="n">np</span><span class="o">.</span><span class="n">errstate</span><span class="p">(</span><span class="n">divide</span><span class="o">=</span><span class="s1">&#39;ignore&#39;</span><span class="p">,</span> <span class="n">invalid</span><span class="o">=</span><span class="s1">&#39;ignore&#39;</span><span class="p">):</span>
+    <span class="n">daily_dense</span> <span class="o">=</span> <span class="n">daily_sum</span> <span class="o">/</span> <span class="n">daily_count</span>
+    
+<span class="n">da_daily</span> <span class="o">=</span> <span class="n">xr</span><span class="o">.</span><span class="n">DataArray</span><span class="p">(</span><span class="n">daily_dense</span><span class="p">,</span> <span class="n">coords</span><span class="o">=</span><span class="p">{</span><span class="s2">&quot;time&quot;</span><span class="p">:</span> <span class="n">target_dates</span><span class="p">,</span> <span class="s2">&quot;y&quot;</span><span class="p">:</span> <span class="n">raw_s</span><span class="o">.</span><span class="n">y</span><span class="p">,</span> <span class="s2">&quot;x&quot;</span><span class="p">:</span> <span class="n">raw_s</span><span class="o">.</span><span class="n">x</span><span class="p">},</span> <span class="n">dims</span><span class="o">=</span><span class="p">(</span><span class="s2">&quot;time&quot;</span><span class="p">,</span> <span class="s2">&quot;y&quot;</span><span class="p">,</span> <span class="s2">&quot;x&quot;</span><span class="p">))</span>
+
+<span class="c1"># Quality Metrics</span>
+<span class="nb">print</span><span class="p">(</span><span class="s2">&quot;Calculating quality metrics...&quot;</span><span class="p">)</span>
+<span class="n">is_missing</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">isnan</span><span class="p">(</span><span class="n">da_daily</span><span class="p">)</span>
+<span class="n">prop_filled_map</span> <span class="o">=</span> <span class="n">is_missing</span><span class="o">.</span><span class="n">sum</span><span class="p">(</span><span class="n">dim</span><span class="o">=</span><span class="s1">&#39;time&#39;</span><span class="p">)</span> <span class="o">/</span> <span class="n">is_missing</span><span class="o">.</span><span class="n">sizes</span><span class="p">[</span><span class="s1">&#39;time&#39;</span><span class="p">]</span>
+
+<span class="n">max_gap_map</span> <span class="o">=</span> <span class="n">xr</span><span class="o">.</span><span class="n">apply_ufunc</span><span class="p">(</span>
+    <span class="n">calc_max_gap_1d</span><span class="p">,</span> <span class="n">da_daily</span><span class="p">,</span> <span class="n">input_core_dims</span><span class="o">=</span><span class="p">[[</span><span class="s1">&#39;time&#39;</span><span class="p">]],</span> <span class="n">vectorize</span><span class="o">=</span><span class="kc">True</span><span class="p">,</span> <span class="n">output_dtypes</span><span class="o">=</span><span class="p">[</span><span class="n">np</span><span class="o">.</span><span class="n">float32</span><span class="p">]</span>
+<span class="p">)</span>
+
+<span class="c1"># Savitzky-Golay Filtering</span>
+<span class="nb">print</span><span class="p">(</span><span class="s2">&quot;Running Phase 1 Smoothing...&quot;</span><span class="p">)</span>
+<span class="n">da_pre_fill</span> <span class="o">=</span> <span class="n">da_daily</span><span class="o">.</span><span class="n">interpolate_na</span><span class="p">(</span><span class="n">dim</span><span class="o">=</span><span class="s1">&#39;time&#39;</span><span class="p">,</span> <span class="n">method</span><span class="o">=</span><span class="s1">&#39;linear&#39;</span><span class="p">,</span> <span class="n">limit</span><span class="o">=</span><span class="n">PRE_FILL_LIMIT</span><span class="p">)</span>
+
+<span class="k">def</span><span class="w"> </span><span class="nf">smooth_pre</span><span class="p">(</span><span class="n">data</span><span class="p">):</span>
+    <span class="k">if</span> <span class="n">np</span><span class="o">.</span><span class="n">isnan</span><span class="p">(</span><span class="n">data</span><span class="p">)</span><span class="o">.</span><span class="n">any</span><span class="p">():</span> <span class="k">return</span> <span class="n">data</span> 
+    <span class="k">if</span> <span class="nb">len</span><span class="p">(</span><span class="n">data</span><span class="p">)</span> <span class="o">&lt;</span> <span class="n">SAVGOL_WINDOW_PRE</span><span class="p">:</span> <span class="k">return</span> <span class="n">data</span>
+    <span class="n">win</span> <span class="o">=</span> <span class="n">SAVGOL_WINDOW_PRE</span> <span class="k">if</span> <span class="n">SAVGOL_WINDOW_PRE</span> <span class="o">%</span> <span class="mi">2</span> <span class="o">==</span> <span class="mi">1</span> <span class="k">else</span> <span class="n">SAVGOL_WINDOW_PRE</span> <span class="o">+</span> <span class="mi">1</span>
+    <span class="k">return</span> <span class="n">savgol_filter</span><span class="p">(</span><span class="n">data</span><span class="p">,</span> <span class="n">window_length</span><span class="o">=</span><span class="n">win</span><span class="p">,</span> <span class="n">polyorder</span><span class="o">=</span><span class="n">SAVGOL_POLY</span><span class="p">)</span>
+
+<span class="n">da_pre_smooth</span> <span class="o">=</span> <span class="n">xr</span><span class="o">.</span><span class="n">apply_ufunc</span><span class="p">(</span><span class="n">smooth_pre</span><span class="p">,</span> <span class="n">da_pre_fill</span><span class="p">,</span> <span class="n">input_core_dims</span><span class="o">=</span><span class="p">[[</span><span class="s1">&#39;time&#39;</span><span class="p">]],</span> <span class="n">output_core_dims</span><span class="o">=</span><span class="p">[[</span><span class="s1">&#39;time&#39;</span><span class="p">]],</span> <span class="n">vectorize</span><span class="o">=</span><span class="kc">True</span><span class="p">,</span> <span class="n">output_dtypes</span><span class="o">=</span><span class="p">[</span><span class="n">np</span><span class="o">.</span><span class="n">float32</span><span class="p">])</span>
+<span class="n">da_pre_smooth</span><span class="p">[</span><span class="s1">&#39;time&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="n">da_daily</span><span class="p">[</span><span class="s1">&#39;time&#39;</span><span class="p">]</span>
+
+<span class="c1"># Fill gaps</span>
+<span class="n">da_full_fill</span> <span class="o">=</span> <span class="n">da_pre_smooth</span><span class="o">.</span><span class="n">interpolate_na</span><span class="p">(</span><span class="n">dim</span><span class="o">=</span><span class="s1">&#39;time&#39;</span><span class="p">,</span> <span class="n">method</span><span class="o">=</span><span class="s1">&#39;linear&#39;</span><span class="p">,</span> <span class="n">limit</span><span class="o">=</span><span class="kc">None</span><span class="p">)</span><span class="o">.</span><span class="n">bfill</span><span class="p">(</span><span class="n">dim</span><span class="o">=</span><span class="s1">&#39;time&#39;</span><span class="p">)</span><span class="o">.</span><span class="n">ffill</span><span class="p">(</span><span class="n">dim</span><span class="o">=</span><span class="s1">&#39;time&#39;</span><span class="p">)</span>
+
+<span class="nb">print</span><span class="p">(</span><span class="s2">&quot;Running Phase 3 Smoothing...&quot;</span><span class="p">)</span>
+<span class="k">def</span><span class="w"> </span><span class="nf">smooth_post</span><span class="p">(</span><span class="n">data</span><span class="p">):</span>
+    <span class="k">if</span> <span class="n">np</span><span class="o">.</span><span class="n">isnan</span><span class="p">(</span><span class="n">data</span><span class="p">)</span><span class="o">.</span><span class="n">any</span><span class="p">():</span> <span class="k">return</span> <span class="n">data</span>
+    <span class="k">if</span> <span class="nb">len</span><span class="p">(</span><span class="n">data</span><span class="p">)</span> <span class="o">&lt;</span> <span class="n">SAVGOL_WINDOW_POST</span><span class="p">:</span> <span class="k">return</span> <span class="n">data</span>
+    <span class="n">win</span> <span class="o">=</span> <span class="n">SAVGOL_WINDOW_POST</span> <span class="k">if</span> <span class="n">SAVGOL_WINDOW_POST</span> <span class="o">%</span> <span class="mi">2</span> <span class="o">==</span> <span class="mi">1</span> <span class="k">else</span> <span class="n">SAVGOL_WINDOW_POST</span> <span class="o">+</span> <span class="mi">1</span>
+    <span class="k">return</span> <span class="n">savgol_filter</span><span class="p">(</span><span class="n">data</span><span class="p">,</span> <span class="n">window_length</span><span class="o">=</span><span class="n">win</span><span class="p">,</span> <span class="n">polyorder</span><span class="o">=</span><span class="n">SAVGOL_POLY</span><span class="p">)</span>
+
+<span class="n">da_final_smooth</span> <span class="o">=</span> <span class="n">xr</span><span class="o">.</span><span class="n">apply_ufunc</span><span class="p">(</span><span class="n">smooth_post</span><span class="p">,</span> <span class="n">da_full_fill</span><span class="p">,</span> <span class="n">input_core_dims</span><span class="o">=</span><span class="p">[[</span><span class="s1">&#39;time&#39;</span><span class="p">]],</span> <span class="n">output_core_dims</span><span class="o">=</span><span class="p">[[</span><span class="s1">&#39;time&#39;</span><span class="p">]],</span> <span class="n">vectorize</span><span class="o">=</span><span class="kc">True</span><span class="p">,</span> <span class="n">output_dtypes</span><span class="o">=</span><span class="p">[</span><span class="n">np</span><span class="o">.</span><span class="n">float32</span><span class="p">])</span>
+<span class="n">da_final_smooth</span><span class="p">[</span><span class="s1">&#39;time&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="n">da_daily</span><span class="p">[</span><span class="s1">&#39;time&#39;</span><span class="p">]</span>
+
+<span class="c1"># resample to PCA_FREQ (e.g. 12 days)</span>
+<span class="n">da_pca</span> <span class="o">=</span> <span class="n">da_final_smooth</span><span class="o">.</span><span class="n">resample</span><span class="p">(</span><span class="n">time</span><span class="o">=</span><span class="n">PCA_FREQ</span><span class="p">)</span><span class="o">.</span><span class="n">mean</span><span class="p">()</span>
+<span class="nb">print</span><span class="p">(</span><span class="s2">&quot;Pre-processing complete.&quot;</span><span class="p">)</span>
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>Distributing multi-day averages to daily grid...
+Calculating quality metrics...
+Running Phase 1 Smoothing...
+Running Phase 3 Smoothing...
+Pre-processing complete.
+</pre></div>
+</div>
+</div>
+</div>
+</section>
+<section id="diagnostic-check-verifying-the-pre-processing">
+<h2>5. Diagnostic Check: Verifying the pre-processing<a class="headerlink" href="#diagnostic-check-verifying-the-pre-processing" title="Permalink to this heading">#</a></h2>
+<p>Before throwing our data into the PCA “black box”, it is good practice to visually verify that our gap-filling and smoothing pipeline hasn’t destroyed the underlying physical signal.</p>
+<p>In this cell, we extract the data for a specific point on the glacier (within a 250 m radius). We will plot the raw, gappy satellite measurements against our continuous, smoothed timeseries.</p>
+<p>We also calculate and subtract the <strong>linear trend</strong>. So that the PCA focuses on on the <em>oscillatory anomalies</em>, such as the seasonal pulses and short-term variations we are actually interested in. This is arguably less important for short time-series such as this, but its crucial when working with longer timeseries.</p>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="kn">from</span><span class="w"> </span><span class="nn">pyproj</span><span class="w"> </span><span class="kn">import</span> <span class="n">Transformer</span>
+
+<span class="c1"># 1. Coordinates</span>
+<span class="n">target_lat</span> <span class="o">=</span> <span class="o">-</span><span class="mf">64.695241</span>
+<span class="n">target_lon</span> <span class="o">=</span> <span class="o">-</span><span class="mf">61.931084</span>
+
+<span class="c1"># Reproject to EPSG:3031</span>
+<span class="n">transformer</span> <span class="o">=</span> <span class="n">Transformer</span><span class="o">.</span><span class="n">from_crs</span><span class="p">(</span><span class="s2">&quot;EPSG:4326&quot;</span><span class="p">,</span> <span class="s2">&quot;EPSG:3031&quot;</span><span class="p">,</span> <span class="n">always_xy</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span>
+<span class="n">target_x</span><span class="p">,</span> <span class="n">target_y</span> <span class="o">=</span> <span class="n">transformer</span><span class="o">.</span><span class="n">transform</span><span class="p">(</span><span class="n">target_lon</span><span class="p">,</span> <span class="n">target_lat</span><span class="p">)</span>
+
+<span class="c1"># 2. Extract pixels in ROI</span>
+<span class="n">dist</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">sqrt</span><span class="p">((</span><span class="n">da_pca</span><span class="o">.</span><span class="n">x</span> <span class="o">-</span> <span class="n">target_x</span><span class="p">)</span><span class="o">**</span><span class="mi">2</span> <span class="o">+</span> <span class="p">(</span><span class="n">da_pca</span><span class="o">.</span><span class="n">y</span> <span class="o">-</span> <span class="n">target_y</span><span class="p">)</span><span class="o">**</span><span class="mi">2</span><span class="p">)</span>
+<span class="n">radius_mask</span> <span class="o">=</span> <span class="n">dist</span> <span class="o">&lt;=</span> <span class="mi">250</span>
+
+<span class="c1"># Fallback to nearest pixel if needed (helpful if buffer is small)</span>
+<span class="k">if</span> <span class="ow">not</span> <span class="nb">bool</span><span class="p">(</span><span class="n">radius_mask</span><span class="o">.</span><span class="n">any</span><span class="p">()):</span>
+    <span class="n">radius_mask</span> <span class="o">=</span> <span class="p">(</span><span class="n">dist</span> <span class="o">==</span> <span class="n">dist</span><span class="o">.</span><span class="n">min</span><span class="p">())</span>
+
+<span class="c1"># 3. Compute spatial mean for each stage</span>
+<span class="c1"># Stage A: raw daily data</span>
+<span class="n">ts_raw_daily</span> <span class="o">=</span> <span class="n">da_daily</span><span class="o">.</span><span class="n">where</span><span class="p">(</span><span class="n">radius_mask</span><span class="p">)</span><span class="o">.</span><span class="n">mean</span><span class="p">(</span><span class="n">dim</span><span class="o">=</span><span class="p">(</span><span class="s1">&#39;y&#39;</span><span class="p">,</span> <span class="s1">&#39;x&#39;</span><span class="p">))</span>
+
+<span class="c1"># Stage B: filled, smoothed &amp; resampled data (da_pca)</span>
+<span class="n">ts_filled_pca</span> <span class="o">=</span> <span class="n">da_pca</span><span class="o">.</span><span class="n">where</span><span class="p">(</span><span class="n">radius_mask</span><span class="p">)</span><span class="o">.</span><span class="n">mean</span><span class="p">(</span><span class="n">dim</span><span class="o">=</span><span class="p">(</span><span class="s1">&#39;y&#39;</span><span class="p">,</span> <span class="s1">&#39;x&#39;</span><span class="p">))</span>
+
+<span class="c1"># Stage C: linear trend and detrended data</span>
+<span class="n">filled_vals</span> <span class="o">=</span> <span class="n">ts_filled_pca</span><span class="o">.</span><span class="n">values</span>
+<span class="n">time_indices</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">arange</span><span class="p">(</span><span class="nb">len</span><span class="p">(</span><span class="n">filled_vals</span><span class="p">))</span>
+<span class="n">valid_mask</span> <span class="o">=</span> <span class="o">~</span><span class="n">np</span><span class="o">.</span><span class="n">isnan</span><span class="p">(</span><span class="n">filled_vals</span><span class="p">)</span>
+
+<span class="k">if</span> <span class="n">np</span><span class="o">.</span><span class="n">any</span><span class="p">(</span><span class="n">valid_mask</span><span class="p">):</span>
+    <span class="c1"># Fit linear trend to the filled time series</span>
+    <span class="n">slope</span><span class="p">,</span> <span class="n">intercept</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">polyfit</span><span class="p">(</span><span class="n">time_indices</span><span class="p">[</span><span class="n">valid_mask</span><span class="p">],</span> <span class="n">filled_vals</span><span class="p">[</span><span class="n">valid_mask</span><span class="p">],</span> <span class="mi">1</span><span class="p">)</span>
+    <span class="n">linear_trend</span> <span class="o">=</span> <span class="n">slope</span> <span class="o">*</span> <span class="n">time_indices</span> <span class="o">+</span> <span class="n">intercept</span>
+    <span class="n">ts_detrended</span> <span class="o">=</span> <span class="n">filled_vals</span> <span class="o">-</span> <span class="n">linear_trend</span>
+<span class="k">else</span><span class="p">:</span>
+    <span class="n">slope</span> <span class="o">=</span> <span class="mi">0</span>
+    <span class="n">linear_trend</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">full_like</span><span class="p">(</span><span class="n">filled_vals</span><span class="p">,</span> <span class="n">np</span><span class="o">.</span><span class="n">nan</span><span class="p">)</span>
+    <span class="n">ts_detrended</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">full_like</span><span class="p">(</span><span class="n">filled_vals</span><span class="p">,</span> <span class="n">np</span><span class="o">.</span><span class="n">nan</span><span class="p">)</span>
+
+<span class="c1"># 4. Plotting</span>
+<span class="n">fig</span><span class="p">,</span> <span class="p">(</span><span class="n">ax1</span><span class="p">,</span> <span class="n">ax2</span><span class="p">)</span> <span class="o">=</span> <span class="n">plt</span><span class="o">.</span><span class="n">subplots</span><span class="p">(</span><span class="mi">2</span><span class="p">,</span> <span class="mi">1</span><span class="p">,</span> <span class="n">figsize</span><span class="o">=</span><span class="p">(</span><span class="mi">14</span><span class="p">,</span> <span class="mi">8</span><span class="p">),</span> <span class="n">sharex</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span>
+
+<span class="c1"># --- raw vs. filled &amp; linear trend ---</span>
+<span class="n">ax1</span><span class="o">.</span><span class="n">plot</span><span class="p">(</span><span class="n">ts_raw_daily</span><span class="o">.</span><span class="n">time</span><span class="p">,</span> <span class="n">ts_raw_daily</span><span class="p">,</span> <span class="s1">&#39;o&#39;</span><span class="p">,</span> <span class="n">color</span><span class="o">=</span><span class="s1">&#39;gray&#39;</span><span class="p">,</span> <span class="n">alpha</span><span class="o">=</span><span class="mf">0.4</span><span class="p">,</span> <span class="n">markersize</span><span class="o">=</span><span class="mi">3</span><span class="p">,</span> <span class="n">label</span><span class="o">=</span><span class="s1">&#39;Raw Daily Data&#39;</span><span class="p">)</span>
+<span class="n">ax1</span><span class="o">.</span><span class="n">plot</span><span class="p">(</span><span class="n">ts_filled_pca</span><span class="o">.</span><span class="n">time</span><span class="p">,</span> <span class="n">ts_filled_pca</span><span class="p">,</span> <span class="n">color</span><span class="o">=</span><span class="s1">&#39;tab:blue&#39;</span><span class="p">,</span> <span class="n">linewidth</span><span class="o">=</span><span class="mi">2</span><span class="p">,</span> <span class="n">label</span><span class="o">=</span><span class="sa">f</span><span class="s1">&#39;Filled &amp; Smoothed (</span><span class="si">{</span><span class="n">PCA_FREQ</span><span class="si">}</span><span class="s1"> Resampled)&#39;</span><span class="p">)</span>
+<span class="n">ax1</span><span class="o">.</span><span class="n">plot</span><span class="p">(</span><span class="n">ts_filled_pca</span><span class="o">.</span><span class="n">time</span><span class="p">,</span> <span class="n">linear_trend</span><span class="p">,</span> <span class="s1">&#39;--&#39;</span><span class="p">,</span> <span class="n">color</span><span class="o">=</span><span class="s1">&#39;tab:red&#39;</span><span class="p">,</span> <span class="n">linewidth</span><span class="o">=</span><span class="mf">1.5</span><span class="p">,</span> <span class="n">label</span><span class="o">=</span><span class="sa">f</span><span class="s1">&#39;Linear Trend (</span><span class="si">{</span><span class="n">slope</span><span class="o">*</span><span class="nb">len</span><span class="p">(</span><span class="n">time_indices</span><span class="p">)</span><span class="si">:</span><span class="s1">.1f</span><span class="si">}</span><span class="s1"> m/yr total change)&#39;</span><span class="p">)</span>
+
+<span class="n">ax1</span><span class="o">.</span><span class="n">set_ylabel</span><span class="p">(</span><span class="s2">&quot;Speed (m/yr)&quot;</span><span class="p">,</span> <span class="n">fontsize</span><span class="o">=</span><span class="mi">11</span><span class="p">)</span>
+<span class="n">ax1</span><span class="o">.</span><span class="n">set_title</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;Processing Pipeline Time Series Verification</span><span class="se">\n</span><span class="s2">Location: </span><span class="si">{</span><span class="n">target_lat</span><span class="si">:</span><span class="s2">.6f</span><span class="si">}</span><span class="s2">°N, </span><span class="si">{</span><span class="n">target_lon</span><span class="si">:</span><span class="s2">.6f</span><span class="si">}</span><span class="s2">°E (Within 250 m radius)&quot;</span><span class="p">,</span> <span class="n">fontsize</span><span class="o">=</span><span class="mi">13</span><span class="p">,</span> <span class="n">fontweight</span><span class="o">=</span><span class="s1">&#39;bold&#39;</span><span class="p">)</span>
+<span class="n">ax1</span><span class="o">.</span><span class="n">grid</span><span class="p">(</span><span class="kc">True</span><span class="p">,</span> <span class="n">linestyle</span><span class="o">=</span><span class="s1">&#39;:&#39;</span><span class="p">,</span> <span class="n">alpha</span><span class="o">=</span><span class="mf">0.6</span><span class="p">)</span>
+<span class="n">ax1</span><span class="o">.</span><span class="n">legend</span><span class="p">(</span><span class="n">loc</span><span class="o">=</span><span class="s1">&#39;upper left&#39;</span><span class="p">,</span> <span class="n">frameon</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span>
+
+<span class="c1"># --- detrended anomaly series (input to pCA) ---</span>
+<span class="n">ax2</span><span class="o">.</span><span class="n">axhline</span><span class="p">(</span><span class="mi">0</span><span class="p">,</span> <span class="n">color</span><span class="o">=</span><span class="s1">&#39;black&#39;</span><span class="p">,</span> <span class="n">linewidth</span><span class="o">=</span><span class="mf">0.8</span><span class="p">,</span> <span class="n">linestyle</span><span class="o">=</span><span class="s1">&#39;-&#39;</span><span class="p">)</span>
+<span class="n">ax2</span><span class="o">.</span><span class="n">plot</span><span class="p">(</span><span class="n">ts_filled_pca</span><span class="o">.</span><span class="n">time</span><span class="p">,</span> <span class="n">ts_detrended</span><span class="p">,</span> <span class="n">color</span><span class="o">=</span><span class="s1">&#39;tab:green&#39;</span><span class="p">,</span> <span class="n">linewidth</span><span class="o">=</span><span class="mf">1.8</span><span class="p">,</span> <span class="n">label</span><span class="o">=</span><span class="s1">&#39;Detrended Series (PCA Input)&#39;</span><span class="p">)</span>
+<span class="n">ax2</span><span class="o">.</span><span class="n">fill_between</span><span class="p">(</span><span class="n">ts_filled_pca</span><span class="o">.</span><span class="n">time</span><span class="p">,</span> <span class="n">ts_detrended</span><span class="p">,</span> <span class="mi">0</span><span class="p">,</span> <span class="n">where</span><span class="o">=</span><span class="p">(</span><span class="n">ts_detrended</span> <span class="o">&gt;=</span> <span class="mi">0</span><span class="p">),</span> <span class="n">color</span><span class="o">=</span><span class="s1">&#39;tab:green&#39;</span><span class="p">,</span> <span class="n">alpha</span><span class="o">=</span><span class="mf">0.2</span><span class="p">)</span>
+<span class="n">ax2</span><span class="o">.</span><span class="n">fill_between</span><span class="p">(</span><span class="n">ts_filled_pca</span><span class="o">.</span><span class="n">time</span><span class="p">,</span> <span class="n">ts_detrended</span><span class="p">,</span> <span class="mi">0</span><span class="p">,</span> <span class="n">where</span><span class="o">=</span><span class="p">(</span><span class="n">ts_detrended</span> <span class="o">&lt;</span> <span class="mi">0</span><span class="p">),</span> <span class="n">color</span><span class="o">=</span><span class="s1">&#39;tab:orange&#39;</span><span class="p">,</span> <span class="n">alpha</span><span class="o">=</span><span class="mf">0.2</span><span class="p">)</span>
+
+<span class="n">ax2</span><span class="o">.</span><span class="n">set_ylabel</span><span class="p">(</span><span class="s2">&quot;Speed Anomaly (m/yr)&quot;</span><span class="p">,</span> <span class="n">fontsize</span><span class="o">=</span><span class="mi">11</span><span class="p">)</span>
+<span class="n">ax2</span><span class="o">.</span><span class="n">set_xlabel</span><span class="p">(</span><span class="s2">&quot;Date&quot;</span><span class="p">,</span> <span class="n">fontsize</span><span class="o">=</span><span class="mi">11</span><span class="p">)</span>
+<span class="n">ax2</span><span class="o">.</span><span class="n">grid</span><span class="p">(</span><span class="kc">True</span><span class="p">,</span> <span class="n">linestyle</span><span class="o">=</span><span class="s1">&#39;:&#39;</span><span class="p">,</span> <span class="n">alpha</span><span class="o">=</span><span class="mf">0.6</span><span class="p">)</span>
+<span class="n">ax2</span><span class="o">.</span><span class="n">legend</span><span class="p">(</span><span class="n">loc</span><span class="o">=</span><span class="s1">&#39;upper left&#39;</span><span class="p">,</span> <span class="n">frameon</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span>
+
+<span class="n">plt</span><span class="o">.</span><span class="n">tight_layout</span><span class="p">()</span>
+<span class="n">plt</span><span class="o">.</span><span class="n">show</span><span class="p">()</span>
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<img alt="../_images/66a44908ba32c0569ecc5830778f6f4252f843e1841caaa024a74bcec76961ea.png" src="../_images/66a44908ba32c0569ecc5830778f6f4252f843e1841caaa024a74bcec76961ea.png" />
+</div>
+</div>
+</section>
+<section id="masking-detrending-and-principal-component-analysis">
+<h2>6. Masking, Detrending, and Principal Component Analysis<a class="headerlink" href="#masking-detrending-and-principal-component-analysis" title="Permalink to this heading">#</a></h2>
+<p>Now for the heavy lifting. We apply several masks to ensure we are only analyzing valid ice. We mask out rock outcrops, the ocean (using BedMachine and Bedmap3), areas moving too slowly to yield a reliable signal-to-noise ratio, and any pixels that required <em>too much</em> synthetic gap-filling based on the thresholds we set above.</p>
+<p>Once the data is clean, we flatten our 3D dataset <code class="docutils literal notranslate"><span class="pre">(time,</span> <span class="pre">y,</span> <span class="pre">x)</span></code> into a 2D matrix <code class="docutils literal notranslate"><span class="pre">(time,</span> <span class="pre">pixels)</span></code>. We apply the linear detrending (as visualized in the previous step) across all pixels simultaneously.</p>
+<p>Finally, we run the PCA. The algorithm decomposes our observations of speed variability into a few dominant “Modes” of variability. Each mode consists of two parts:</p>
+<ul class="simple">
+<li><p><strong>Empirical Orthogonal Functions (EOFs):</strong> The spatial maps showing <em>where</em> this specific pattern of variability occurs.</p></li>
+<li><p><strong>Principal Components (PCs):</strong> The timeseries showing <em>when</em> and <em>how strongly</em> this pattern occurs.</p></li>
+</ul>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="nb">print</span><span class="p">(</span><span class="s2">&quot;Loading spatial masks...&quot;</span><span class="p">)</span>
+<span class="n">grid_template</span> <span class="o">=</span> <span class="n">da_pca</span><span class="o">.</span><span class="n">isel</span><span class="p">(</span><span class="n">time</span><span class="o">=</span><span class="mi">0</span><span class="p">)</span><span class="o">.</span><span class="n">drop_vars</span><span class="p">(</span><span class="s1">&#39;time&#39;</span><span class="p">)</span>
+
+<span class="k">def</span><span class="w"> </span><span class="nf">load_mask</span><span class="p">(</span><span class="n">path</span><span class="p">):</span>
+    <span class="c1"># Load, clip, interpolate to match our data grid, and extract the first band</span>
+    <span class="k">return</span> <span class="n">rioxarray</span><span class="o">.</span><span class="n">open_rasterio</span><span class="p">(</span><span class="n">path</span><span class="p">)</span><span class="o">.</span><span class="n">rio</span><span class="o">.</span><span class="n">clip_box</span><span class="p">(</span><span class="o">*</span><span class="n">da_pca</span><span class="o">.</span><span class="n">rio</span><span class="o">.</span><span class="n">bounds</span><span class="p">())</span>\
+        <span class="o">.</span><span class="n">interp_like</span><span class="p">(</span><span class="n">grid_template</span><span class="p">,</span> <span class="n">method</span><span class="o">=</span><span class="s1">&#39;nearest&#39;</span><span class="p">)</span><span class="o">.</span><span class="n">isel</span><span class="p">(</span><span class="n">band</span><span class="o">=</span><span class="mi">0</span><span class="p">)</span>
+
+<span class="n">rock</span> <span class="o">=</span> <span class="n">load_mask</span><span class="p">(</span><span class="n">ROCK_MASK_PATH</span><span class="p">)</span>
+<span class="n">ice</span> <span class="o">=</span> <span class="n">load_mask</span><span class="p">(</span><span class="n">ICE_MASK_PATH</span><span class="p">)</span>
+<span class="n">bm</span> <span class="o">=</span> <span class="n">load_mask</span><span class="p">(</span><span class="n">BEDMACHINE_PATH</span><span class="p">)</span>
+<span class="n">b3</span> <span class="o">=</span> <span class="n">load_mask</span><span class="p">(</span><span class="n">BEDMAP3_PATH</span><span class="p">)</span>
+
+<span class="c1"># Load static speed for masking</span>
+<span class="n">s_static</span> <span class="o">=</span> <span class="n">rioxarray</span><span class="o">.</span><span class="n">open_rasterio</span><span class="p">(</span><span class="n">S_PATH</span><span class="p">)</span><span class="o">.</span><span class="n">rio</span><span class="o">.</span><span class="n">clip_box</span><span class="p">(</span><span class="o">*</span><span class="n">da_pca</span><span class="o">.</span><span class="n">rio</span><span class="o">.</span><span class="n">bounds</span><span class="p">())</span>\
+    <span class="o">.</span><span class="n">isel</span><span class="p">(</span><span class="n">band</span><span class="o">=</span><span class="mi">0</span><span class="p">)</span><span class="o">.</span><span class="n">interp_like</span><span class="p">(</span><span class="n">grid_template</span><span class="p">,</span> <span class="n">method</span><span class="o">=</span><span class="s1">&#39;linear&#39;</span><span class="p">)</span>
+
+<span class="nb">print</span><span class="p">(</span><span class="s2">&quot;Consolidating masks...&quot;</span><span class="p">)</span>
+<span class="n">valid_geo</span> <span class="o">=</span> <span class="p">(</span><span class="n">rock</span> <span class="o">==</span> <span class="mi">0</span><span class="p">)</span> <span class="o">&amp;</span> <span class="p">(</span><span class="n">ice</span> <span class="o">==</span> <span class="mi">1</span><span class="p">)</span>
+<span class="n">valid_speed</span> <span class="o">=</span> <span class="n">s_static</span> <span class="o">&gt;=</span> <span class="n">MIN_MEAN_SPEED</span>
+<span class="n">valid_qual</span> <span class="o">=</span> <span class="p">(</span><span class="n">prop_filled_map</span> <span class="o">&lt;=</span> <span class="n">MAX_PROP_FILLED</span><span class="p">)</span> <span class="o">&amp;</span> <span class="p">(</span><span class="n">max_gap_map</span> <span class="o">&lt;=</span> <span class="n">MAX_GAP_ALLOWED</span><span class="p">)</span>
+<span class="n">valid_bedmachine</span> <span class="o">=</span> <span class="p">(</span><span class="n">bm</span> <span class="o">!=</span> <span class="mi">0</span><span class="p">)</span> <span class="o">&amp;</span> <span class="p">(</span><span class="n">bm</span> <span class="o">!=</span> <span class="mi">3</span><span class="p">)</span>
+<span class="n">valid_bedmap</span> <span class="o">=</span> <span class="p">(</span><span class="n">b3</span> <span class="o">!=</span> <span class="mi">3</span><span class="p">)</span>
+
+<span class="c1"># Single combined mask just like process_tile</span>
+<span class="n">final_mask</span> <span class="o">=</span> <span class="n">valid_geo</span> <span class="o">&amp;</span> <span class="n">valid_speed</span> <span class="o">&amp;</span> <span class="n">valid_qual</span> <span class="o">&amp;</span> <span class="n">valid_bedmachine</span> <span class="o">&amp;</span> <span class="n">valid_bedmap</span>
+
+<span class="nb">print</span><span class="p">(</span><span class="s2">&quot;Applying masks...&quot;</span><span class="p">)</span>
+<span class="n">da_masked</span> <span class="o">=</span> <span class="n">da_pca</span><span class="o">.</span><span class="n">where</span><span class="p">(</span><span class="n">final_mask</span><span class="p">)</span>
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>Loading spatial masks...
+Consolidating masks...
+Applying masks...
+</pre></div>
+</div>
+</div>
+</div>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="c1"># PCA Execution</span>
+<span class="n">da_stacked</span> <span class="o">=</span> <span class="n">da_masked</span><span class="o">.</span><span class="n">stack</span><span class="p">(</span><span class="n">pixel</span><span class="o">=</span><span class="p">(</span><span class="s2">&quot;y&quot;</span><span class="p">,</span> <span class="s2">&quot;x&quot;</span><span class="p">))</span>
+<span class="n">da_clean</span> <span class="o">=</span> <span class="n">da_stacked</span><span class="o">.</span><span class="n">dropna</span><span class="p">(</span><span class="n">dim</span><span class="o">=</span><span class="s1">&#39;pixel&#39;</span><span class="p">,</span> <span class="n">how</span><span class="o">=</span><span class="s1">&#39;any&#39;</span><span class="p">)</span> 
+
+<span class="k">if</span> <span class="n">da_clean</span><span class="o">.</span><span class="n">pixel</span><span class="o">.</span><span class="n">size</span> <span class="o">&lt;</span> <span class="mi">1000</span><span class="p">:</span> 
+    <span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;WARNING: Too few valid pixels (</span><span class="si">{</span><span class="n">da_clean</span><span class="o">.</span><span class="n">pixel</span><span class="o">.</span><span class="n">size</span><span class="si">}</span><span class="s2">) for reliable PCA.&quot;</span><span class="p">)</span>
+<span class="k">else</span><span class="p">:</span>
+    <span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;Calculating 3-Mode PCA on </span><span class="si">{</span><span class="n">da_clean</span><span class="o">.</span><span class="n">pixel</span><span class="o">.</span><span class="n">size</span><span class="si">}</span><span class="s2"> valid pixels...&quot;</span><span class="p">)</span>
+    <span class="n">X_raw</span> <span class="o">=</span> <span class="n">da_clean</span><span class="o">.</span><span class="n">values</span>  <span class="c1"># Extract raw 2D values (time, pixels)</span>
+    <span class="n">X_detrended</span> <span class="o">=</span> <span class="n">detrend</span><span class="p">(</span><span class="n">X_raw</span><span class="p">,</span> <span class="n">axis</span><span class="o">=</span><span class="mi">0</span><span class="p">,</span> <span class="nb">type</span><span class="o">=</span><span class="s1">&#39;linear&#39;</span><span class="p">)</span>  <span class="c1"># Detrend along the time axis (axis=0) to remove the linear trend and mean from each pixel</span>
+    <span class="n">pca</span> <span class="o">=</span> <span class="n">PCA</span><span class="p">(</span><span class="n">n_components</span><span class="o">=</span><span class="n">NUM_MODES</span><span class="p">)</span>
+    <span class="n">pc_components</span> <span class="o">=</span> <span class="n">pca</span><span class="o">.</span><span class="n">fit_transform</span><span class="p">(</span><span class="n">X_detrended</span><span class="p">)</span>
+    <span class="n">eof_vectors</span> <span class="o">=</span> <span class="n">pca</span><span class="o">.</span><span class="n">components_</span>
+
+    <span class="c1"># Amplitude scaling</span>
+    <span class="n">pcs_scaled</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">zeros_like</span><span class="p">(</span><span class="n">pc_components</span><span class="p">)</span>
+    <span class="n">eofs_scaled</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">zeros_like</span><span class="p">(</span><span class="n">eof_vectors</span><span class="p">)</span>
+    <span class="k">for</span> <span class="n">k</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="n">NUM_MODES</span><span class="p">):</span>
+        <span class="n">max_val</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">max</span><span class="p">(</span><span class="n">np</span><span class="o">.</span><span class="n">abs</span><span class="p">(</span><span class="n">pc_components</span><span class="p">[:,</span> <span class="n">k</span><span class="p">]))</span>
+        <span class="k">if</span> <span class="n">max_val</span> <span class="o">==</span> <span class="mi">0</span><span class="p">:</span> <span class="n">max_val</span> <span class="o">=</span> <span class="mi">1</span>
+        <span class="n">pcs_scaled</span><span class="p">[:,</span> <span class="n">k</span><span class="p">]</span> <span class="o">=</span> <span class="n">pc_components</span><span class="p">[:,</span> <span class="n">k</span><span class="p">]</span> <span class="o">/</span> <span class="n">max_val</span>
+        <span class="n">eofs_scaled</span><span class="p">[</span><span class="n">k</span><span class="p">,</span> <span class="p">:]</span> <span class="o">=</span> <span class="n">eof_vectors</span><span class="p">[</span><span class="n">k</span><span class="p">,</span> <span class="p">:]</span> <span class="o">*</span> <span class="n">max_val</span>
+
+    <span class="c1"># Reconstruct spatial maps</span>
+    <span class="n">dummy</span> <span class="o">=</span> <span class="n">da_masked</span><span class="o">.</span><span class="n">isel</span><span class="p">(</span><span class="n">time</span><span class="o">=</span><span class="mi">0</span><span class="p">)</span><span class="o">.</span><span class="n">drop_vars</span><span class="p">(</span><span class="s1">&#39;time&#39;</span><span class="p">)</span> <span class="o">*</span> <span class="n">np</span><span class="o">.</span><span class="n">nan</span>
+    <span class="n">dummy_stacked</span> <span class="o">=</span> <span class="n">dummy</span><span class="o">.</span><span class="n">stack</span><span class="p">(</span><span class="n">pixel</span><span class="o">=</span><span class="p">(</span><span class="s2">&quot;y&quot;</span><span class="p">,</span> <span class="s2">&quot;x&quot;</span><span class="p">))</span>
+    
+    <span class="n">eof_maps_list</span> <span class="o">=</span> <span class="p">[]</span>
+    <span class="k">for</span> <span class="n">k</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="n">NUM_MODES</span><span class="p">):</span>
+        <span class="n">series</span> <span class="o">=</span> <span class="n">pd</span><span class="o">.</span><span class="n">Series</span><span class="p">(</span><span class="n">eofs_scaled</span><span class="p">[</span><span class="n">k</span><span class="p">,</span> <span class="p">:],</span> <span class="n">index</span><span class="o">=</span><span class="n">da_clean</span><span class="o">.</span><span class="n">pixel</span><span class="o">.</span><span class="n">to_index</span><span class="p">())</span>
+        <span class="n">full</span> <span class="o">=</span> <span class="n">series</span><span class="o">.</span><span class="n">reindex</span><span class="p">(</span><span class="n">dummy_stacked</span><span class="o">.</span><span class="n">pixel</span><span class="o">.</span><span class="n">to_index</span><span class="p">())</span>
+        <span class="n">da_temp</span> <span class="o">=</span> <span class="n">xr</span><span class="o">.</span><span class="n">DataArray</span><span class="p">(</span><span class="n">full</span><span class="o">.</span><span class="n">values</span><span class="p">,</span> <span class="n">coords</span><span class="o">=</span><span class="n">dummy_stacked</span><span class="o">.</span><span class="n">coords</span><span class="p">,</span> <span class="n">dims</span><span class="o">=</span><span class="s1">&#39;pixel&#39;</span><span class="p">)</span><span class="o">.</span><span class="n">unstack</span><span class="p">(</span><span class="s1">&#39;pixel&#39;</span><span class="p">)</span>
+        <span class="n">eof_maps_list</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">da_temp</span><span class="p">)</span>
+        
+    <span class="n">da_eofs</span> <span class="o">=</span> <span class="n">xr</span><span class="o">.</span><span class="n">concat</span><span class="p">(</span><span class="n">eof_maps_list</span><span class="p">,</span> <span class="n">dim</span><span class="o">=</span><span class="s1">&#39;mode&#39;</span><span class="p">)</span>
+    <span class="n">da_eofs</span><span class="p">[</span><span class="s1">&#39;mode&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="nb">range</span><span class="p">(</span><span class="mi">1</span><span class="p">,</span> <span class="n">NUM_MODES</span><span class="o">+</span><span class="mi">1</span><span class="p">)</span>
+
+    <span class="n">da_pcs</span> <span class="o">=</span> <span class="n">xr</span><span class="o">.</span><span class="n">DataArray</span><span class="p">(</span><span class="n">pcs_scaled</span><span class="p">,</span> <span class="n">coords</span><span class="o">=</span><span class="p">{</span><span class="s1">&#39;time&#39;</span><span class="p">:</span> <span class="n">da_clean</span><span class="o">.</span><span class="n">time</span><span class="p">,</span> <span class="s1">&#39;mode&#39;</span><span class="p">:</span> <span class="nb">range</span><span class="p">(</span><span class="mi">1</span><span class="p">,</span> <span class="n">NUM_MODES</span><span class="o">+</span><span class="mi">1</span><span class="p">)},</span> <span class="n">dims</span><span class="o">=</span><span class="p">(</span><span class="s1">&#39;time&#39;</span><span class="p">,</span> <span class="s1">&#39;mode&#39;</span><span class="p">))</span>
+    <span class="n">da_var</span> <span class="o">=</span> <span class="n">xr</span><span class="o">.</span><span class="n">DataArray</span><span class="p">(</span><span class="n">pca</span><span class="o">.</span><span class="n">explained_variance_ratio_</span> <span class="o">*</span> <span class="mi">100</span><span class="p">,</span> <span class="n">coords</span><span class="o">=</span><span class="p">{</span><span class="s1">&#39;mode&#39;</span><span class="p">:</span> <span class="nb">range</span><span class="p">(</span><span class="mi">1</span><span class="p">,</span> <span class="n">NUM_MODES</span><span class="o">+</span><span class="mi">1</span><span class="p">)},</span> <span class="n">dims</span><span class="o">=</span><span class="s1">&#39;mode&#39;</span><span class="p">)</span>
+    <span class="nb">print</span><span class="p">(</span><span class="s2">&quot;PCA completed.&quot;</span><span class="p">)</span>
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>Calculating 3-Mode PCA on 1729 valid pixels...
+PCA completed.
+</pre></div>
+</div>
+</div>
+</div>
+</section>
+<section id="visualising-and-interpreting-the-pca-modes">
+<h2>7. Visualising and Interpreting the PCA Modes<a class="headerlink" href="#visualising-and-interpreting-the-pca-modes" title="Permalink to this heading">#</a></h2>
+<p>Let’s look at the results. For each mode, you will see a spatial map (EOF) and a timeseries (PC).</p>
+<p><strong>How to interpret these plots:</strong>
+The actual physical velocity anomaly associated with a given mode at any given moment is the product of the spatial map multiplied by the timeseries value.</p>
+<ul class="simple">
+<li><p>When the timeseries (PC) is <strong>positive</strong>, the glacier is behaving exactly as the map shows (e.g., red areas are speeding up, blue areas are slowing down).</p></li>
+<li><p>When the timeseries is <strong>negative</strong>, the spatial pattern is <em>inverted</em> (e.g., red areas are now slowing down).</p></li>
+<li><p>The amplitude of the timeseries tells you how intense the anomaly is at that moment.</p></li>
+</ul>
+<p>The modes are ordered by the percentage of total variance they explain. <strong>Mode 1</strong> represents the dominant, most widespread pattern of variability across the glacier. Higher modes usually represent more localized or complex secondary behaviors.</p>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="k">if</span> <span class="n">da_clean</span><span class="o">.</span><span class="n">pixel</span><span class="o">.</span><span class="n">size</span> <span class="o">&gt;=</span> <span class="mi">1000</span><span class="p">:</span>
+    <span class="nb">print</span><span class="p">(</span><span class="s2">&quot;Displaying Input Quality Maps...&quot;</span><span class="p">)</span>
+    <span class="n">dem_clip</span> <span class="o">=</span> <span class="n">rioxarray</span><span class="o">.</span><span class="n">open_rasterio</span><span class="p">(</span><span class="n">DEM_PATH</span><span class="p">)</span><span class="o">.</span><span class="n">rio</span><span class="o">.</span><span class="n">clip_box</span><span class="p">(</span><span class="o">*</span><span class="n">basin_geom</span><span class="o">.</span><span class="n">bounds</span><span class="p">)</span><span class="o">.</span><span class="n">isel</span><span class="p">(</span><span class="n">band</span><span class="o">=</span><span class="mi">0</span><span class="p">)</span>
+    <span class="n">gl_vectors</span> <span class="o">=</span> <span class="n">gpd</span><span class="o">.</span><span class="n">read_file</span><span class="p">(</span><span class="n">GL_PATH</span><span class="p">)</span>
+    <span class="n">gl_clip</span> <span class="o">=</span> <span class="n">gl_vectors</span><span class="o">.</span><span class="n">cx</span><span class="p">[</span><span class="n">basin_geom</span><span class="o">.</span><span class="n">bounds</span><span class="p">[</span><span class="mi">0</span><span class="p">]:</span><span class="n">basin_geom</span><span class="o">.</span><span class="n">bounds</span><span class="p">[</span><span class="mi">2</span><span class="p">],</span> <span class="n">basin_geom</span><span class="o">.</span><span class="n">bounds</span><span class="p">[</span><span class="mi">1</span><span class="p">]:</span><span class="n">basin_geom</span><span class="o">.</span><span class="n">bounds</span><span class="p">[</span><span class="mi">3</span><span class="p">]]</span>
+
+    <span class="n">plot_quality_map</span><span class="p">(</span><span class="n">prop_filled_map</span><span class="p">,</span> <span class="n">max_gap_map</span><span class="p">,</span> <span class="n">dem_clip</span><span class="p">,</span> <span class="n">basin_geom</span><span class="p">,</span> <span class="n">TARGET_BASIN</span><span class="p">)</span>
+
+    <span class="nb">print</span><span class="p">(</span><span class="s2">&quot;Displaying First 3 PCA Modes (in m/yr)...&quot;</span><span class="p">)</span>
+    <span class="k">for</span> <span class="n">m</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="n">NUM_MODES</span><span class="p">):</span>
+        <span class="n">mode_idx</span> <span class="o">=</span> <span class="n">m</span> <span class="o">+</span> <span class="mi">1</span>
+        <span class="n">var_exp</span> <span class="o">=</span> <span class="n">da_var</span><span class="o">.</span><span class="n">sel</span><span class="p">(</span><span class="n">mode</span><span class="o">=</span><span class="n">mode_idx</span><span class="p">)</span><span class="o">.</span><span class="n">item</span><span class="p">()</span>
+        <span class="n">pc_series</span> <span class="o">=</span> <span class="n">da_pcs</span><span class="o">.</span><span class="n">sel</span><span class="p">(</span><span class="n">mode</span><span class="o">=</span><span class="n">mode_idx</span><span class="p">)</span>
+        <span class="n">eof_map</span> <span class="o">=</span> <span class="n">da_eofs</span><span class="o">.</span><span class="n">sel</span><span class="p">(</span><span class="n">mode</span><span class="o">=</span><span class="n">mode_idx</span><span class="p">)</span>
+        
+        <span class="n">plot_mode_figure</span><span class="p">(</span>
+            <span class="n">mode_idx</span><span class="p">,</span> <span class="n">var_exp</span><span class="p">,</span> <span class="n">pc_series</span><span class="p">,</span> <span class="n">eof_map</span><span class="p">,</span> <span class="n">dem_clip</span><span class="p">,</span> <span class="n">gl_clip</span><span class="p">,</span> <span class="n">basin_geom</span><span class="p">,</span> <span class="n">TARGET_BASIN</span>
+        <span class="p">)</span>
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>Displaying Input Quality Maps...
+</pre></div>
+</div>
+<img alt="../_images/3223ad0f433ebdb103067fce9881b73ec33a713cf3888abf2ce635c702169832.png" src="../_images/3223ad0f433ebdb103067fce9881b73ec33a713cf3888abf2ce635c702169832.png" />
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>Displaying First 3 PCA Modes (in m/yr)...
+</pre></div>
+</div>
+<img alt="../_images/49c02bab0c129c8854509209f4cb9e9b9fe8e8fb2b4642cf607d26e29847f9f5.png" src="../_images/49c02bab0c129c8854509209f4cb9e9b9fe8e8fb2b4642cf607d26e29847f9f5.png" />
+<img alt="../_images/7f3575d82afc916e07112e7eff06dc62588a6bf409253ddd30eb31d9c1b1ba4b.png" src="../_images/7f3575d82afc916e07112e7eff06dc62588a6bf409253ddd30eb31d9c1b1ba4b.png" />
+<img alt="../_images/3c288a76415de872858c39f98ef744b56fdec6c25d67ae8f4160af136845cb13.png" src="../_images/3c288a76415de872858c39f98ef744b56fdec6c25d67ae8f4160af136845cb13.png" />
+</div>
+</div>
+<p>This analysis confirms that Leonardo Glacier undergoes significant seasonal flow variability that is highly synchronized across its fast-flowing main trunk. Breaking this down, Mode 1 captures a broad multi-year trend—highlighted by a prolonged period of minimum speeds from mid-2020 through 2022—with a low-amplitude seasonal signal superimposed. Meanwhile, Mode 3 isolates a higher-amplitude seasonal cycle with a distinct spatial divide: speed peaks during the summer at the glacier terminus, whereas speeds peak during the winter at higher elevations.</p>
+</section>
+</section>
+
+    <script type="text/x-thebe-config">
+    {
+        requestKernel: true,
+        binderOptions: {
+            repo: "binder-examples/jupyter-stacks-datascience",
+            ref: "master",
+        },
+        codeMirrorConfig: {
+            theme: "abcdef",
+            mode: "shiver_env"
+        },
+        kernelOptions: {
+            name: "shiver_env",
+            path: "./examples"
+        },
+        predefinedOutput: true
+    }
+    </script>
+    <script>kernelName = 'shiver_env'</script>
+
+                </article>
+              
+
+              
+              
+              
+              
+                <footer class="prev-next-footer d-print-none">
+                  
+<div class="prev-next-area">
+    <a class="left-prev"
+       href="trend_change.html"
+       title="previous page">
+      <i class="fa-solid fa-angle-left"></i>
+      <div class="prev-next-info">
+        <p class="prev-next-subtitle">previous</p>
+        <p class="prev-next-title">Ice speed trends in west Greenland (advanced)</p>
+      </div>
+    </a>
+    <a class="right-next"
+       href="strain.html"
+       title="next page">
+      <div class="prev-next-info">
+        <p class="prev-next-subtitle">next</p>
+        <p class="prev-next-title">Strain across the Brunt Ice Shelf</p>
+      </div>
+      <i class="fa-solid fa-angle-right"></i>
+    </a>
+</div>
+                </footer>
+              
+            </div>
+            
+            
+              
+                <div class="bd-sidebar-secondary bd-toc"><div class="sidebar-secondary-items sidebar-secondary__inner">
+
+
+  <div class="sidebar-secondary-item">
+  <div class="page-toc tocsection onthispage">
+    <i class="fa-solid fa-list"></i> Contents
+  </div>
+  <nav class="bd-toc-nav page-toc">
+    <ul class="visible nav section-nav flex-column">
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#configuration-and-parameters">1. Configuration and Parameters</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#helper-functions">2. Helper Functions</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#data-loading-and-time-separations">3. Data Loading and Time Separations</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#temporal-distribution-and-gap-filling">4. Temporal Distribution and Gap Filling</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#diagnostic-check-verifying-the-pre-processing">5. Diagnostic Check: Verifying the pre-processing</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#masking-detrending-and-principal-component-analysis">6. Masking, Detrending, and Principal Component Analysis</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#visualising-and-interpreting-the-pca-modes">7. Visualising and Interpreting the PCA Modes</a></li>
+</ul>
+  </nav></div>
+
+</div></div>
+              
+            
+          </div>
+          <footer class="bd-footer-content">
+            
+<div class="bd-footer-content__inner container">
+  
+  <div class="footer-item">
+    
+<p class="component-author">
+By Benjamin Davison
+</p>
+
+  </div>
+  
+  <div class="footer-item">
+    
+
+  <p class="copyright">
+    
+      © Copyright 2022.
+      <br/>
+    
+  </p>
+
+  </div>
+  
+  <div class="footer-item">
+    
+  </div>
+  
+  <div class="footer-item">
+    
+  </div>
+  
+</div>
+          </footer>
+        
+
+      </main>
+    </div>
+  </div>
+  
+  <!-- Scripts loaded after <body> so the DOM is not blocked -->
+  <script src="../_static/scripts/bootstrap.js?digest=dfe6caa3a7d634c4db9b"></script>
+<script src="../_static/scripts/pydata-sphinx-theme.js?digest=dfe6caa3a7d634c4db9b"></script>
+
+  <footer class="bd-footer">
+  </footer>
+  </body>
+</html>

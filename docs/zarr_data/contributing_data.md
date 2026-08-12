@@ -6,7 +6,7 @@ Our ice sheet velocity Zarr stores contain ice velocity estimates that have been
 
 _There are 17 Contributing Datasets for Greenland, which are summarised in this table:_
 
-**Table 1. Datasets contributing to the Greenland Ice Sheet unified dataset.**
+**Table 1. Datasets contributing to the Greenland Ice Sheet unified dataset. _Valid as of 30th July 2026_**
 | Source Dataset | Start Date | End Date | Epochs | Sep. (days) | Resolution (m) | Citation |
 | :--- | :--- | :--- | ---: | ---: | ---: | ---: |
 | ENVEO annual | 01/10/2014 | 30/09/2020 | 6 | 364 | 250 | [1] |
@@ -35,7 +35,7 @@ _There are 17 Contributing Datasets for Greenland, which are summarised in this 
 ## Antarctica Data
 _There are 17 Contributing Datasets for Antarctica, which are summarised in this table:_
 
-**Table 2. Datasets contributing to the Antarctic Ice Sheet unified dataset.**
+**Table 2. Datasets contributing to the Antarctic Ice Sheet unified dataset. _Valid as of 30th July 2026_**
 | Source Dataset | Start Date | End Date | Epochs | Sep. (days) | Resolution (m) | Citation |
 | :--- | :--- | :--- | ---: | ---: | ---: | ---: |
 | ENVEO ALOS<sup>a</sup> | 29/09/2009 | 17/02/2011 | 2 | 47 | 50 | [51] |
@@ -66,4 +66,4 @@ _There are 17 Contributing Datasets for Antarctica, which are summarised in this
 
 Combined, these sources offer an extensive historical record of ice motion. For Greenland, the measurements span from July 1972 to the present, with epoch resolutions ranging from four days to one year. For the Antarctic Ice Sheet, the temporal record extends from 1963 to January 2026, with epoch resolutions ranging from two days to multiple years.
 
-The data infrastructure is designed to accommodate ongoing data generation. Currently, only one Contributing Dataset for Greenland (PROMICE (Solgaard et al. 2021)) receives predictable, operational updates; these new data are automatically ingested into the Unified Dataset and made accessible via SHIVER with a delay of one day following data publication by PROMICE. Irregular updates from other sources (e.g., MEaSUREs, ITS_LIVE), as well as the integration of entirely new ice velocity products, will be incorporated periodically into future versions of the Unified Dataset.
+The data infrastructure is designed to accommodate ongoing data generation. Currently, only one Contributing Dataset for Greenland (PROMICE (Solgaard et al. 2021)) receives predictable, operational updates; these new data are automatically ingested into the Unified Dataset and made accessible via SHIVER with a delay of three days following data publication by PROMICE. Irregular updates from other sources (e.g., MEaSUREs, ITS_LIVE), as well as the integration of entirely new ice velocity products, will be incorporated periodically into future versions of the Unified Dataset.

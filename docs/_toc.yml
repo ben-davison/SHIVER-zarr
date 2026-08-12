@@ -20,7 +20,9 @@ parts:
       - file: examples/generating_citations
       - file: examples/simple_layers
       - file: examples/simple_subset
-      - file: examples/temporal_statistics
+      - file: examples/trend_change
+      - file: examples/eof
+      - file: examples/strain
 
   - caption: Appendix
     chapters:

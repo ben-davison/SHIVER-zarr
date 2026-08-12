@@ -192,7 +192,9 @@ const thebe_selector_output = ".output, .cell_output"
 <li class="toctree-l1"><a class="reference internal" href="generating_citations.html">Generating citations for Contributing Datasets</a></li>
 <li class="toctree-l1 current active"><a class="current reference internal" href="#">Large spatial scale extraction of velocity fields</a></li>
 <li class="toctree-l1"><a class="reference internal" href="simple_subset.html">Datacube subsetting</a></li>
-<li class="toctree-l1"><a class="reference internal" href="temporal_statistics.html">Calculating temporal statistics (advanced)</a></li>
+<li class="toctree-l1"><a class="reference internal" href="trend_change.html">Ice speed trends in west Greenland (advanced)</a></li>
+<li class="toctree-l1"><a class="reference internal" href="eof.html">Principal Component Analysis (advanced)</a></li>
+<li class="toctree-l1"><a class="reference internal" href="strain.html">Strain across the Brunt Ice Shelf</a></li>
 </ul>
 <p aria-level="2" class="caption" role="heading"><span class="caption-text">Appendix</span></p>
 <ul class="nav bd-sidenav">
@@ -389,7 +391,9 @@ document.write(`
   </button>
 `);
 </script>
-
+<label class="sidebar-toggle secondary-toggle btn btn-sm" for="__secondary"title="Toggle secondary sidebar" data-bs-placement="bottom" data-bs-toggle="tooltip">
+    <span class="fa-solid fa-list"></span>
+</label>
 </div></div>
       
     </div>
@@ -405,6 +409,14 @@ document.write(`
     <div id="print-main-content">
         <div id="jb-print-toc">
             
+            <div>
+                <h2> Contents </h2>
+            </div>
+            <nav aria-label="Page">
+                <ul class="visible nav section-nav flex-column">
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#calculating-speed-change">Calculating speed change</a></li>
+</ul>
+            </nav>
         </div>
     </div>
 </div>
@@ -416,8 +428,8 @@ document.write(`
                   
   <section class="tex2jax_ignore mathjax_ignore" id="large-spatial-scale-extraction-of-velocity-fields">
 <h1>Large spatial scale extraction of velocity fields<a class="headerlink" href="#large-spatial-scale-extraction-of-velocity-fields" title="Permalink to this heading">#</a></h1>
-<p>If your goal requires to examine velocity fields over large spatial areas, especially if you require few epochs, then it makes sense to use the Zarr store optimized for this type of operation.</p>
-<p>The Greenland Zarr store suitable for this analysis is called <code class="docutils literal notranslate"><span class="pre">greenland_multisource_velocity_spatial.zarr</span></code> whilst the Antarctic equivalent is called <code class="docutils literal notranslate"><span class="pre">antarctica_multisource_velocity_spatial.zarr</span></code> and their equivalent URLs are:</p>
+<p>If your goal requires you to examine velocity fields over large spatial areas, especially if you require few epochs, then it makes sense to use the Zarr store optimized for this type of operation.</p>
+<p>The Greenland Zarr store most suited to this analysis is called <code class="docutils literal notranslate"><span class="pre">greenland_multisource_velocity_spatial.zarr</span></code> whilst the Antarctic equivalent is called <code class="docutils literal notranslate"><span class="pre">antarctica_multisource_velocity_spatial.zarr</span></code> and their equivalent URLs are:</p>
 <div class="cell docutils container">
 <div class="cell_input docutils container">
 <div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="c1"># Greenland URL</span>
@@ -430,7 +442,7 @@ document.write(`
 </div>
 </div>
 <p>These are <code class="docutils literal notranslate"><span class="pre">OME-Zarr</span></code> stores, which are analagous to Cloud Optimized Geotiffs for Zarr. They contain multiple copies of the velocity data at varying spatial resolutions. At the lowest level (group 0), the resolution is 200 m, whereas at the highest level (group 4 for Greenland and group 5 for Antarctica) the resolution is 3200 m for Greenland and 6400 m for Antarctica. If your analysis does not require the highest spatial resolution, you can save yourself significant resources by using one of the lower resolution layers.</p>
-<p>In this example, we will visualise a large-scale velocity field of Greenland. Since plots (even those produced at a high dpi and viewed on a high spec monitor) are lower resolution than our data, it is a waste of resources to use the full resolution layer. Therefore, we will use lowest resolution layer, which we can do simply by specify the group number in our open_zarr call.</p>
+<p>In this example, we will visualise a large-scale velocity field of Greenland. Since plots (even those produced at a high dpi and viewed on a high spec monitor) are lower resolution than our data, it is a waste of resources to use the full resolution layer. Therefore, we will use lowest resolution layer, which we can do simply by specify the group number in <code class="docutils literal notranslate"><span class="pre">xr.open_zarr</span></code>.</p>
 <div class="cell docutils container">
 <div class="cell_input docutils container">
 <div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="kn">import</span><span class="w"> </span><span class="nn">matplotlib.pyplot</span><span class="w"> </span><span class="k">as</span><span class="w"> </span><span class="nn">plt</span>
@@ -438,12 +450,12 @@ document.write(`
 <span class="kn">import</span><span class="w"> </span><span class="nn">xarray</span><span class="w"> </span><span class="k">as</span><span class="w"> </span><span class="nn">xr</span>
 
 <span class="c1"># Load the lower spatial resolution layer lazily</span>
-<span class="n">ds</span> <span class="o">=</span> <span class="n">xr</span><span class="o">.</span><span class="n">open_zarr</span><span class="p">(</span><span class="n">greenland_url</span><span class="p">,</span> <span class="n">group</span><span class="o">=</span><span class="s2">&quot;4&quot;</span><span class="p">,</span> <span class="n">consolidated</span><span class="o">=</span><span class="kc">True</span><span class="p">,</span> <span class="p">)</span>
+<span class="n">ds</span> <span class="o">=</span> <span class="n">xr</span><span class="o">.</span><span class="n">open_zarr</span><span class="p">(</span><span class="n">greenland_url</span><span class="p">,</span> <span class="n">group</span><span class="o">=</span><span class="s2">&quot;4&quot;</span><span class="p">,</span> <span class="n">consolidated</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span>
 </pre></div>
 </div>
 </div>
 </div>
-<p>We can filter the Zarr to target a particular Contributing Dataset. Since we want a relatively complete velocity field for this example, we will visualise the most recent <code class="docutils literal notranslate"><span class="pre">MEaSUREs</span> <span class="pre">annual</span></code> velocity field.</p>
+<p>We can filter the Zarr to target a particular Contributing Dataset. Since we want a relatively complete velocity field for this example, we will visualise the most recent <code class="docutils literal notranslate"><span class="pre">MEaSUREs_annual</span></code> velocity field.</p>
 <div class="cell docutils container">
 <div class="cell_input docutils container">
 <div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="c1"># Identify only measures annual data</span>
@@ -520,6 +532,209 @@ document.write(`
 <img alt="../_images/1d4e0c1d93d630b2c835171e0095880d1b8da27dd60f404dc24aa122b66a6bf9.png" src="../_images/1d4e0c1d93d630b2c835171e0095880d1b8da27dd60f404dc24aa122b66a6bf9.png" />
 </div>
 </div>
+<section id="calculating-speed-change">
+<h2>Calculating speed change<a class="headerlink" href="#calculating-speed-change" title="Permalink to this heading">#</a></h2>
+<p>One major benefit of having large-scale temporally-resolved velocity fields is the ability to explore changes in speed over large areas and time periods. With these Zarr stores, we can relatively easily reproduce observed changes in speed around Antarctica presented in Rignot et al. (2022).</p>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="kn">import</span><span class="w"> </span><span class="nn">numpy</span><span class="w"> </span><span class="k">as</span><span class="w"> </span><span class="nn">np</span>
+<span class="kn">import</span><span class="w"> </span><span class="nn">xarray</span><span class="w"> </span><span class="k">as</span><span class="w"> </span><span class="nn">xr</span>
+<span class="kn">import</span><span class="w"> </span><span class="nn">rioxarray</span><span class="w"> </span><span class="k">as</span><span class="w"> </span><span class="nn">rxr</span>
+<span class="kn">import</span><span class="w"> </span><span class="nn">matplotlib.pyplot</span><span class="w"> </span><span class="k">as</span><span class="w"> </span><span class="nn">plt</span>
+<span class="kn">import</span><span class="w"> </span><span class="nn">matplotlib.gridspec</span><span class="w"> </span><span class="k">as</span><span class="w"> </span><span class="nn">gridspec</span>
+<span class="kn">from</span><span class="w"> </span><span class="nn">matplotlib.colors</span><span class="w"> </span><span class="kn">import</span> <span class="n">LightSource</span>
+<span class="kn">from</span><span class="w"> </span><span class="nn">matplotlib.patches</span><span class="w"> </span><span class="kn">import</span> <span class="n">Polygon</span>
+<span class="kn">from</span><span class="w"> </span><span class="nn">matplotlib_scalebar.scalebar</span><span class="w"> </span><span class="kn">import</span> <span class="n">ScaleBar</span>
+<span class="kn">import</span><span class="w"> </span><span class="nn">cartopy.crs</span><span class="w"> </span><span class="k">as</span><span class="w"> </span><span class="nn">ccrs</span>
+<span class="kn">from</span><span class="w"> </span><span class="nn">pyproj</span><span class="w"> </span><span class="kn">import</span> <span class="n">Transformer</span>
+
+<span class="c1"># ==========================================</span>
+<span class="c1"># 1. Configuration &amp; Input Setup</span>
+<span class="c1"># ==========================================</span>
+<span class="n">antarctica_url</span> <span class="o">=</span> <span class="s2">&quot;https://data.source.coop/uos-shiver/antarctica/antarctica_multisource_velocity_spatial.zarr&quot;</span>
+<span class="n">dem_1km_path</span> <span class="o">=</span> <span class="sa">r</span><span class="s2">&quot;D:\work\Fellowship_Leeds\Data\Elevation\Antarctica\REMA\REMA_1km_dem_filled.tif&quot;</span>
+<span class="n">dem_200m_path</span> <span class="o">=</span> <span class="sa">r</span><span class="s2">&quot;D:\work\Fellowship_Leeds\Data\Elevation\Antarctica\REMA\REMA_200m_dem_filled.tif&quot;</span>
+
+<span class="c1"># Define CRS</span>
+<span class="n">CRS_3031</span> <span class="o">=</span> <span class="n">ccrs</span><span class="o">.</span><span class="n">SouthPolarStereo</span><span class="p">()</span>
+<span class="n">proj_transformer</span> <span class="o">=</span> <span class="n">Transformer</span><span class="o">.</span><span class="n">from_crs</span><span class="p">(</span><span class="s2">&quot;EPSG:4326&quot;</span><span class="p">,</span> <span class="s2">&quot;EPSG:3031&quot;</span><span class="p">,</span> <span class="n">always_xy</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span>
+
+<span class="c1"># Define regions for subplots</span>
+<span class="n">regions</span> <span class="o">=</span> <span class="p">{</span>
+    <span class="s2">&quot;b&quot;</span><span class="p">:</span> <span class="p">{</span><span class="s2">&quot;name&quot;</span><span class="p">:</span> <span class="s2">&quot;Central Peninsula&quot;</span><span class="p">,</span> <span class="s2">&quot;coords&quot;</span><span class="p">:</span> <span class="p">[</span><span class="o">-</span><span class="mf">64.2506</span><span class="p">,</span> <span class="o">-</span><span class="mf">61.9245</span><span class="p">,</span> <span class="o">-</span><span class="mf">66.7136</span><span class="p">,</span> <span class="o">-</span><span class="mf">62.3837</span><span class="p">]},</span>
+    <span class="s2">&quot;c&quot;</span><span class="p">:</span> <span class="p">{</span><span class="s2">&quot;name&quot;</span><span class="p">:</span> <span class="s2">&quot;George VI&quot;</span><span class="p">,</span> <span class="s2">&quot;coords&quot;</span><span class="p">:</span> <span class="p">[</span><span class="o">-</span><span class="mf">69.918</span><span class="p">,</span> <span class="o">-</span><span class="mf">67.481</span><span class="p">,</span> <span class="o">-</span><span class="mf">73.633</span><span class="p">,</span> <span class="o">-</span><span class="mf">71.344</span><span class="p">]},</span>
+    <span class="s2">&quot;d&quot;</span><span class="p">:</span> <span class="p">{</span><span class="s2">&quot;name&quot;</span><span class="p">:</span> <span class="s2">&quot;ASE&quot;</span><span class="p">,</span> <span class="s2">&quot;coords&quot;</span><span class="p">:</span> <span class="p">[</span><span class="o">-</span><span class="mf">74.384</span><span class="p">,</span> <span class="o">-</span><span class="mf">89.529</span><span class="p">,</span> <span class="o">-</span><span class="mf">77.041</span><span class="p">,</span> <span class="o">-</span><span class="mf">113.937</span><span class="p">]},</span>
+    <span class="s2">&quot;e&quot;</span><span class="p">:</span> <span class="p">{</span><span class="s2">&quot;name&quot;</span><span class="p">:</span> <span class="s2">&quot;Getz Ice Shelf&quot;</span><span class="p">,</span> <span class="s2">&quot;coords&quot;</span><span class="p">:</span> <span class="p">[</span><span class="o">-</span><span class="mf">74.056</span><span class="p">,</span> <span class="o">-</span><span class="mf">108.288</span><span class="p">,</span> <span class="o">-</span><span class="mf">75.121</span><span class="p">,</span> <span class="o">-</span><span class="mf">145.912</span><span class="p">]},</span>
+    <span class="s2">&quot;f&quot;</span><span class="p">:</span> <span class="p">{</span><span class="s2">&quot;name&quot;</span><span class="p">:</span> <span class="s2">&quot;Totten Glacier&quot;</span><span class="p">,</span> <span class="s2">&quot;coords&quot;</span><span class="p">:</span> <span class="p">[</span><span class="o">-</span><span class="mf">69.733</span><span class="p">,</span> <span class="mf">114.806</span><span class="p">,</span> <span class="o">-</span><span class="mf">64.687</span><span class="p">,</span> <span class="mf">119.426</span><span class="p">]},</span>
+<span class="p">}</span>
+
+<span class="c1"># ==========================================</span>
+<span class="c1"># 2. Helper Functions</span>
+<span class="c1"># ==========================================</span>
+<span class="k">def</span><span class="w"> </span><span class="nf">get_polygon_3031</span><span class="p">(</span><span class="n">lat1</span><span class="p">,</span> <span class="n">lon1</span><span class="p">,</span> <span class="n">lat2</span><span class="p">,</span> <span class="n">lon2</span><span class="p">,</span> <span class="n">n_samples</span><span class="o">=</span><span class="mi">20</span><span class="p">):</span>
+    <span class="n">lats</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">concatenate</span><span class="p">([</span>
+        <span class="n">np</span><span class="o">.</span><span class="n">linspace</span><span class="p">(</span><span class="n">lat1</span><span class="p">,</span> <span class="n">lat1</span><span class="p">,</span> <span class="n">n_samples</span><span class="p">),</span>
+        <span class="n">np</span><span class="o">.</span><span class="n">linspace</span><span class="p">(</span><span class="n">lat1</span><span class="p">,</span> <span class="n">lat2</span><span class="p">,</span> <span class="n">n_samples</span><span class="p">),</span>
+        <span class="n">np</span><span class="o">.</span><span class="n">linspace</span><span class="p">(</span><span class="n">lat2</span><span class="p">,</span> <span class="n">lat2</span><span class="p">,</span> <span class="n">n_samples</span><span class="p">),</span>
+        <span class="n">np</span><span class="o">.</span><span class="n">linspace</span><span class="p">(</span><span class="n">lat2</span><span class="p">,</span> <span class="n">lat1</span><span class="p">,</span> <span class="n">n_samples</span><span class="p">)</span>
+    <span class="p">])</span>
+    <span class="n">lons</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">concatenate</span><span class="p">([</span>
+        <span class="n">np</span><span class="o">.</span><span class="n">linspace</span><span class="p">(</span><span class="n">lon1</span><span class="p">,</span> <span class="n">lon2</span><span class="p">,</span> <span class="n">n_samples</span><span class="p">),</span>
+        <span class="n">np</span><span class="o">.</span><span class="n">linspace</span><span class="p">(</span><span class="n">lon2</span><span class="p">,</span> <span class="n">lon2</span><span class="p">,</span> <span class="n">n_samples</span><span class="p">),</span>
+        <span class="n">np</span><span class="o">.</span><span class="n">linspace</span><span class="p">(</span><span class="n">lon2</span><span class="p">,</span> <span class="n">lon1</span><span class="p">,</span> <span class="n">n_samples</span><span class="p">),</span>
+        <span class="n">np</span><span class="o">.</span><span class="n">linspace</span><span class="p">(</span><span class="n">lon1</span><span class="p">,</span> <span class="n">lon1</span><span class="p">,</span> <span class="n">n_samples</span><span class="p">)</span>
+    <span class="p">])</span>
+    <span class="n">x</span><span class="p">,</span> <span class="n">y</span> <span class="o">=</span> <span class="n">proj_transformer</span><span class="o">.</span><span class="n">transform</span><span class="p">(</span><span class="n">lons</span><span class="p">,</span> <span class="n">lats</span><span class="p">)</span>
+    <span class="k">return</span> <span class="n">np</span><span class="o">.</span><span class="n">column_stack</span><span class="p">([</span><span class="n">x</span><span class="p">,</span> <span class="n">y</span><span class="p">])</span>
+
+<span class="k">def</span><span class="w"> </span><span class="nf">compute_speed_change</span><span class="p">(</span><span class="n">ds</span><span class="p">):</span>
+    <span class="n">source_mask</span> <span class="o">=</span> <span class="p">(</span><span class="n">ds</span><span class="p">[</span><span class="s1">&#39;data_source&#39;</span><span class="p">]</span> <span class="o">==</span> <span class="s1">&#39;MEaSUREs_multiyear&#39;</span><span class="p">)</span><span class="o">.</span><span class="n">compute</span><span class="p">()</span>
+    <span class="n">measures_times</span> <span class="o">=</span> <span class="n">ds</span><span class="o">.</span><span class="n">time</span><span class="p">[</span><span class="n">source_mask</span><span class="p">]</span>
+    
+    <span class="n">speed_first</span> <span class="o">=</span> <span class="n">ds</span><span class="p">[</span><span class="s1">&#39;speed&#39;</span><span class="p">]</span><span class="o">.</span><span class="n">sel</span><span class="p">(</span><span class="n">time</span><span class="o">=</span><span class="n">measures_times</span><span class="p">[</span><span class="mi">0</span><span class="p">])</span><span class="o">.</span><span class="n">compute</span><span class="p">()</span>
+    <span class="n">speed_latest</span> <span class="o">=</span> <span class="n">ds</span><span class="p">[</span><span class="s1">&#39;speed&#39;</span><span class="p">]</span><span class="o">.</span><span class="n">sel</span><span class="p">(</span><span class="n">time</span><span class="o">=</span><span class="n">measures_times</span><span class="p">[</span><span class="o">-</span><span class="mi">1</span><span class="p">])</span><span class="o">.</span><span class="n">compute</span><span class="p">()</span>
+    
+    <span class="k">return</span> <span class="n">speed_latest</span> <span class="o">-</span> <span class="n">speed_first</span>
+
+<span class="k">def</span><span class="w"> </span><span class="nf">create_hillshade</span><span class="p">(</span><span class="n">dem_raster</span><span class="p">):</span>
+    <span class="n">ls</span> <span class="o">=</span> <span class="n">LightSource</span><span class="p">(</span><span class="n">azdeg</span><span class="o">=</span><span class="mi">315</span><span class="p">,</span> <span class="n">altdeg</span><span class="o">=</span><span class="mi">45</span><span class="p">)</span>
+    <span class="n">dem_filled</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">nan_to_num</span><span class="p">(</span><span class="n">dem_raster</span><span class="o">.</span><span class="n">values</span><span class="p">,</span> <span class="n">nan</span><span class="o">=</span><span class="mi">0</span><span class="p">)</span>
+    <span class="k">return</span> <span class="n">ls</span><span class="o">.</span><span class="n">hillshade</span><span class="p">(</span><span class="n">dem_filled</span><span class="p">,</span> <span class="n">vert_exag</span><span class="o">=</span><span class="mi">2</span><span class="p">)</span>
+
+<span class="c1"># ==========================================</span>
+<span class="c1"># 3. Data Processing - Overview Map</span>
+<span class="c1"># ==========================================</span>
+<span class="nb">print</span><span class="p">(</span><span class="s2">&quot;Extracting full bounds from Group 0...&quot;</span><span class="p">)</span>
+<span class="n">ds_g0</span> <span class="o">=</span> <span class="n">xr</span><span class="o">.</span><span class="n">open_zarr</span><span class="p">(</span><span class="n">antarctica_url</span><span class="p">,</span> <span class="n">group</span><span class="o">=</span><span class="s2">&quot;0&quot;</span><span class="p">,</span> <span class="n">consolidated</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span>
+<span class="n">full_x_min</span><span class="p">,</span> <span class="n">full_x_max</span> <span class="o">=</span> <span class="n">ds_g0</span><span class="o">.</span><span class="n">x</span><span class="o">.</span><span class="n">min</span><span class="p">()</span><span class="o">.</span><span class="n">item</span><span class="p">(),</span> <span class="n">ds_g0</span><span class="o">.</span><span class="n">x</span><span class="o">.</span><span class="n">max</span><span class="p">()</span><span class="o">.</span><span class="n">item</span><span class="p">()</span>
+<span class="n">full_y_min</span><span class="p">,</span> <span class="n">full_y_max</span> <span class="o">=</span> <span class="n">ds_g0</span><span class="o">.</span><span class="n">y</span><span class="o">.</span><span class="n">min</span><span class="p">()</span><span class="o">.</span><span class="n">item</span><span class="p">(),</span> <span class="n">ds_g0</span><span class="o">.</span><span class="n">y</span><span class="o">.</span><span class="n">max</span><span class="p">()</span><span class="o">.</span><span class="n">item</span><span class="p">()</span>
+
+<span class="nb">print</span><span class="p">(</span><span class="s2">&quot;Processing Group 5...&quot;</span><span class="p">)</span>
+<span class="n">ds_g5</span> <span class="o">=</span> <span class="n">xr</span><span class="o">.</span><span class="n">open_zarr</span><span class="p">(</span><span class="n">antarctica_url</span><span class="p">,</span> <span class="n">group</span><span class="o">=</span><span class="s2">&quot;5&quot;</span><span class="p">,</span> <span class="n">consolidated</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span>
+<span class="n">speed_change_g5</span> <span class="o">=</span> <span class="n">compute_speed_change</span><span class="p">(</span><span class="n">ds_g5</span><span class="p">)</span>
+
+<span class="n">dem_1km</span> <span class="o">=</span> <span class="n">rxr</span><span class="o">.</span><span class="n">open_rasterio</span><span class="p">(</span><span class="n">dem_1km_path</span><span class="p">,</span> <span class="n">masked</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span><span class="o">.</span><span class="n">squeeze</span><span class="p">()</span>
+<span class="n">dem_1km_hillshade</span> <span class="o">=</span> <span class="n">create_hillshade</span><span class="p">(</span><span class="n">dem_1km</span><span class="p">)</span>
+<span class="n">extent_1km</span> <span class="o">=</span> <span class="p">[</span><span class="n">dem_1km</span><span class="o">.</span><span class="n">x</span><span class="o">.</span><span class="n">min</span><span class="p">()</span><span class="o">.</span><span class="n">item</span><span class="p">(),</span> <span class="n">dem_1km</span><span class="o">.</span><span class="n">x</span><span class="o">.</span><span class="n">max</span><span class="p">()</span><span class="o">.</span><span class="n">item</span><span class="p">(),</span> 
+              <span class="n">dem_1km</span><span class="o">.</span><span class="n">y</span><span class="o">.</span><span class="n">min</span><span class="p">()</span><span class="o">.</span><span class="n">item</span><span class="p">(),</span> <span class="n">dem_1km</span><span class="o">.</span><span class="n">y</span><span class="o">.</span><span class="n">max</span><span class="p">()</span><span class="o">.</span><span class="n">item</span><span class="p">()]</span>
+
+<span class="c1"># ==========================================</span>
+<span class="c1"># 4. Figure Layout Initialization</span>
+<span class="c1"># ==========================================</span>
+<span class="n">plt</span><span class="o">.</span><span class="n">rcParams</span><span class="o">.</span><span class="n">update</span><span class="p">({</span><span class="s1">&#39;font.sans-serif&#39;</span><span class="p">:</span> <span class="s1">&#39;Arial&#39;</span><span class="p">,</span> <span class="s1">&#39;font.size&#39;</span><span class="p">:</span> <span class="mi">7</span><span class="p">})</span>
+<span class="n">fig</span> <span class="o">=</span> <span class="n">plt</span><span class="o">.</span><span class="n">figure</span><span class="p">(</span><span class="n">figsize</span><span class="o">=</span><span class="p">(</span><span class="mi">7</span><span class="p">,</span> <span class="mi">5</span><span class="p">),</span> <span class="n">dpi</span><span class="o">=</span><span class="mi">400</span><span class="p">)</span>
+
+<span class="n">gs_left</span> <span class="o">=</span> <span class="n">gridspec</span><span class="o">.</span><span class="n">GridSpec</span><span class="p">(</span><span class="mi">1</span><span class="p">,</span> <span class="mi">1</span><span class="p">,</span> <span class="n">left</span><span class="o">=</span><span class="mf">0.02</span><span class="p">,</span> <span class="n">right</span><span class="o">=</span><span class="mf">0.44</span><span class="p">,</span> <span class="n">bottom</span><span class="o">=</span><span class="mf">0.25</span><span class="p">,</span> <span class="n">top</span><span class="o">=</span><span class="mf">0.95</span><span class="p">)</span>
+<span class="n">gs_right_top</span> <span class="o">=</span> <span class="n">gridspec</span><span class="o">.</span><span class="n">GridSpec</span><span class="p">(</span><span class="mi">1</span><span class="p">,</span> <span class="mi">2</span><span class="p">,</span> <span class="n">left</span><span class="o">=</span><span class="mf">0.48</span><span class="p">,</span> <span class="n">right</span><span class="o">=</span><span class="mf">0.98</span><span class="p">,</span> <span class="n">bottom</span><span class="o">=</span><span class="mf">0.54</span><span class="p">,</span> <span class="n">top</span><span class="o">=</span><span class="mf">0.85</span><span class="p">,</span> <span class="n">wspace</span><span class="o">=</span><span class="mf">0.15</span><span class="p">)</span>
+<span class="n">gs_right_bot</span> <span class="o">=</span> <span class="n">gridspec</span><span class="o">.</span><span class="n">GridSpec</span><span class="p">(</span><span class="mi">1</span><span class="p">,</span> <span class="mi">3</span><span class="p">,</span> <span class="n">left</span><span class="o">=</span><span class="mf">0.48</span><span class="p">,</span> <span class="n">right</span><span class="o">=</span><span class="mf">0.98</span><span class="p">,</span> <span class="n">bottom</span><span class="o">=</span><span class="mf">0.22</span><span class="p">,</span> <span class="n">top</span><span class="o">=</span><span class="mf">0.50</span><span class="p">,</span> <span class="n">wspace</span><span class="o">=</span><span class="mf">0.10</span><span class="p">)</span>
+
+<span class="n">ax_main</span> <span class="o">=</span> <span class="n">fig</span><span class="o">.</span><span class="n">add_subplot</span><span class="p">(</span><span class="n">gs_left</span><span class="p">[</span><span class="mi">0</span><span class="p">],</span> <span class="n">projection</span><span class="o">=</span><span class="n">CRS_3031</span><span class="p">)</span>
+
+<span class="c1"># ==========================================</span>
+<span class="c1"># 5. Plot overview</span>
+<span class="c1"># ==========================================</span>
+<span class="n">ax_main</span><span class="o">.</span><span class="n">imshow</span><span class="p">(</span><span class="n">dem_1km_hillshade</span><span class="p">,</span> <span class="n">cmap</span><span class="o">=</span><span class="s1">&#39;gray&#39;</span><span class="p">,</span> <span class="n">origin</span><span class="o">=</span><span class="s1">&#39;upper&#39;</span><span class="p">,</span> <span class="n">extent</span><span class="o">=</span><span class="n">extent_1km</span><span class="p">,</span> <span class="n">alpha</span><span class="o">=</span><span class="mf">0.7</span><span class="p">)</span>
+
+<span class="n">im</span> <span class="o">=</span> <span class="n">speed_change_g5</span><span class="o">.</span><span class="n">plot</span><span class="o">.</span><span class="n">imshow</span><span class="p">(</span>
+    <span class="n">ax</span><span class="o">=</span><span class="n">ax_main</span><span class="p">,</span> <span class="n">cmap</span><span class="o">=</span><span class="s2">&quot;seismic&quot;</span><span class="p">,</span> <span class="n">vmin</span><span class="o">=-</span><span class="mi">300</span><span class="p">,</span> <span class="n">vmax</span><span class="o">=</span><span class="mi">300</span><span class="p">,</span> <span class="n">alpha</span><span class="o">=</span><span class="mf">0.55</span><span class="p">,</span>
+    <span class="n">add_colorbar</span><span class="o">=</span><span class="kc">False</span><span class="p">,</span> <span class="n">transform</span><span class="o">=</span><span class="n">CRS_3031</span>
+<span class="p">)</span>
+
+<span class="c1"># Ensure panels fits everything in</span>
+<span class="n">x_center</span> <span class="o">=</span> <span class="p">(</span><span class="n">full_x_max</span> <span class="o">+</span> <span class="n">full_x_min</span><span class="p">)</span> <span class="o">/</span> <span class="mf">2.0</span>
+<span class="n">y_center</span> <span class="o">=</span> <span class="p">(</span><span class="n">full_y_max</span> <span class="o">+</span> <span class="n">full_y_min</span><span class="p">)</span> <span class="o">/</span> <span class="mf">2.0</span>
+<span class="n">max_range</span> <span class="o">=</span> <span class="nb">max</span><span class="p">(</span><span class="n">full_x_max</span> <span class="o">-</span> <span class="n">full_x_min</span><span class="p">,</span> <span class="n">full_y_max</span> <span class="o">-</span> <span class="n">full_y_min</span><span class="p">)</span> <span class="c1"># Find the largest spatial dimension (width or height)</span>
+<span class="n">zoom_buffer</span> <span class="o">=</span> <span class="n">max_range</span> <span class="o">*</span> <span class="mf">0.02</span>   <span class="c1"># Add a 2% buffer to &quot;zoom out&quot; slightly </span>
+<span class="n">ax_main</span><span class="o">.</span><span class="n">set_xlim</span><span class="p">(</span><span class="n">x_center</span> <span class="o">-</span> <span class="p">(</span><span class="n">max_range</span><span class="o">/</span><span class="mi">2</span><span class="p">)</span> <span class="o">-</span> <span class="n">zoom_buffer</span><span class="p">,</span> <span class="n">x_center</span> <span class="o">+</span> <span class="p">(</span><span class="n">max_range</span><span class="o">/</span><span class="mi">2</span><span class="p">)</span> <span class="o">+</span> <span class="n">zoom_buffer</span><span class="p">)</span>
+<span class="n">ax_main</span><span class="o">.</span><span class="n">set_ylim</span><span class="p">(</span><span class="n">y_center</span> <span class="o">-</span> <span class="p">(</span><span class="n">max_range</span><span class="o">/</span><span class="mi">2</span><span class="p">)</span> <span class="o">-</span> <span class="n">zoom_buffer</span><span class="p">,</span> <span class="n">y_center</span> <span class="o">+</span> <span class="p">(</span><span class="n">max_range</span><span class="o">/</span><span class="mi">2</span><span class="p">)</span> <span class="o">+</span> <span class="n">zoom_buffer</span><span class="p">)</span>
+
+<span class="n">ax_main</span><span class="o">.</span><span class="n">set_title</span><span class="p">(</span><span class="s2">&quot;a) Antarctica ice speed change&quot;</span><span class="p">,</span> <span class="n">fontsize</span><span class="o">=</span><span class="mi">7</span><span class="p">,</span> <span class="n">fontweight</span><span class="o">=</span><span class="s1">&#39;bold&#39;</span><span class="p">,</span> <span class="n">loc</span><span class="o">=</span><span class="s1">&#39;left&#39;</span><span class="p">)</span>
+
+<span class="c1"># Remove the bounding box from the main panel</span>
+<span class="k">try</span><span class="p">:</span>
+    <span class="n">ax_main</span><span class="o">.</span><span class="n">spines</span><span class="p">[</span><span class="s1">&#39;geo&#39;</span><span class="p">]</span><span class="o">.</span><span class="n">set_visible</span><span class="p">(</span><span class="kc">False</span><span class="p">)</span>
+<span class="k">except</span> <span class="ne">KeyError</span><span class="p">:</span>
+    <span class="n">ax_main</span><span class="o">.</span><span class="n">outline_patch</span><span class="o">.</span><span class="n">set_visible</span><span class="p">(</span><span class="kc">False</span><span class="p">)</span>
+
+<span class="c1"># Draw and label bounding boxes</span>
+<span class="n">region_polygons</span> <span class="o">=</span> <span class="p">{}</span>
+<span class="k">for</span> <span class="n">key</span><span class="p">,</span> <span class="n">info</span> <span class="ow">in</span> <span class="n">regions</span><span class="o">.</span><span class="n">items</span><span class="p">():</span>
+    <span class="n">poly_pts</span> <span class="o">=</span> <span class="n">get_polygon_3031</span><span class="p">(</span><span class="o">*</span><span class="n">info</span><span class="p">[</span><span class="s2">&quot;coords&quot;</span><span class="p">])</span>
+    <span class="n">region_polygons</span><span class="p">[</span><span class="n">key</span><span class="p">]</span> <span class="o">=</span> <span class="n">poly_pts</span>
+    
+    <span class="n">rect</span> <span class="o">=</span> <span class="n">Polygon</span><span class="p">(</span><span class="n">poly_pts</span><span class="p">,</span> <span class="n">closed</span><span class="o">=</span><span class="kc">True</span><span class="p">,</span> <span class="n">linewidth</span><span class="o">=</span><span class="mf">1.0</span><span class="p">,</span> <span class="n">edgecolor</span><span class="o">=</span><span class="s1">&#39;black&#39;</span><span class="p">,</span> <span class="n">facecolor</span><span class="o">=</span><span class="s1">&#39;none&#39;</span><span class="p">,</span> <span class="n">zorder</span><span class="o">=</span><span class="mi">10</span><span class="p">)</span>
+    <span class="n">ax_main</span><span class="o">.</span><span class="n">add_patch</span><span class="p">(</span><span class="n">rect</span><span class="p">)</span>
+    
+    <span class="n">centroid_x</span><span class="p">,</span> <span class="n">centroid_y</span> <span class="o">=</span> <span class="n">poly_pts</span><span class="p">[:,</span> <span class="mi">0</span><span class="p">]</span><span class="o">.</span><span class="n">mean</span><span class="p">(),</span> <span class="n">poly_pts</span><span class="p">[:,</span> <span class="mi">1</span><span class="p">]</span><span class="o">.</span><span class="n">mean</span><span class="p">()</span>
+    <span class="n">ax_main</span><span class="o">.</span><span class="n">text</span><span class="p">(</span><span class="n">centroid_x</span><span class="p">,</span> <span class="n">centroid_y</span><span class="p">,</span> <span class="n">key</span><span class="p">,</span> <span class="n">fontsize</span><span class="o">=</span><span class="mi">6</span><span class="p">,</span> <span class="n">fontweight</span><span class="o">=</span><span class="s1">&#39;bold&#39;</span><span class="p">,</span>
+                 <span class="n">color</span><span class="o">=</span><span class="s1">&#39;black&#39;</span><span class="p">,</span> <span class="n">bbox</span><span class="o">=</span><span class="nb">dict</span><span class="p">(</span><span class="n">boxstyle</span><span class="o">=</span><span class="s1">&#39;circle,pad=0.1&#39;</span><span class="p">,</span> <span class="n">facecolor</span><span class="o">=</span><span class="s1">&#39;white&#39;</span><span class="p">,</span> <span class="n">edgecolor</span><span class="o">=</span><span class="s1">&#39;black&#39;</span><span class="p">,</span> <span class="n">alpha</span><span class="o">=</span><span class="mf">0.8</span><span class="p">),</span>
+                 <span class="n">ha</span><span class="o">=</span><span class="s1">&#39;center&#39;</span><span class="p">,</span> <span class="n">va</span><span class="o">=</span><span class="s1">&#39;center&#39;</span><span class="p">,</span> <span class="n">zorder</span><span class="o">=</span><span class="mi">11</span><span class="p">)</span>
+
+<span class="c1"># ==========================================</span>
+<span class="c1"># 6. Process &amp; plot subpanels (b-f)</span>
+<span class="c1"># ==========================================</span>
+<span class="nb">print</span><span class="p">(</span><span class="s2">&quot;Processing subplots using Zarr group 2...&quot;</span><span class="p">)</span>
+<span class="n">ds_g2</span> <span class="o">=</span> <span class="n">xr</span><span class="o">.</span><span class="n">open_zarr</span><span class="p">(</span><span class="n">antarctica_url</span><span class="p">,</span> <span class="n">group</span><span class="o">=</span><span class="s2">&quot;2&quot;</span><span class="p">,</span> <span class="n">consolidated</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span>
+<span class="n">dem_200m</span> <span class="o">=</span> <span class="n">rxr</span><span class="o">.</span><span class="n">open_rasterio</span><span class="p">(</span><span class="n">dem_200m_path</span><span class="p">,</span> <span class="n">masked</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span><span class="o">.</span><span class="n">squeeze</span><span class="p">()</span>
+
+<span class="n">subplot_slots</span> <span class="o">=</span> <span class="p">[</span>
+    <span class="n">gs_right_top</span><span class="p">[</span><span class="mi">0</span><span class="p">,</span> <span class="mi">0</span><span class="p">],</span> <span class="c1"># b</span>
+    <span class="n">gs_right_top</span><span class="p">[</span><span class="mi">0</span><span class="p">,</span> <span class="mi">1</span><span class="p">],</span> <span class="c1"># c</span>
+    <span class="n">gs_right_bot</span><span class="p">[</span><span class="mi">0</span><span class="p">,</span> <span class="mi">0</span><span class="p">],</span> <span class="c1"># d</span>
+    <span class="n">gs_right_bot</span><span class="p">[</span><span class="mi">0</span><span class="p">,</span> <span class="mi">1</span><span class="p">],</span> <span class="c1"># e</span>
+    <span class="n">gs_right_bot</span><span class="p">[</span><span class="mi">0</span><span class="p">,</span> <span class="mi">2</span><span class="p">],</span> <span class="c1"># f</span>
+<span class="p">]</span>
+
+<span class="k">for</span> <span class="n">idx</span><span class="p">,</span> <span class="p">(</span><span class="n">key</span><span class="p">,</span> <span class="n">info</span><span class="p">)</span> <span class="ow">in</span> <span class="nb">enumerate</span><span class="p">(</span><span class="n">regions</span><span class="o">.</span><span class="n">items</span><span class="p">()):</span>
+    <span class="n">ax_sub</span> <span class="o">=</span> <span class="n">fig</span><span class="o">.</span><span class="n">add_subplot</span><span class="p">(</span><span class="n">subplot_slots</span><span class="p">[</span><span class="n">idx</span><span class="p">],</span> <span class="n">projection</span><span class="o">=</span><span class="n">CRS_3031</span><span class="p">)</span>
+    
+    <span class="n">pts</span> <span class="o">=</span> <span class="n">region_polygons</span><span class="p">[</span><span class="n">key</span><span class="p">]</span>
+    <span class="n">xmin</span><span class="p">,</span> <span class="n">xmax</span> <span class="o">=</span> <span class="n">pts</span><span class="p">[:,</span> <span class="mi">0</span><span class="p">]</span><span class="o">.</span><span class="n">min</span><span class="p">(),</span> <span class="n">pts</span><span class="p">[:,</span> <span class="mi">0</span><span class="p">]</span><span class="o">.</span><span class="n">max</span><span class="p">()</span>
+    <span class="n">ymin</span><span class="p">,</span> <span class="n">ymax</span> <span class="o">=</span> <span class="n">pts</span><span class="p">[:,</span> <span class="mi">1</span><span class="p">]</span><span class="o">.</span><span class="n">min</span><span class="p">(),</span> <span class="n">pts</span><span class="p">[:,</span> <span class="mi">1</span><span class="p">]</span><span class="o">.</span><span class="n">max</span><span class="p">()</span>
+    
+    <span class="n">dem_sub</span> <span class="o">=</span> <span class="n">dem_200m</span><span class="o">.</span><span class="n">rio</span><span class="o">.</span><span class="n">clip_box</span><span class="p">(</span><span class="n">minx</span><span class="o">=</span><span class="n">xmin</span><span class="p">,</span> <span class="n">miny</span><span class="o">=</span><span class="n">ymin</span><span class="p">,</span> <span class="n">maxx</span><span class="o">=</span><span class="n">xmax</span><span class="p">,</span> <span class="n">maxy</span><span class="o">=</span><span class="n">ymax</span><span class="p">)</span>
+    <span class="n">hillshade_sub</span> <span class="o">=</span> <span class="n">create_hillshade</span><span class="p">(</span><span class="n">dem_sub</span><span class="p">)</span>
+    <span class="n">sub_extent</span> <span class="o">=</span> <span class="p">[</span><span class="n">dem_sub</span><span class="o">.</span><span class="n">x</span><span class="o">.</span><span class="n">min</span><span class="p">()</span><span class="o">.</span><span class="n">item</span><span class="p">(),</span> <span class="n">dem_sub</span><span class="o">.</span><span class="n">x</span><span class="o">.</span><span class="n">max</span><span class="p">()</span><span class="o">.</span><span class="n">item</span><span class="p">(),</span>
+                  <span class="n">dem_sub</span><span class="o">.</span><span class="n">y</span><span class="o">.</span><span class="n">min</span><span class="p">()</span><span class="o">.</span><span class="n">item</span><span class="p">(),</span> <span class="n">dem_sub</span><span class="o">.</span><span class="n">y</span><span class="o">.</span><span class="n">max</span><span class="p">()</span><span class="o">.</span><span class="n">item</span><span class="p">()]</span>
+    
+    <span class="n">ds_g2_sub</span> <span class="o">=</span> <span class="n">ds_g2</span><span class="o">.</span><span class="n">sel</span><span class="p">(</span><span class="n">x</span><span class="o">=</span><span class="nb">slice</span><span class="p">(</span><span class="n">xmin</span><span class="p">,</span> <span class="n">xmax</span><span class="p">),</span> <span class="n">y</span><span class="o">=</span><span class="nb">slice</span><span class="p">(</span><span class="n">ymax</span><span class="p">,</span> <span class="n">ymin</span><span class="p">))</span>
+    <span class="k">if</span> <span class="n">ds_g2_sub</span><span class="o">.</span><span class="n">x</span><span class="o">.</span><span class="n">size</span> <span class="o">==</span> <span class="mi">0</span> <span class="ow">or</span> <span class="n">ds_g2_sub</span><span class="o">.</span><span class="n">y</span><span class="o">.</span><span class="n">size</span> <span class="o">==</span> <span class="mi">0</span><span class="p">:</span>
+        <span class="n">ds_g2_sub</span> <span class="o">=</span> <span class="n">ds_g2</span><span class="o">.</span><span class="n">sel</span><span class="p">(</span><span class="n">x</span><span class="o">=</span><span class="nb">slice</span><span class="p">(</span><span class="n">xmin</span><span class="p">,</span> <span class="n">xmax</span><span class="p">),</span> <span class="n">y</span><span class="o">=</span><span class="nb">slice</span><span class="p">(</span><span class="n">ymin</span><span class="p">,</span> <span class="n">ymax</span><span class="p">))</span>
+        
+    <span class="n">speed_change_g2</span> <span class="o">=</span> <span class="n">compute_speed_change</span><span class="p">(</span><span class="n">ds_g2_sub</span><span class="p">)</span>
+    
+    <span class="n">ax_sub</span><span class="o">.</span><span class="n">imshow</span><span class="p">(</span><span class="n">hillshade_sub</span><span class="p">,</span> <span class="n">cmap</span><span class="o">=</span><span class="s1">&#39;gray&#39;</span><span class="p">,</span> <span class="n">origin</span><span class="o">=</span><span class="s1">&#39;upper&#39;</span><span class="p">,</span> <span class="n">extent</span><span class="o">=</span><span class="n">sub_extent</span><span class="p">,</span> <span class="n">alpha</span><span class="o">=</span><span class="mf">0.7</span><span class="p">)</span>
+    <span class="n">speed_change_g2</span><span class="o">.</span><span class="n">plot</span><span class="o">.</span><span class="n">imshow</span><span class="p">(</span>
+        <span class="n">ax</span><span class="o">=</span><span class="n">ax_sub</span><span class="p">,</span> <span class="n">cmap</span><span class="o">=</span><span class="s2">&quot;seismic&quot;</span><span class="p">,</span> <span class="n">vmin</span><span class="o">=-</span><span class="mi">300</span><span class="p">,</span> <span class="n">vmax</span><span class="o">=</span><span class="mi">300</span><span class="p">,</span> <span class="n">alpha</span><span class="o">=</span><span class="mf">0.6</span><span class="p">,</span>
+        <span class="n">add_colorbar</span><span class="o">=</span><span class="kc">False</span><span class="p">,</span> <span class="n">transform</span><span class="o">=</span><span class="n">CRS_3031</span>
+    <span class="p">)</span>
+    
+    <span class="n">ax_sub</span><span class="o">.</span><span class="n">set_extent</span><span class="p">([</span><span class="n">xmin</span><span class="p">,</span> <span class="n">xmax</span><span class="p">,</span> <span class="n">ymin</span><span class="p">,</span> <span class="n">ymax</span><span class="p">],</span> <span class="n">crs</span><span class="o">=</span><span class="n">CRS_3031</span><span class="p">)</span>
+    <span class="n">ax_sub</span><span class="o">.</span><span class="n">set_title</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;</span><span class="si">{</span><span class="n">key</span><span class="si">}</span><span class="s2">) </span><span class="si">{</span><span class="n">info</span><span class="p">[</span><span class="s1">&#39;name&#39;</span><span class="p">]</span><span class="si">}</span><span class="s2">&quot;</span><span class="p">,</span> <span class="n">fontsize</span><span class="o">=</span><span class="mi">6</span><span class="p">,</span> <span class="n">fontweight</span><span class="o">=</span><span class="s1">&#39;bold&#39;</span><span class="p">,</span> <span class="n">loc</span><span class="o">=</span><span class="s1">&#39;left&#39;</span><span class="p">)</span>
+    
+    <span class="n">scalebar</span> <span class="o">=</span> <span class="n">ScaleBar</span><span class="p">(</span><span class="mi">1</span><span class="p">,</span> <span class="n">units</span><span class="o">=</span><span class="s2">&quot;m&quot;</span><span class="p">,</span> <span class="n">location</span><span class="o">=</span><span class="s2">&quot;lower right&quot;</span><span class="p">,</span> <span class="n">box_alpha</span><span class="o">=</span><span class="mf">0.6</span><span class="p">,</span> <span class="n">font_properties</span><span class="o">=</span><span class="p">{</span><span class="s1">&#39;size&#39;</span><span class="p">:</span> <span class="mi">6</span><span class="p">})</span>
+    <span class="n">ax_sub</span><span class="o">.</span><span class="n">add_artist</span><span class="p">(</span><span class="n">scalebar</span><span class="p">)</span>
+
+<span class="c1"># ==========================================</span>
+<span class="c1"># 7. Global Colorbar &amp; Output</span>
+<span class="c1"># ==========================================</span>
+<span class="n">cax</span> <span class="o">=</span> <span class="n">fig</span><span class="o">.</span><span class="n">add_axes</span><span class="p">([</span><span class="mf">0.08</span><span class="p">,</span> <span class="mf">0.16</span><span class="p">,</span> <span class="mf">0.30</span><span class="p">,</span> <span class="mf">0.02</span><span class="p">])</span>
+<span class="n">cbar</span> <span class="o">=</span> <span class="n">fig</span><span class="o">.</span><span class="n">colorbar</span><span class="p">(</span><span class="n">im</span><span class="p">,</span> <span class="n">cax</span><span class="o">=</span><span class="n">cax</span><span class="p">,</span> <span class="n">orientation</span><span class="o">=</span><span class="s1">&#39;horizontal&#39;</span><span class="p">,</span> <span class="n">extend</span><span class="o">=</span><span class="s1">&#39;both&#39;</span><span class="p">)</span>
+<span class="n">cbar</span><span class="o">.</span><span class="n">set_label</span><span class="p">(</span><span class="s1">&#39;Speed change (m yr$^{-1}$)&#39;</span><span class="p">,</span> <span class="n">fontsize</span><span class="o">=</span><span class="mi">7</span><span class="p">,</span> <span class="n">fontweight</span><span class="o">=</span><span class="s1">&#39;bold&#39;</span><span class="p">)</span>
+<span class="n">plt</span><span class="o">.</span><span class="n">show</span><span class="p">()</span>
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>Extracting full bounds from Group 0...
+Processing Group 5...
+Processing subplots using Zarr group 2...
+</pre></div>
+</div>
+<img alt="../_images/c0968a738367f7e0059087aedaa09fa12796bc8034444e3705dc17973df241dd.png" src="../_images/c0968a738367f7e0059087aedaa09fa12796bc8034444e3705dc17973df241dd.png" />
+</div>
+</div>
+</section>
 </section>
 
     <script type="text/x-thebe-config">
@@ -576,6 +791,21 @@ document.write(`
             </div>
             
             
+              
+                <div class="bd-sidebar-secondary bd-toc"><div class="sidebar-secondary-items sidebar-secondary__inner">
+
+
+  <div class="sidebar-secondary-item">
+  <div class="page-toc tocsection onthispage">
+    <i class="fa-solid fa-list"></i> Contents
+  </div>
+  <nav class="bd-toc-nav page-toc">
+    <ul class="visible nav section-nav flex-column">
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#calculating-speed-change">Calculating speed change</a></li>
+</ul>
+  </nav></div>
+
+</div></div>
               
             
           </div>

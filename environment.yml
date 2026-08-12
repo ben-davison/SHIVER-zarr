@@ -15,10 +15,16 @@ dependencies:
   - pandas
   - cartopy
   - jupyter-book[version='<1.0']
-  - fsspec
+  - fsspec[version='>=2023.10.0']
   - matplotlib
   - rioxarray
   - python=3.11
   - numpy
   - zarr
-  - s3fs
+  - s3fs[version='>=2023.10.0']
+  - glacier-strain-tools
+  - boto3
+  - aiobotocore
+  - cmcrameri
+  - shapely
+  - geopandas

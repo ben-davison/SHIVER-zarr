@@ -67,8 +67,6 @@ const thebe_selector_output = ".output, .cell_output"
     <script>DOCUMENTATION_OPTIONS.pagename = 'examples/temporal_statistics';</script>
     <link rel="index" title="Index" href="../genindex.html" />
     <link rel="search" title="Search" href="../search.html" />
-    <link rel="next" title="FAQ" href="../appendix/faq.html" />
-    <link rel="prev" title="Datacube subsetting" href="simple_subset.html" />
   <meta name="viewport" content="width=device-width, initial-scale=1"/>
   <meta name="docsearch:language" content="en"/>
   </head>
@@ -131,6 +129,8 @@ const thebe_selector_output = ".output, .cell_output"
       
       
       
+        
+      
       <div class="bd-sidebar-primary bd-sidebar">
         
 
@@ -189,12 +189,14 @@ const thebe_selector_output = ".output, .cell_output"
 <li class="toctree-l1"><a class="reference internal" href="../zarr_data/zarr_structure.html">Inspecting the Zarr Structure</a></li>
 </ul>
 <p aria-level="2" class="caption" role="heading"><span class="caption-text">Examples</span></p>
-<ul class="current nav bd-sidenav">
+<ul class="nav bd-sidenav">
 <li class="toctree-l1"><a class="reference internal" href="simple_timeseries.html">Timeseries extraction</a></li>
 <li class="toctree-l1"><a class="reference internal" href="generating_citations.html">Generating citations for Contributing Datasets</a></li>
 <li class="toctree-l1"><a class="reference internal" href="simple_layers.html">Large spatial scale extraction of velocity fields</a></li>
 <li class="toctree-l1"><a class="reference internal" href="simple_subset.html">Datacube subsetting</a></li>
-<li class="toctree-l1 current active"><a class="current reference internal" href="#">Calculating temporal statistics (advanced)</a></li>
+<li class="toctree-l1"><a class="reference internal" href="trend_change.html">Ice speed trends in west Greenland (advanced)</a></li>
+<li class="toctree-l1"><a class="reference internal" href="eof.html">Principal Component Analysis (advanced)</a></li>
+<li class="toctree-l1"><a class="reference internal" href="strain.html">Strain across the Brunt Ice Shelf</a></li>
 </ul>
 <p aria-level="2" class="caption" role="heading"><span class="caption-text">Appendix</span></p>
 <ul class="nav bd-sidenav">
@@ -792,8 +794,8 @@ document.write(`
 <p>If you look closely at the code below, you will notice we calculate the linear regression (slope and p-value) manually using sums of squares (<code class="docutils literal notranslate"><span class="pre">numerator</span></code>, <code class="docutils literal notranslate"><span class="pre">denominator</span></code>, <code class="docutils literal notranslate"><span class="pre">ss_res</span></code>), rather than using a built-in tool like <code class="docutils literal notranslate"><span class="pre">scipy.stats.linregress</span></code>.</p>
 <p>There are two major reasons for this design choice:</p>
 <ol class="arabic simple">
-<li><p><strong>Multi-dimensional Vectorization:</strong> Standard functions like <code class="docutils literal notranslate"><span class="pre">scipy.stats.linregress</span></code> are designed to work on 1D arrays (a single pixel at a time). If we used a for loop to apply a 1D function across millions of spatial pixels, it would take hours. By writing the math out using NumPy primitives and specifying <code class="docutils literal notranslate"><span class="pre">axis=-1</span></code> (the time dimension), we evaluate the trend for an entire 3D block of data (y, x, time) simultaneously at C-level speed.</p></li>
-<li><p><strong>Robust Missing Data Handling:</strong> Satellite imagery is inherently messy due to cloud cover, sensor gaps, or tracking failures. By using <code class="docutils literal notranslate"><span class="pre">np.nanmean</span></code> and <code class="docutils literal notranslate"><span class="pre">np.nansum</span></code>, our manual regression perfectly ignores missing data slices without throwing errors or corrupting the results of adjacent pixels.</p></li>
+<li><p><strong>Multi-dimensional Vectorization:</strong> Standard functions like <code class="docutils literal notranslate"><span class="pre">scipy.stats.linregress</span></code> are designed to work on 1D arrays (a single pixel at a time). If we used a for loop to apply a 1D function across this many spatial pixels, it would take a little too long for this example. By writing the math out using NumPy primitives and specifying <code class="docutils literal notranslate"><span class="pre">axis=-1</span></code> (the time dimension), we evaluate the trend for an entire 3D block of data (y, x, time) simultaneously at C-level speed.</p></li>
+<li><p><strong>Missing Data Handling:</strong> Ice velocity fields derived from satellite imagery always suffers from some data gaps. By using <code class="docutils literal notranslate"><span class="pre">np.nanmean</span></code> and <code class="docutils literal notranslate"><span class="pre">np.nansum</span></code>, our manual regression ignores these missing data slices without throwing errors. Of course, this means we are actually calculating a trend through varying numbers of data points and varying time periods in each pixel. To make this analysis robust, we would need to identify which pixels had sufficient data that was sufficiently spread over the time period of interest to calculate a representative trend. However, since this is just an example to illustrate the process, we will skip those important details here.</p></li>
 </ol>
 <div class="cell docutils container">
 <div class="cell_input docutils container">
@@ -886,7 +888,7 @@ document.write(`
 
 <span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;Cropping to X: [</span><span class="si">{</span><span class="n">min_x</span><span class="si">:</span><span class="s2">.0f</span><span class="si">}</span><span class="s2">, </span><span class="si">{</span><span class="n">max_x</span><span class="si">:</span><span class="s2">.0f</span><span class="si">}</span><span class="s2">], Y: [</span><span class="si">{</span><span class="n">min_y</span><span class="si">:</span><span class="s2">.0f</span><span class="si">}</span><span class="s2">, </span><span class="si">{</span><span class="n">max_y</span><span class="si">:</span><span class="s2">.0f</span><span class="si">}</span><span class="s2">]&quot;</span><span class="p">)</span>
 
-<span class="c1"># Determine slice direction (Y is often descending in satellite imagery)</span>
+<span class="c1"># Determine slice direction</span>
 <span class="n">x_slice</span> <span class="o">=</span> <span class="nb">slice</span><span class="p">(</span><span class="n">min_x</span><span class="p">,</span> <span class="n">max_x</span><span class="p">)</span> <span class="k">if</span> <span class="n">ds</span><span class="o">.</span><span class="n">x</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span> <span class="o">&lt;</span> <span class="n">ds</span><span class="o">.</span><span class="n">x</span><span class="p">[</span><span class="o">-</span><span class="mi">1</span><span class="p">]</span> <span class="k">else</span> <span class="nb">slice</span><span class="p">(</span><span class="n">max_x</span><span class="p">,</span> <span class="n">min_x</span><span class="p">)</span>
 <span class="n">y_slice</span> <span class="o">=</span> <span class="nb">slice</span><span class="p">(</span><span class="n">min_y</span><span class="p">,</span> <span class="n">max_y</span><span class="p">)</span> <span class="k">if</span> <span class="n">ds</span><span class="o">.</span><span class="n">y</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span> <span class="o">&lt;</span> <span class="n">ds</span><span class="o">.</span><span class="n">y</span><span class="p">[</span><span class="o">-</span><span class="mi">1</span><span class="p">]</span> <span class="k">else</span> <span class="nb">slice</span><span class="p">(</span><span class="n">max_y</span><span class="p">,</span> <span class="n">min_y</span><span class="p">)</span>
 
@@ -1028,7 +1030,7 @@ Computation complete!
 <img alt="../_images/25608c1e341bd52b20463be8ef1225661e79365a73f9622df2dcdb9488cb1bea.png" src="../_images/25608c1e341bd52b20463be8ef1225661e79365a73f9622df2dcdb9488cb1bea.png" />
 </div>
 </div>
-<p>Which is neat because it broadly agrees with the results of Tedstone et al. (2015) and Williams et al (2021), showing a long-term deceleration of ice in the ablation zome of this land-terminating sector of west Greenland. Albeit the plots here are somewhat messier than theirs.</p>
+<p>Which is neat because it broadly agrees with the results of Tedstone et al. (2015) and Williams et al (2020), showing a long-term deceleration of ice in the ablation zome of this land-terminating sector of west Greenland. Albeit the plots here are somewhat messier than theirs. In the next example, we’ll have a go at reproducing those trends more robustly.</p>
 </section>
 </section>
 </section>
@@ -1063,24 +1065,6 @@ Computation complete!
                 <footer class="prev-next-footer d-print-none">
                   
 <div class="prev-next-area">
-    <a class="left-prev"
-       href="simple_subset.html"
-       title="previous page">
-      <i class="fa-solid fa-angle-left"></i>
-      <div class="prev-next-info">
-        <p class="prev-next-subtitle">previous</p>
-        <p class="prev-next-title">Datacube subsetting</p>
-      </div>
-    </a>
-    <a class="right-next"
-       href="../appendix/faq.html"
-       title="next page">
-      <div class="prev-next-info">
-        <p class="prev-next-subtitle">next</p>
-        <p class="prev-next-title">FAQ</p>
-      </div>
-      <i class="fa-solid fa-angle-right"></i>
-    </a>
 </div>
                 </footer>
               

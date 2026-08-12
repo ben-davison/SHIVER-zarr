@@ -1,0 +1,1017 @@
+
+
+<!DOCTYPE html>
+
+
+<html lang="en" data-content_root="" >
+
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" /><meta name="generator" content="Docutils 0.18.1: http://docutils.sourceforge.net/" />
+
+    <title>Ice speed trends in west Greenland (advanced) &#8212; SHeffield Ice Velocity ExploreR (SHIVER) - Cloud access to a unified dataset of satellite-derived ice surface velocity measurements for the Antarctica Ice Sheet and Greenland Ice Sheet</title>
+  
+  
+  
+  <script data-cfasync="false">
+    document.documentElement.dataset.mode = localStorage.getItem("mode") || "";
+    document.documentElement.dataset.theme = localStorage.getItem("theme") || "";
+  </script>
+  
+  <!-- Loaded before other Sphinx assets -->
+  <link href="../_static/styles/theme.css?digest=dfe6caa3a7d634c4db9b" rel="stylesheet" />
+<link href="../_static/styles/bootstrap.css?digest=dfe6caa3a7d634c4db9b" rel="stylesheet" />
+<link href="../_static/styles/pydata-sphinx-theme.css?digest=dfe6caa3a7d634c4db9b" rel="stylesheet" />
+
+  
+  <link href="../_static/vendor/fontawesome/6.5.2/css/all.min.css?digest=dfe6caa3a7d634c4db9b" rel="stylesheet" />
+  <link rel="preload" as="font" type="font/woff2" crossorigin href="../_static/vendor/fontawesome/6.5.2/webfonts/fa-solid-900.woff2" />
+<link rel="preload" as="font" type="font/woff2" crossorigin href="../_static/vendor/fontawesome/6.5.2/webfonts/fa-brands-400.woff2" />
+<link rel="preload" as="font" type="font/woff2" crossorigin href="../_static/vendor/fontawesome/6.5.2/webfonts/fa-regular-400.woff2" />
+
+    <link rel="stylesheet" type="text/css" href="../_static/pygments.css" />
+    <link rel="stylesheet" href="../_static/styles/sphinx-book-theme.css?digest=14f4ca6b54d191a8c7657f6c759bf11a5fb86285" type="text/css" />
+    <link rel="stylesheet" type="text/css" href="../_static/togglebutton.css" />
+    <link rel="stylesheet" type="text/css" href="../_static/copybutton.css" />
+    <link rel="stylesheet" type="text/css" href="../_static/mystnb.4510f1fc1dee50b3e5859aac5469c37c29e427902b24a333a5f9fcb2f0b3ac41.css" />
+    <link rel="stylesheet" type="text/css" href="../_static/sphinx-thebe.css" />
+    <link rel="stylesheet" type="text/css" href="../_static/design-style.4045f2051d55cab465a707391d5b2007.min.css" />
+  
+  <!-- Pre-loaded scripts that we'll load fully later -->
+  <link rel="preload" as="script" href="../_static/scripts/bootstrap.js?digest=dfe6caa3a7d634c4db9b" />
+<link rel="preload" as="script" href="../_static/scripts/pydata-sphinx-theme.js?digest=dfe6caa3a7d634c4db9b" />
+  <script src="../_static/vendor/fontawesome/6.5.2/js/all.min.js?digest=dfe6caa3a7d634c4db9b"></script>
+
+    <script data-url_root="../" id="documentation_options" src="../_static/documentation_options.js"></script>
+    <script src="../_static/jquery.js"></script>
+    <script src="../_static/underscore.js"></script>
+    <script src="../_static/_sphinx_javascript_frameworks_compat.js"></script>
+    <script src="../_static/doctools.js"></script>
+    <script src="../_static/clipboard.min.js"></script>
+    <script src="../_static/copybutton.js"></script>
+    <script src="../_static/scripts/sphinx-book-theme.js?digest=5a5c038af52cf7bc1a1ec88eea08e6366ee68824"></script>
+    <script>let toggleHintShow = 'Click to show';</script>
+    <script>let toggleHintHide = 'Click to hide';</script>
+    <script>let toggleOpenOnPrint = 'true';</script>
+    <script src="../_static/togglebutton.js"></script>
+    <script>var togglebuttonSelector = '.toggle, .admonition.dropdown';</script>
+    <script src="../_static/design-tabs.js"></script>
+    <script>const THEBE_JS_URL = "https://unpkg.com/thebe@0.8.2/lib/index.js"
+const thebe_selector = ".thebe,.cell"
+const thebe_selector_input = "pre"
+const thebe_selector_output = ".output, .cell_output"
+</script>
+    <script async="async" src="../_static/sphinx-thebe.js"></script>
+    <script>window.MathJax = {"options": {"processHtmlClass": "tex2jax_process|mathjax_process|math|output_area"}}</script>
+    <script defer="defer" src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-mml-chtml.js"></script>
+    <script>DOCUMENTATION_OPTIONS.pagename = 'examples/trend_change';</script>
+    <link rel="index" title="Index" href="../genindex.html" />
+    <link rel="search" title="Search" href="../search.html" />
+    <link rel="next" title="Principal Component Analysis (advanced)" href="eof.html" />
+    <link rel="prev" title="Datacube subsetting" href="simple_subset.html" />
+  <meta name="viewport" content="width=device-width, initial-scale=1"/>
+  <meta name="docsearch:language" content="en"/>
+  </head>
+  
+  
+  <body data-bs-spy="scroll" data-bs-target=".bd-toc-nav" data-offset="180" data-bs-root-margin="0px 0px -60%" data-default-mode="">
+
+  
+  
+  <div id="pst-skip-link" class="skip-link d-print-none"><a href="#main-content">Skip to main content</a></div>
+  
+  <div id="pst-scroll-pixel-helper"></div>
+  
+  <button type="button" class="btn rounded-pill" id="pst-back-to-top">
+    <i class="fa-solid fa-arrow-up"></i>Back to top</button>
+
+  
+  <input type="checkbox"
+          class="sidebar-toggle"
+          id="pst-primary-sidebar-checkbox"/>
+  <label class="overlay overlay-primary" for="pst-primary-sidebar-checkbox"></label>
+  
+  <input type="checkbox"
+          class="sidebar-toggle"
+          id="pst-secondary-sidebar-checkbox"/>
+  <label class="overlay overlay-secondary" for="pst-secondary-sidebar-checkbox"></label>
+  
+  <div class="search-button__wrapper">
+    <div class="search-button__overlay"></div>
+    <div class="search-button__search-container">
+<form class="bd-search d-flex align-items-center"
+      action="../search.html"
+      method="get">
+  <i class="fa-solid fa-magnifying-glass"></i>
+  <input type="search"
+         class="form-control"
+         name="q"
+         id="search-input"
+         placeholder="Search this book..."
+         aria-label="Search this book..."
+         autocomplete="off"
+         autocorrect="off"
+         autocapitalize="off"
+         spellcheck="false"/>
+  <span class="search-button__kbd-shortcut"><kbd class="kbd-shortcut__modifier">Ctrl</kbd>+<kbd>K</kbd></span>
+</form></div>
+  </div>
+
+  <div class="pst-async-banner-revealer d-none">
+  <aside id="bd-header-version-warning" class="d-none d-print-none" aria-label="Version warning"></aside>
+</div>
+
+  
+    <header class="bd-header navbar navbar-expand-lg bd-navbar d-print-none">
+    </header>
+  
+
+  <div class="bd-container">
+    <div class="bd-container__inner bd-page-width">
+      
+      
+      
+      <div class="bd-sidebar-primary bd-sidebar">
+        
+
+  
+  <div class="sidebar-header-items sidebar-primary__section">
+    
+    
+    
+    
+  </div>
+  
+    <div class="sidebar-primary-items__start sidebar-primary__section">
+        <div class="sidebar-primary-item">
+
+  
+    
+  
+
+<a class="navbar-brand logo" href="../index.html">
+  
+  
+  
+  
+  
+    
+    
+      
+    
+    
+    <img src="../_static/SHIVER_logo_stacked_v1_black_on_transparent_background_simplified.png" class="logo__image only-light" alt="SHeffield Ice Velocity ExploreR (SHIVER) - Cloud access to a unified dataset of satellite-derived ice surface velocity measurements for the Antarctica Ice Sheet and Greenland Ice Sheet - Home"/>
+    <script>document.write(`<img src="../_static/SHIVER_logo_stacked_v1_black_on_transparent_background_simplified.png" class="logo__image only-dark" alt="SHeffield Ice Velocity ExploreR (SHIVER) - Cloud access to a unified dataset of satellite-derived ice surface velocity measurements for the Antarctica Ice Sheet and Greenland Ice Sheet - Home"/>`);</script>
+  
+  
+</a></div>
+        <div class="sidebar-primary-item"><nav class="bd-links" id="bd-docs-nav" aria-label="Main">
+    <div class="bd-toc-item navbar-nav active">
+        
+        <ul class="nav bd-sidenav bd-sidenav__home-link">
+            <li class="toctree-l1">
+                <a class="reference internal" href="../index.html">
+                    SHeffield Ice Velocity ExploreR
+                </a>
+            </li>
+        </ul>
+        <p aria-level="2" class="caption" role="heading"><span class="caption-text">Getting Started</span></p>
+<ul class="nav bd-sidenav">
+<li class="toctree-l1"><a class="reference internal" href="../getting_started/why.html">Why SHIVER?</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../getting_started/cite.html">Cite</a></li>
+</ul>
+<p aria-level="2" class="caption" role="heading"><span class="caption-text">Data</span></p>
+<ul class="nav bd-sidenav">
+<li class="toctree-l1"><a class="reference internal" href="../zarr_data/what_is_zarr.html">What is Zarr?</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../zarr_data/contributing_data.html">Contributing Datasets</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../zarr_data/unified_data.html">Unified Datasets</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../zarr_data/comparison.html">Comparison of Contributing Datasets</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../zarr_data/zarr_structure.html">Inspecting the Zarr Structure</a></li>
+</ul>
+<p aria-level="2" class="caption" role="heading"><span class="caption-text">Examples</span></p>
+<ul class="current nav bd-sidenav">
+<li class="toctree-l1"><a class="reference internal" href="simple_timeseries.html">Timeseries extraction</a></li>
+<li class="toctree-l1"><a class="reference internal" href="generating_citations.html">Generating citations for Contributing Datasets</a></li>
+<li class="toctree-l1"><a class="reference internal" href="simple_layers.html">Large spatial scale extraction of velocity fields</a></li>
+<li class="toctree-l1"><a class="reference internal" href="simple_subset.html">Datacube subsetting</a></li>
+<li class="toctree-l1 current active"><a class="current reference internal" href="#">Ice speed trends in west Greenland (advanced)</a></li>
+<li class="toctree-l1"><a class="reference internal" href="eof.html">Principal Component Analysis (advanced)</a></li>
+<li class="toctree-l1"><a class="reference internal" href="strain.html">Strain across the Brunt Ice Shelf</a></li>
+</ul>
+<p aria-level="2" class="caption" role="heading"><span class="caption-text">Appendix</span></p>
+<ul class="nav bd-sidenav">
+<li class="toctree-l1"><a class="reference internal" href="../appendix/faq.html">FAQ</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../appendix/versions.html">Version Updates</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../appendix/references.html">References</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../appendix/acknowledgements.html">Acknowledgements</a></li>
+</ul>
+
+    </div>
+</nav></div>
+    </div>
+  
+  
+  <div class="sidebar-primary-items__end sidebar-primary__section">
+  </div>
+  
+  <div id="rtd-footer-container"></div>
+
+
+      </div>
+      
+      <main id="main-content" class="bd-main" role="main">
+        
+        
+
+<div class="sbt-scroll-pixel-helper"></div>
+
+          <div class="bd-content">
+            <div class="bd-article-container">
+              
+              <div class="bd-header-article d-print-none">
+<div class="header-article-items header-article__inner">
+  
+    <div class="header-article-items__start">
+      
+        <div class="header-article-item"><label class="sidebar-toggle primary-toggle btn btn-sm" for="__primary" title="Toggle primary sidebar" data-bs-placement="bottom" data-bs-toggle="tooltip">
+  <span class="fa-solid fa-bars"></span>
+</label></div>
+      
+    </div>
+  
+  
+    <div class="header-article-items__end">
+      
+        <div class="header-article-item">
+
+<div class="article-header-buttons">
+
+
+
+
+
+<div class="dropdown dropdown-source-buttons">
+  <button class="btn dropdown-toggle" type="button" data-bs-toggle="dropdown" aria-expanded="false" aria-label="Source repositories">
+    <i class="fab fa-github"></i>
+  </button>
+  <ul class="dropdown-menu">
+      
+      
+      
+      <li><a href="https://github.com/ben-davison/SHIVER-build-zarr" target="_blank"
+   class="btn btn-sm btn-source-repository-button dropdown-item"
+   title="Source repository"
+   data-bs-placement="left" data-bs-toggle="tooltip"
+>
+  
+
+<span class="btn__icon-container">
+  <i class="fab fa-github"></i>
+  </span>
+<span class="btn__text-container">Repository</span>
+</a>
+</li>
+      
+      
+      
+      
+      <li><a href="https://github.com/ben-davison/SHIVER-build-zarr/edit/main/docs/examples/trend_change.ipynb" target="_blank"
+   class="btn btn-sm btn-source-edit-button dropdown-item"
+   title="Suggest edit"
+   data-bs-placement="left" data-bs-toggle="tooltip"
+>
+  
+
+<span class="btn__icon-container">
+  <i class="fas fa-pencil-alt"></i>
+  </span>
+<span class="btn__text-container">Suggest edit</span>
+</a>
+</li>
+      
+      
+      
+      
+      <li><a href="https://github.com/ben-davison/SHIVER-build-zarr/issues/new?title=Issue%20on%20page%20%2Fexamples/trend_change.html&body=Your%20issue%20content%20here." target="_blank"
+   class="btn btn-sm btn-source-issues-button dropdown-item"
+   title="Open an issue"
+   data-bs-placement="left" data-bs-toggle="tooltip"
+>
+  
+
+<span class="btn__icon-container">
+  <i class="fas fa-lightbulb"></i>
+  </span>
+<span class="btn__text-container">Open issue</span>
+</a>
+</li>
+      
+  </ul>
+</div>
+
+
+
+
+
+
+<div class="dropdown dropdown-download-buttons">
+  <button class="btn dropdown-toggle" type="button" data-bs-toggle="dropdown" aria-expanded="false" aria-label="Download this page">
+    <i class="fas fa-download"></i>
+  </button>
+  <ul class="dropdown-menu">
+      
+      
+      
+      <li><a href="../_sources/examples/trend_change.ipynb" target="_blank"
+   class="btn btn-sm btn-download-source-button dropdown-item"
+   title="Download source file"
+   data-bs-placement="left" data-bs-toggle="tooltip"
+>
+  
+
+<span class="btn__icon-container">
+  <i class="fas fa-file"></i>
+  </span>
+<span class="btn__text-container">.ipynb</span>
+</a>
+</li>
+      
+      
+      
+      
+      <li>
+<button onclick="window.print()"
+  class="btn btn-sm btn-download-pdf-button dropdown-item"
+  title="Print to PDF"
+  data-bs-placement="left" data-bs-toggle="tooltip"
+>
+  
+
+<span class="btn__icon-container">
+  <i class="fas fa-file-pdf"></i>
+  </span>
+<span class="btn__text-container">.pdf</span>
+</button>
+</li>
+      
+  </ul>
+</div>
+
+
+
+
+<button onclick="toggleFullScreen()"
+  class="btn btn-sm btn-fullscreen-button"
+  title="Fullscreen mode"
+  data-bs-placement="bottom" data-bs-toggle="tooltip"
+>
+  
+
+<span class="btn__icon-container">
+  <i class="fas fa-expand"></i>
+  </span>
+
+</button>
+
+
+
+<script>
+document.write(`
+  <button class="btn btn-sm nav-link pst-navbar-icon theme-switch-button" title="light/dark" aria-label="light/dark" data-bs-placement="bottom" data-bs-toggle="tooltip">
+    <i class="theme-switch fa-solid fa-sun fa-lg" data-mode="light"></i>
+    <i class="theme-switch fa-solid fa-moon fa-lg" data-mode="dark"></i>
+    <i class="theme-switch fa-solid fa-circle-half-stroke fa-lg" data-mode="auto"></i>
+  </button>
+`);
+</script>
+
+
+<script>
+document.write(`
+  <button class="btn btn-sm pst-navbar-icon search-button search-button__button" title="Search" aria-label="Search" data-bs-placement="bottom" data-bs-toggle="tooltip">
+    <i class="fa-solid fa-magnifying-glass fa-lg"></i>
+  </button>
+`);
+</script>
+<label class="sidebar-toggle secondary-toggle btn btn-sm" for="__secondary"title="Toggle secondary sidebar" data-bs-placement="bottom" data-bs-toggle="tooltip">
+    <span class="fa-solid fa-list"></span>
+</label>
+</div></div>
+      
+    </div>
+  
+</div>
+</div>
+              
+              
+
+<div id="jb-print-docs-body" class="onlyprint">
+    <h1>Ice speed trends in west Greenland (advanced)</h1>
+    <!-- Table of contents -->
+    <div id="print-main-content">
+        <div id="jb-print-toc">
+            
+            <div>
+                <h2> Contents </h2>
+            </div>
+            <nav aria-label="Page">
+                <ul class="visible nav section-nav flex-column">
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#managing-the-workload-with-dask">Managing the workload with Dask</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#define-function-to-calculate-temporal-statistics">Define function to calculate temporal statistics</a><ul class="nav section-nav flex-column">
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#why-write-a-custom-pure-numpy-function">Why write a custom, pure-NumPy function?</a></li>
+</ul>
+</li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#connecting-to-the-cloud-and-subsetting-the-data">Connecting to the Cloud and subsetting the data</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#computing-metrics-using-dask">Computing metrics using Dask</a><ul class="nav section-nav flex-column">
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#how-it-works">How it works</a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#why-use-xr-apply-ufunc">Why use <code class="docutils literal notranslate"><span class="pre">xr.apply_ufunc</span></code></a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#what-are-the-alternatives">What are the alternatives</a></li>
+</ul>
+</li>
+</ul>
+            </nav>
+        </div>
+    </div>
+</div>
+
+              
+                
+<div id="searchbox"></div>
+                <article class="bd-article">
+                  
+  <section class="tex2jax_ignore mathjax_ignore" id="ice-speed-trends-in-west-greenland-advanced">
+<h1>Ice speed trends in west Greenland (advanced)<a class="headerlink" href="#ice-speed-trends-in-west-greenland-advanced" title="Permalink to this heading">#</a></h1>
+<p>In this example, we move beyond basic data extraction and compute temporal statistics (such as the linear trend in ice speed and its statistical significance (p-value)) on a pixel-by-pixel basis. Analyzing these time-series allows us to identify where glaciers are actively accelerating or slowing down, which is critical for understanding broader ice sheet dynamics.</p>
+<p>While we will focus on a moderately sized area in West Greenland, which has been the focus of many investigations, to ensure this notebook runs relatively quickly. The workflow is explicitly designed to scale up, where sufficient resources are available.</p>
+<section id="managing-the-workload-with-dask">
+<h2>Managing the workload with Dask<a class="headerlink" href="#managing-the-workload-with-dask" title="Permalink to this heading">#</a></h2>
+<p>Time-series analysis on large multidimensional datasets (like our Zarr stores) can be computationally expensive. I certainly could not load the entire dataset into memory at once on my PC. To enable analysis of arrays that do not fit into memory, we use <strong>Dask</strong>, which also supports parallel computation.</p>
+<p>First, we will load our core dependencies and initialize a LocalCluster. Here is what is happening under the hood:</p>
+<ul class="simple">
+<li><p><code class="docutils literal notranslate"><span class="pre">xarray</span></code> &amp; <code class="docutils literal notranslate"><span class="pre">rioxarray</span></code>: For lazily loading and managing the geospatial data cube.</p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">scipy.stats</span></code> &amp; <code class="docutils literal notranslate"><span class="pre">numpy</span></code>: For performing the maths.</p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">pyproj</span></code>: To handle spatial coordinate transformations.</p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">LocalCluster</span></code>: This automatically inspects the machine running the notebook, creates a pool of “workers” based on the available CPU cores, and actively manages memory limits so we don’t overflow the RAM.</p></li>
+</ul>
+<blockquote>
+<div><p><em>Tip: If you run the cell below, an HTML representation of the <code class="docutils literal notranslate"><span class="pre">client</span></code> will appear. Clicking the <strong>Dashboard link</strong> opens a new tab where you can watch Dask distribute the tasks across your CPU cores in real-time</em></p>
+</div></blockquote>
+<p>By default, Dask tries to maximise throughout by requesting many Zarr chunks simultaneously. Over plain HTTP, this can overwhelm local TCP socket limits and router state tables, causing dropped packets and truncated downloads mid-stream, which would end the computation. Depending on your connection, it can be necessary to limit the number of total worker execution threads, cap the number of open sockets and limit how many asynchronous chunks each thread can request at once.</p>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="kn">import</span><span class="w"> </span><span class="nn">warnings</span>
+<span class="kn">import</span><span class="w"> </span><span class="nn">numpy</span><span class="w"> </span><span class="k">as</span><span class="w"> </span><span class="nn">np</span>
+<span class="kn">import</span><span class="w"> </span><span class="nn">xarray</span><span class="w"> </span><span class="k">as</span><span class="w"> </span><span class="nn">xr</span>
+<span class="kn">import</span><span class="w"> </span><span class="nn">rioxarray</span>
+<span class="kn">import</span><span class="w"> </span><span class="nn">geopandas</span><span class="w"> </span><span class="k">as</span><span class="w"> </span><span class="nn">gpd</span>
+<span class="kn">import</span><span class="w"> </span><span class="nn">shapely.geometry</span>
+<span class="kn">import</span><span class="w"> </span><span class="nn">scipy.stats</span>
+<span class="kn">import</span><span class="w"> </span><span class="nn">matplotlib.pyplot</span><span class="w"> </span><span class="k">as</span><span class="w"> </span><span class="nn">plt</span>
+<span class="kn">from</span><span class="w"> </span><span class="nn">matplotlib.colors</span><span class="w"> </span><span class="kn">import</span> <span class="n">LightSource</span>
+<span class="kn">from</span><span class="w"> </span><span class="nn">pyproj</span><span class="w"> </span><span class="kn">import</span> <span class="n">Transformer</span>
+<span class="kn">from</span><span class="w"> </span><span class="nn">dask.distributed</span><span class="w"> </span><span class="kn">import</span> <span class="n">Client</span><span class="p">,</span> <span class="n">LocalCluster</span>
+<span class="kn">import</span><span class="w"> </span><span class="nn">dask</span>
+<span class="kn">import</span><span class="w"> </span><span class="nn">zarr</span>
+<span class="kn">import</span><span class="w"> </span><span class="nn">aiohttp</span>
+
+<span class="c1"># Spin up a local Dask cluster, limiting the number of workers and the number of threads per work</span>
+<span class="n">cluster</span> <span class="o">=</span> <span class="n">LocalCluster</span><span class="p">(</span><span class="n">n_workers</span><span class="o">=</span><span class="mi">4</span><span class="p">,</span> <span class="n">threads_per_worker</span><span class="o">=</span><span class="mi">2</span><span class="p">)</span>
+<span class="n">client</span> <span class="o">=</span> <span class="n">Client</span><span class="p">(</span><span class="n">cluster</span><span class="p">)</span>
+
+<span class="c1"># 1. Cap Zarr&#39;s internal HTTP concurrency per worker</span>
+<span class="n">zarr</span><span class="o">.</span><span class="n">config</span><span class="o">.</span><span class="n">set</span><span class="p">({</span><span class="s2">&quot;async.concurrency&quot;</span><span class="p">:</span> <span class="mi">2</span><span class="p">})</span>
+
+<span class="c1"># Configure the HTTP backend to allow more time for large chunks</span>
+<span class="n">s3_options</span> <span class="o">=</span> <span class="p">{</span>
+    <span class="s2">&quot;anon&quot;</span><span class="p">:</span> <span class="kc">True</span><span class="p">,</span> 
+    <span class="s2">&quot;config_kwargs&quot;</span><span class="p">:</span> <span class="p">{</span>
+        <span class="s2">&quot;max_pool_connections&quot;</span><span class="p">:</span> <span class="mi">50</span><span class="p">,</span>  
+        <span class="s2">&quot;retries&quot;</span><span class="p">:</span> <span class="p">{</span>
+            <span class="s2">&quot;max_attempts&quot;</span><span class="p">:</span> <span class="mi">10</span><span class="p">,</span>      
+            <span class="s2">&quot;mode&quot;</span><span class="p">:</span> <span class="s2">&quot;standard&quot;</span>       
+        <span class="p">}</span>
+    <span class="p">}</span>
+<span class="p">}</span>
+
+<span class="c1"># Display the dashboard link so users can watch the processing graph</span>
+<span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;Dask Dashboard: </span><span class="si">{</span><span class="n">client</span><span class="o">.</span><span class="n">dashboard_link</span><span class="si">}</span><span class="s2">&quot;</span><span class="p">)</span>
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<div class="output stderr highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>C:\Users\gg1bjd\AppData\Local\anaconda3\envs\shiver_env\Lib\site-packages\distributed\node.py:188: UserWarning: Port 8787 is already in use.
+Perhaps you already have a cluster running?
+Hosting the HTTP server on port 52182 instead
+  warnings.warn(
+</pre></div>
+</div>
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>Dask Dashboard: http://127.0.0.1:52182/status
+</pre></div>
+</div>
+</div>
+</div>
+</section>
+<section id="define-function-to-calculate-temporal-statistics">
+<h2>Define function to calculate temporal statistics<a class="headerlink" href="#define-function-to-calculate-temporal-statistics" title="Permalink to this heading">#</a></h2>
+<p>Next, we need to define the mathematical operations we want to perform on our velocity data. We will extract four key metrics for every single pixel:</p>
+<ul class="simple">
+<li><p><strong>Time-average mean speed</strong></p></li>
+<li><p><strong>Measurement count:</strong> The number of valid (non-NaN) observations over time, which helps us gauge the reliability of the trend.</p></li>
+<li><p><strong>Linear trend</strong> The rate of change in speed over time (acceleration or deceleration).</p></li>
+<li><p><strong>Significance (p-value):</strong> The statistical confidence that the observed trend is real and not just random noise.</p></li>
+</ul>
+<section id="why-write-a-custom-pure-numpy-function">
+<h3>Why write a custom, pure-NumPy function?<a class="headerlink" href="#why-write-a-custom-pure-numpy-function" title="Permalink to this heading">#</a></h3>
+<p>If you look closely at the code below, you will notice we calculate the linear regression (slope and p-value) manually using sums of squares (<code class="docutils literal notranslate"><span class="pre">numerator</span></code>, <code class="docutils literal notranslate"><span class="pre">denominator</span></code>, <code class="docutils literal notranslate"><span class="pre">ss_res</span></code>), rather than using a built-in tool like <code class="docutils literal notranslate"><span class="pre">scipy.stats.linregress</span></code>.</p>
+<p>There are two major reasons for this design choice:</p>
+<ol class="arabic simple">
+<li><p><strong>Multi-dimensional vectorization:</strong> Standard functions like <code class="docutils literal notranslate"><span class="pre">scipy.stats.linregress</span></code> are designed to work on 1D arrays (a single pixel at a time). If we used a for loop to apply a 1D function across this many spatial pixels, it would take a little too long for this example. By writing the math out using NumPy primitives and specifying <code class="docutils literal notranslate"><span class="pre">axis=-1</span></code> (the time dimension), we evaluate the trend for an entire 3D block of data (y, x, time) simultaneously at C-level speed.</p></li>
+<li><p><strong>Missing data handling:</strong> Ice velocity fields derived from satellite imagery always suffers from some data gaps. By using <code class="docutils literal notranslate"><span class="pre">np.nanmean</span></code> and <code class="docutils literal notranslate"><span class="pre">np.nansum</span></code>, our manual regression ignores these missing data slices without throwing errors. Of course, this means we are actually calculating a trend through varying numbers of data points and varying time periods in each pixel. To make this analysis robust, we would need to identify which pixels had sufficient data that was sufficiently spread over the time period of interest to calculate a representative trend. However, since this is just an example to illustrate the process, we will skip those important details here and we’ll approximate the areas with <em>good</em> data using the p-value.</p></li>
+</ol>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="k">def</span><span class="w"> </span><span class="nf">_calc_stats_numpy</span><span class="p">(</span><span class="n">y</span><span class="p">,</span> <span class="n">t</span><span class="p">):</span>
+<span class="w">    </span><span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">    Pure NumPy function to calculate stats along the last axis (-1).</span>
+<span class="sd">    y shape: (..., time), t shape: (time,)</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+    <span class="n">y</span> <span class="o">=</span> <span class="n">y</span><span class="o">.</span><span class="n">astype</span><span class="p">(</span><span class="nb">float</span><span class="p">)</span>
+    <span class="n">t</span> <span class="o">=</span> <span class="n">t</span><span class="o">.</span><span class="n">astype</span><span class="p">(</span><span class="nb">float</span><span class="p">)</span>
+
+    <span class="n">valid</span> <span class="o">=</span> <span class="o">~</span><span class="n">np</span><span class="o">.</span><span class="n">isnan</span><span class="p">(</span><span class="n">y</span><span class="p">)</span>
+    <span class="n">count</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">sum</span><span class="p">(</span><span class="n">valid</span><span class="p">,</span> <span class="n">axis</span><span class="o">=-</span><span class="mi">1</span><span class="p">)</span>
+
+    <span class="k">with</span> <span class="n">warnings</span><span class="o">.</span><span class="n">catch_warnings</span><span class="p">():</span>
+        <span class="n">warnings</span><span class="o">.</span><span class="n">simplefilter</span><span class="p">(</span><span class="s2">&quot;ignore&quot;</span><span class="p">,</span> <span class="n">category</span><span class="o">=</span><span class="ne">RuntimeWarning</span><span class="p">)</span>
+        
+        <span class="c1"># 1. Mean</span>
+        <span class="n">mean</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">nanmean</span><span class="p">(</span><span class="n">y</span><span class="p">,</span> <span class="n">axis</span><span class="o">=-</span><span class="mi">1</span><span class="p">)</span>
+
+        <span class="c1"># 2. Linear Trend (Slope)</span>
+        <span class="n">t_masked</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">where</span><span class="p">(</span><span class="n">valid</span><span class="p">,</span> <span class="n">t</span><span class="p">,</span> <span class="n">np</span><span class="o">.</span><span class="n">nan</span><span class="p">)</span>
+        <span class="n">t_mean</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">nanmean</span><span class="p">(</span><span class="n">t_masked</span><span class="p">,</span> <span class="n">axis</span><span class="o">=-</span><span class="mi">1</span><span class="p">)</span>
+
+        <span class="n">t_anom</span> <span class="o">=</span> <span class="n">t_masked</span> <span class="o">-</span> <span class="n">t_mean</span><span class="p">[</span><span class="o">...</span><span class="p">,</span> <span class="n">np</span><span class="o">.</span><span class="n">newaxis</span><span class="p">]</span>
+        <span class="n">y_anom</span> <span class="o">=</span> <span class="n">y</span> <span class="o">-</span> <span class="n">mean</span><span class="p">[</span><span class="o">...</span><span class="p">,</span> <span class="n">np</span><span class="o">.</span><span class="n">newaxis</span><span class="p">]</span>
+
+        <span class="n">numerator</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">nansum</span><span class="p">(</span><span class="n">t_anom</span> <span class="o">*</span> <span class="n">y_anom</span><span class="p">,</span> <span class="n">axis</span><span class="o">=-</span><span class="mi">1</span><span class="p">)</span>
+        <span class="n">denominator</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">nansum</span><span class="p">(</span><span class="n">t_anom</span> <span class="o">**</span> <span class="mi">2</span><span class="p">,</span> <span class="n">axis</span><span class="o">=-</span><span class="mi">1</span><span class="p">)</span>
+
+        <span class="n">slope</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">where</span><span class="p">((</span><span class="n">count</span> <span class="o">&gt;=</span> <span class="mi">2</span><span class="p">)</span> <span class="o">&amp;</span> <span class="p">(</span><span class="n">denominator</span> <span class="o">!=</span> <span class="mi">0</span><span class="p">),</span> <span class="n">numerator</span> <span class="o">/</span> <span class="n">denominator</span><span class="p">,</span> <span class="n">np</span><span class="o">.</span><span class="n">nan</span><span class="p">)</span>
+
+        <span class="c1"># 3. P-Value</span>
+        <span class="n">y_pred_anom</span> <span class="o">=</span> <span class="n">slope</span><span class="p">[</span><span class="o">...</span><span class="p">,</span> <span class="n">np</span><span class="o">.</span><span class="n">newaxis</span><span class="p">]</span> <span class="o">*</span> <span class="n">t_anom</span>
+        <span class="n">residuals</span> <span class="o">=</span> <span class="n">y_anom</span> <span class="o">-</span> <span class="n">y_pred_anom</span>
+        <span class="n">ss_res</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">nansum</span><span class="p">(</span><span class="n">residuals</span> <span class="o">**</span> <span class="mi">2</span><span class="p">,</span> <span class="n">axis</span><span class="o">=-</span><span class="mi">1</span><span class="p">)</span>
+
+        <span class="n">df</span> <span class="o">=</span> <span class="n">count</span> <span class="o">-</span> <span class="mi">2</span>
+        <span class="n">se_sq</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">where</span><span class="p">(</span><span class="n">df</span> <span class="o">&gt;</span> <span class="mi">0</span><span class="p">,</span> <span class="p">(</span><span class="n">ss_res</span> <span class="o">/</span> <span class="n">df</span><span class="p">)</span> <span class="o">/</span> <span class="n">denominator</span><span class="p">,</span> <span class="n">np</span><span class="o">.</span><span class="n">nan</span><span class="p">)</span>
+        <span class="n">se</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">sqrt</span><span class="p">(</span><span class="n">se_sq</span><span class="p">)</span>
+
+        <span class="n">t_stat</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">where</span><span class="p">(</span><span class="n">se</span> <span class="o">&gt;</span> <span class="mi">0</span><span class="p">,</span> <span class="n">slope</span> <span class="o">/</span> <span class="n">se</span><span class="p">,</span> <span class="n">np</span><span class="o">.</span><span class="n">nan</span><span class="p">)</span>
+        <span class="n">p_val</span> <span class="o">=</span> <span class="mi">2</span> <span class="o">*</span> <span class="n">scipy</span><span class="o">.</span><span class="n">stats</span><span class="o">.</span><span class="n">t</span><span class="o">.</span><span class="n">sf</span><span class="p">(</span><span class="n">np</span><span class="o">.</span><span class="n">abs</span><span class="p">(</span><span class="n">t_stat</span><span class="p">),</span> <span class="n">df</span><span class="p">)</span>
+        <span class="n">p_val</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">where</span><span class="p">(</span><span class="n">count</span> <span class="o">&gt;=</span> <span class="mi">3</span><span class="p">,</span> <span class="n">p_val</span><span class="p">,</span> <span class="n">np</span><span class="o">.</span><span class="n">nan</span><span class="p">)</span>
+
+    <span class="k">return</span> <span class="n">mean</span><span class="p">,</span> <span class="n">count</span><span class="p">,</span> <span class="n">slope</span><span class="p">,</span> <span class="n">p_val</span>
+</pre></div>
+</div>
+</div>
+</div>
+</section>
+</section>
+<section id="connecting-to-the-cloud-and-subsetting-the-data">
+<h2>Connecting to the Cloud and subsetting the data<a class="headerlink" href="#connecting-to-the-cloud-and-subsetting-the-data" title="Permalink to this heading">#</a></h2>
+<p>Now we will connect to our dataset and isolate the region we want to analyze. If you have sufficient computational resources, you could skip the subsetting step and process the entire ice sheet, but for this example, we will focus on this area in west Greenland.</p>
+<blockquote>
+<div><p><em>Note: Lazy Loading from the Cloud: We are pointing <code class="docutils literal notranslate"><span class="pre">xarray</span></code> directly to a URL hosted on Source Cooperative. Because Zarr is a cloud-optimized format, <code class="docutils literal notranslate"><span class="pre">xr.open_zarr</span></code> reads only the dataset’s metadata (the <code class="docutils literal notranslate"><span class="pre">consolidated=True</span></code> flag makes this very fast). No actual velocity data is downloaded until we trigger the Dask computation later.</em></p>
+</div></blockquote>
+<p>In previous examples, we used the standard <code class="docutils literal notranslate"><span class="pre">https://</span></code> path for the Zarr store. In this example, we will use the <code class="docutils literal notranslate"><span class="pre">s3://</span></code> path. We do this because the S3 protocol is backed by <code class="docutils literal notranslate"><span class="pre">botocore</span></code> (AWS’s official C/Python engine), which includes build-in socket keep-alives and retry algorithms specifically designed for object storage I/O. Generic HTTP clients (like <code class="docutils literal notranslate"><span class="pre">aiohttp</span></code>) lack this architecture and fail immediately upon encountering network hiccups. <code class="docutils literal notranslate"><span class="pre">s3fs</span></code> is also preferable to plain HTTP access via <code class="docutils literal notranslate"><span class="pre">fsspec</span></code> because the former manages its background event loops in isolated threads, which prevents conflicts with Jupyter’s internal <code class="docutils literal notranslate"><span class="pre">asyncio</span></code> event loop. The last reason why S3 is better here is that the AWS S3 APIs (used by <code class="docutils literal notranslate"><span class="pre">s3fs</span></code>) are optimised for chunked binary arrays, reducing overheads compared to file streaming over HTTPS.</p>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="c1"># 1. Define paths and parameters</span>
+<span class="c1">#zarr_path = &quot;https://data.source.coop/uos-shiver/greenland/greenland_multisource_velocity_timeseries.zarr&quot;</span>
+<span class="n">zarr_path</span> <span class="o">=</span> <span class="s2">&quot;s3://us-west-2.opendata.source.coop/uos-shiver/greenland/greenland_multisource_velocity_timeseries.zarr&quot;</span>
+<span class="n">bed_path</span> <span class="o">=</span> <span class="sa">r</span><span class="s2">&quot;/no/one/wants/to/see/my/directory/structure/BedMachineGreenland-v5.nc&quot;</span>
+
+<span class="n">source</span> <span class="o">=</span> <span class="s2">&quot;AllSources&quot;</span>
+
+<span class="c1"># 2. Define region of interest in Lat/Lon </span>
+<span class="n">min_lon</span><span class="p">,</span> <span class="n">max_lon</span> <span class="o">=</span> <span class="o">-</span><span class="mf">51.548</span><span class="p">,</span> <span class="o">-</span><span class="mf">45.940</span> 
+<span class="n">min_lat</span><span class="p">,</span> <span class="n">max_lat</span> <span class="o">=</span> <span class="mf">64.991</span><span class="p">,</span> <span class="mf">68.629</span>
+<span class="c1"># Or use a smaller area for quicker testing</span>
+<span class="c1">#min_lon, max_lon = -50.4383, -48.6306</span>
+<span class="c1">#min_lat, max_lat = 66.6818, 67.2586</span>
+
+<span class="nb">print</span><span class="p">(</span><span class="s2">&quot;Opening Zarr store...&quot;</span><span class="p">)</span>
+<span class="n">ds</span> <span class="o">=</span> <span class="n">xr</span><span class="o">.</span><span class="n">open_zarr</span><span class="p">(</span><span class="n">zarr_path</span><span class="p">,</span> <span class="n">consolidated</span><span class="o">=</span><span class="kc">True</span><span class="p">,</span> <span class="n">storage_options</span><span class="o">=</span><span class="n">s3_options</span><span class="p">)</span>
+
+<span class="k">if</span> <span class="n">source</span><span class="o">.</span><span class="n">lower</span><span class="p">()</span> <span class="o">!=</span> <span class="s2">&quot;allsources&quot;</span><span class="p">:</span>
+    <span class="n">source_mask</span> <span class="o">=</span> <span class="p">(</span><span class="n">ds</span><span class="p">[</span><span class="s1">&#39;data_source&#39;</span><span class="p">]</span> <span class="o">==</span> <span class="n">source</span><span class="p">)</span><span class="o">.</span><span class="n">compute</span><span class="p">()</span>
+    <span class="n">ds</span> <span class="o">=</span> <span class="n">ds</span><span class="o">.</span><span class="n">isel</span><span class="p">(</span><span class="n">time</span><span class="o">=</span><span class="n">source_mask</span><span class="p">)</span>
+
+<span class="c1"># 3. Convert Lat/Lon bounding box to EPSG:3413</span>
+<span class="n">transformer</span> <span class="o">=</span> <span class="n">Transformer</span><span class="o">.</span><span class="n">from_crs</span><span class="p">(</span><span class="s2">&quot;EPSG:4326&quot;</span><span class="p">,</span> <span class="s2">&quot;EPSG:3413&quot;</span><span class="p">,</span> <span class="n">always_xy</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span>
+<span class="n">lons</span> <span class="o">=</span> <span class="p">[</span><span class="n">min_lon</span><span class="p">,</span> <span class="n">max_lon</span><span class="p">,</span> <span class="n">max_lon</span><span class="p">,</span> <span class="n">min_lon</span><span class="p">]</span>
+<span class="n">lats</span> <span class="o">=</span> <span class="p">[</span><span class="n">min_lat</span><span class="p">,</span> <span class="n">min_lat</span><span class="p">,</span> <span class="n">max_lat</span><span class="p">,</span> <span class="n">max_lat</span><span class="p">]</span>
+<span class="n">xs</span><span class="p">,</span> <span class="n">ys</span> <span class="o">=</span> <span class="n">transformer</span><span class="o">.</span><span class="n">transform</span><span class="p">(</span><span class="n">lons</span><span class="p">,</span> <span class="n">lats</span><span class="p">)</span>
+<span class="n">min_x</span><span class="p">,</span> <span class="n">max_x</span> <span class="o">=</span> <span class="nb">min</span><span class="p">(</span><span class="n">xs</span><span class="p">),</span> <span class="nb">max</span><span class="p">(</span><span class="n">xs</span><span class="p">)</span>
+<span class="n">min_y</span><span class="p">,</span> <span class="n">max_y</span> <span class="o">=</span> <span class="nb">min</span><span class="p">(</span><span class="n">ys</span><span class="p">),</span> <span class="nb">max</span><span class="p">(</span><span class="n">ys</span><span class="p">)</span>
+
+<span class="n">x_slice</span> <span class="o">=</span> <span class="nb">slice</span><span class="p">(</span><span class="n">min_x</span><span class="p">,</span> <span class="n">max_x</span><span class="p">)</span> <span class="k">if</span> <span class="n">ds</span><span class="o">.</span><span class="n">x</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span> <span class="o">&lt;</span> <span class="n">ds</span><span class="o">.</span><span class="n">x</span><span class="p">[</span><span class="o">-</span><span class="mi">1</span><span class="p">]</span> <span class="k">else</span> <span class="nb">slice</span><span class="p">(</span><span class="n">max_x</span><span class="p">,</span> <span class="n">min_x</span><span class="p">)</span>
+<span class="n">y_slice</span> <span class="o">=</span> <span class="nb">slice</span><span class="p">(</span><span class="n">min_y</span><span class="p">,</span> <span class="n">max_y</span><span class="p">)</span> <span class="k">if</span> <span class="n">ds</span><span class="o">.</span><span class="n">y</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span> <span class="o">&lt;</span> <span class="n">ds</span><span class="o">.</span><span class="n">y</span><span class="p">[</span><span class="o">-</span><span class="mi">1</span><span class="p">]</span> <span class="k">else</span> <span class="nb">slice</span><span class="p">(</span><span class="n">max_y</span><span class="p">,</span> <span class="n">min_y</span><span class="p">)</span>
+
+<span class="n">ds_sub</span> <span class="o">=</span> <span class="n">ds</span><span class="o">.</span><span class="n">sel</span><span class="p">(</span><span class="n">x</span><span class="o">=</span><span class="n">x_slice</span><span class="p">,</span> <span class="n">y</span><span class="o">=</span><span class="n">y_slice</span><span class="p">)</span>
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>Opening Zarr store...
+</pre></div>
+</div>
+</div>
+</div>
+</section>
+<section id="computing-metrics-using-dask">
+<h2>Computing metrics using Dask<a class="headerlink" href="#computing-metrics-using-dask" title="Permalink to this heading">#</a></h2>
+<p>Now that we have subsetted our dataset to a manageable region, it is time to calculate our statistics: mean speed, measurement count, linear trend, and the trend’s p-value.</p>
+<p>To do this efficiently, we use a combination of <strong>Dask</strong> for parallelization and <code class="docutils literal notranslate"><span class="pre">xarray.apply_ufunc</span></code> to execute our custom math.</p>
+<section id="how-it-works">
+<h3>How it works<a class="headerlink" href="#how-it-works" title="Permalink to this heading">#</a></h3>
+<ol class="arabic simple">
+<li><p><strong>Prepare the Data:</strong> We first calculate time in decimal years to ensure our trend (slope) is returned in physical units (<span class="math notranslate nohighlight">\(m/yr^2\)</span>). We then ensure our core dimension (time) is in a single contiguous chunk using <code class="docutils literal notranslate"><span class="pre">.chunk({'time':</span> <span class="pre">-1})</span></code>.</p></li>
+<li><p><strong>Apply the Universal Function:</strong> <code class="docutils literal notranslate"><span class="pre">xr.apply_ufunc</span></code> acts as a bridge. It unwraps our Xarray DataArrays, passes the raw, chunked underlying Dask arrays to our pure NumPy function (_calc_stats_numpy) and then re-wraps the results back into Xarray objects with all coordinates and metadata intact.</p></li>
+<li><p><strong>Compute:</strong> By setting <code class="docutils literal notranslate"><span class="pre">dask=&quot;parallelized&quot;</span></code>, Dask knows to map our NumPy function across all spatial chunks independently. The math happens instantly at the C-level inside NumPy on a per-chunk basis.</p></li>
+</ol>
+</section>
+<section id="why-use-xr-apply-ufunc">
+<h3>Why use <code class="docutils literal notranslate"><span class="pre">xr.apply_ufunc</span></code><a class="headerlink" href="#why-use-xr-apply-ufunc" title="Permalink to this heading">#</a></h3>
+<p>For complex calculations like regressions and p-values, <code class="docutils literal notranslate"><span class="pre">apply_ufunc</span></code> is highly beneficial:</p>
+<ul class="simple">
+<li><p><strong>Prevents Graph Bloat:</strong> If you try to write complex multi-step math (like calculating residuals, standard errors, and T-statistics) using native <code class="docutils literal notranslate"><span class="pre">Xarray</span></code>/<code class="docutils literal notranslate"><span class="pre">Dask</span></code> operations, <code class="docutils literal notranslate"><span class="pre">Dask</span></code> creates an individual task in its graph for every single mathematical operation. This can result in task graphs with millions of nodes, which crashes the Dask scheduler before the computation even begins.</p></li>
+<li><p><strong>Access to SciPy/NumPy Ecosystems:</strong> It allows us to use highly optimized functions like <code class="docutils literal notranslate"><span class="pre">scipy.stats.t.sf</span></code> (for p-values) that do not have direct equivalents in native <code class="docutils literal notranslate"><span class="pre">Dask</span></code>.</p></li>
+<li><p><strong>Speed:</strong> Stripping away the <code class="docutils literal notranslate"><span class="pre">Xarray</span></code> metadata during the actual computation loop reduces overhead, running much faster on raw numpy arrays.</p></li>
+</ul>
+</section>
+<section id="what-are-the-alternatives">
+<h3>What are the alternatives<a class="headerlink" href="#what-are-the-alternatives" title="Permalink to this heading">#</a></h3>
+<p>Depending on your use case, there are other ways to compute statistics on gridded data:</p>
+<ul class="simple">
+<li><p><strong>Native Xarray/Dask Methods</strong> (e.g., <code class="docutils literal notranslate"><span class="pre">ds.mean(dim='time')</span></code> or <code class="docutils literal notranslate"><span class="pre">ds.polyfit()</span></code>)</p>
+<ul>
+<li><p><em>When to use it:</em> For simple aggregations (mean, max, standard deviation) or basic polynomial fits. It is built-in, easy to read, and handles missing data automatically.</p></li>
+<li><p><em>Why we didn’’t use it:</em> Xarray’s <code class="docutils literal notranslate"><span class="pre">polyfit</span></code> does not return p-values, and building the p-value math natively causes the graph bloat mentioned above.</p></li>
+</ul>
+</li>
+<li><p><code class="docutils literal notranslate"><span class="pre">xarray.Dataset.map_blocks</span></code></p>
+<ul>
+<li><p><em>When to use it:</em> When your custom function needs to interact with Xarray coordinates or metadata inside the function, rather than just the raw numbers.</p></li>
+<li><p><em>Why we didn’t use it:</em> It passes whole Xarray datasets into the function chunk-by-chunk, which introduces more overhead than <code class="docutils literal notranslate"><span class="pre">apply_ufunc</span></code> passing bare numpy arrays.</p></li>
+</ul>
+</li>
+<li><p><code class="docutils literal notranslate"><span class="pre">dask.array.map_blocks</span></code></p>
+<ul>
+<li><p><em>When to use it:</em> When you are working purely with Dask arrays and don’t care about spatial coordinates.</p></li>
+<li><p><em>Why we didn’t use it:</em> <code class="docutils literal notranslate"><span class="pre">apply_ufunc</span></code> is essentially a wrapper around map_blocks that does the heavy lifting of aligning dimensions and preserving Xarray coordinates for us.</p></li>
+</ul>
+</li>
+</ul>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="c1"># 5. Define Time Periods</span>
+<span class="n">periods</span> <span class="o">=</span> <span class="p">{</span>
+    <span class="s1">&#39;2003_2013&#39;</span><span class="p">:</span> <span class="p">(</span><span class="s1">&#39;2003-01-01&#39;</span><span class="p">,</span> <span class="s1">&#39;2013-01-31&#39;</span><span class="p">),</span>
+    <span class="s1">&#39;2014_2020&#39;</span><span class="p">:</span> <span class="p">(</span><span class="s1">&#39;2014-03-01&#39;</span><span class="p">,</span> <span class="s1">&#39;2020-03-31&#39;</span><span class="p">),</span>
+    <span class="s1">&#39;2019_2025&#39;</span><span class="p">:</span> <span class="p">(</span><span class="s1">&#39;2019-03-01&#39;</span><span class="p">,</span> <span class="s1">&#39;2025-03-31&#39;</span><span class="p">)</span>
+<span class="p">}</span>
+
+<span class="n">period_labels</span> <span class="o">=</span> <span class="p">{</span>
+    <span class="s1">&#39;2003_2013&#39;</span><span class="p">:</span> <span class="s1">&#39;Jan 2003 to Jan 2013&#39;</span><span class="p">,</span>
+    <span class="s1">&#39;2014_2020&#39;</span><span class="p">:</span> <span class="s1">&#39;March 2014 to March 2020&#39;</span><span class="p">,</span>
+    <span class="s1">&#39;2019_2025&#39;</span><span class="p">:</span> <span class="s1">&#39;March 2019 to March 2025&#39;</span>
+<span class="p">}</span>
+
+<span class="n">results</span> <span class="o">=</span> <span class="p">{}</span>
+
+<span class="nb">print</span><span class="p">(</span><span class="s2">&quot;Building task graphs for all periods...&quot;</span><span class="p">)</span>
+<span class="k">for</span> <span class="n">period_name</span><span class="p">,</span> <span class="p">(</span><span class="n">start</span><span class="p">,</span> <span class="n">end</span><span class="p">)</span> <span class="ow">in</span> <span class="n">periods</span><span class="o">.</span><span class="n">items</span><span class="p">():</span>
+    <span class="c1"># Subset time period</span>
+    <span class="n">ds_period</span> <span class="o">=</span> <span class="n">ds_sub</span><span class="o">.</span><span class="n">sel</span><span class="p">(</span><span class="n">time</span><span class="o">=</span><span class="nb">slice</span><span class="p">(</span><span class="n">start</span><span class="p">,</span> <span class="n">end</span><span class="p">))</span>
+    <span class="n">num_epochs</span> <span class="o">=</span> <span class="nb">len</span><span class="p">(</span><span class="n">ds_period</span><span class="p">[</span><span class="s1">&#39;time&#39;</span><span class="p">])</span>
+    
+    <span class="n">t_years</span> <span class="o">=</span> <span class="n">ds_period</span><span class="p">[</span><span class="s1">&#39;time&#39;</span><span class="p">]</span><span class="o">.</span><span class="n">dt</span><span class="o">.</span><span class="n">year</span> <span class="o">+</span> <span class="p">(</span><span class="n">ds_period</span><span class="p">[</span><span class="s1">&#39;time&#39;</span><span class="p">]</span><span class="o">.</span><span class="n">dt</span><span class="o">.</span><span class="n">dayofyear</span> <span class="o">/</span> <span class="mf">365.25</span><span class="p">)</span>
+    
+    <span class="c1"># Pass directly to apply_ufunc</span>
+    <span class="n">mean_da</span><span class="p">,</span> <span class="n">count_da</span><span class="p">,</span> <span class="n">slope_da</span><span class="p">,</span> <span class="n">p_val_da</span> <span class="o">=</span> <span class="n">xr</span><span class="o">.</span><span class="n">apply_ufunc</span><span class="p">(</span>
+        <span class="n">_calc_stats_numpy</span><span class="p">,</span>
+        <span class="n">ds_period</span><span class="p">[</span><span class="s1">&#39;speed&#39;</span><span class="p">],</span>
+        <span class="n">t_years</span><span class="p">,</span>
+        <span class="n">input_core_dims</span><span class="o">=</span><span class="p">[[</span><span class="s1">&#39;time&#39;</span><span class="p">],</span> <span class="p">[</span><span class="s1">&#39;time&#39;</span><span class="p">]],</span>
+        <span class="n">output_core_dims</span><span class="o">=</span><span class="p">[[],</span> <span class="p">[],</span> <span class="p">[],</span> <span class="p">[]],</span>
+        <span class="n">vectorize</span><span class="o">=</span><span class="kc">False</span><span class="p">,</span>
+        <span class="n">dask</span><span class="o">=</span><span class="s2">&quot;parallelized&quot;</span><span class="p">,</span>
+        <span class="n">output_dtypes</span><span class="o">=</span><span class="p">[</span><span class="n">np</span><span class="o">.</span><span class="n">float64</span><span class="p">,</span> <span class="n">np</span><span class="o">.</span><span class="n">int32</span><span class="p">,</span> <span class="n">np</span><span class="o">.</span><span class="n">float64</span><span class="p">,</span> <span class="n">np</span><span class="o">.</span><span class="n">float64</span><span class="p">]</span>
+    <span class="p">)</span>
+    
+    <span class="n">results</span><span class="p">[</span><span class="n">period_name</span><span class="p">]</span> <span class="o">=</span> <span class="p">{</span>
+        <span class="s1">&#39;num_epochs&#39;</span><span class="p">:</span> <span class="n">num_epochs</span><span class="p">,</span>
+        <span class="s1">&#39;mean&#39;</span><span class="p">:</span> <span class="n">mean_da</span><span class="p">,</span>
+        <span class="s1">&#39;count&#39;</span><span class="p">:</span> <span class="n">count_da</span><span class="p">,</span>
+        <span class="s1">&#39;slope&#39;</span><span class="p">:</span> <span class="n">slope_da</span><span class="p">,</span>
+        <span class="s1">&#39;p_val&#39;</span><span class="p">:</span> <span class="n">p_val_da</span>
+    <span class="p">}</span>
+
+<span class="nb">print</span><span class="p">(</span><span class="s2">&quot;Computing metrics via Dask... (Check dashboard for progress)&quot;</span><span class="p">)</span>
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>Building task graphs for all periods...
+Computing metrics via Dask... (Check dashboard)
+</pre></div>
+</div>
+</div>
+</div>
+<p>Now that we have computed grids of trends in suitable locations, we should mask the data so that we only plot the output where it makes sense to do so:</p>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="nb">print</span><span class="p">(</span><span class="s2">&quot;Computation complete! Applying masks...&quot;</span><span class="p">)</span>
+
+<span class="c1"># Load BedMachine and align to our subset grid using nearest neighbor</span>
+<span class="n">bed_path</span> <span class="o">=</span> <span class="sa">r</span><span class="s2">&quot;/no/one/wants/to/see/my/directory/structure/BedMachineGreenland-v5.nc&quot;</span>
+<span class="n">bed_ds</span> <span class="o">=</span> <span class="n">xr</span><span class="o">.</span><span class="n">open_dataset</span><span class="p">(</span><span class="n">bed_path</span><span class="p">)</span>
+<span class="n">bed_mask</span> <span class="o">=</span> <span class="n">bed_ds</span><span class="p">[</span><span class="s1">&#39;mask&#39;</span><span class="p">]</span><span class="o">.</span><span class="n">interp</span><span class="p">(</span><span class="n">x</span><span class="o">=</span><span class="n">ds_sub</span><span class="o">.</span><span class="n">x</span><span class="p">,</span> <span class="n">y</span><span class="o">=</span><span class="n">ds_sub</span><span class="o">.</span><span class="n">y</span><span class="p">,</span> <span class="n">method</span><span class="o">=</span><span class="s1">&#39;nearest&#39;</span><span class="p">)</span><span class="o">.</span><span class="n">compute</span><span class="p">()</span>
+
+<span class="nb">print</span><span class="p">(</span><span class="s2">&quot;Computing metrics period by period...&quot;</span><span class="p">)</span>
+<span class="n">final_masked_trends</span> <span class="o">=</span> <span class="p">{}</span>
+
+<span class="c1"># 3. Compute each period sequentially </span>
+<span class="k">for</span> <span class="n">period_name</span><span class="p">,</span> <span class="n">p_data</span> <span class="ow">in</span> <span class="n">results</span><span class="o">.</span><span class="n">items</span><span class="p">():</span>
+    <span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;Computing </span><span class="si">{</span><span class="n">period_name</span><span class="si">}</span><span class="s2">...&quot;</span><span class="p">)</span>
+    
+    <span class="n">mean_c</span><span class="p">,</span> <span class="n">count_c</span><span class="p">,</span> <span class="n">slope_c</span><span class="p">,</span> <span class="n">p_val_c</span> <span class="o">=</span> <span class="n">dask</span><span class="o">.</span><span class="n">compute</span><span class="p">(</span>
+        <span class="n">p_data</span><span class="p">[</span><span class="s1">&#39;mean&#39;</span><span class="p">],</span> <span class="n">p_data</span><span class="p">[</span><span class="s1">&#39;count&#39;</span><span class="p">],</span> <span class="n">p_data</span><span class="p">[</span><span class="s1">&#39;slope&#39;</span><span class="p">],</span> <span class="n">p_data</span><span class="p">[</span><span class="s1">&#39;p_val&#39;</span><span class="p">]</span>
+    <span class="p">)</span>
+    
+    <span class="n">num_epochs</span> <span class="o">=</span> <span class="n">p_data</span><span class="p">[</span><span class="s1">&#39;num_epochs&#39;</span><span class="p">]</span>
+    
+    <span class="c1"># Apply masking</span>
+    <span class="n">valid_mask</span> <span class="o">=</span> <span class="p">(</span><span class="n">p_val_c</span> <span class="o">&lt;</span> <span class="mf">0.15</span><span class="p">)</span> <span class="o">&amp;</span> <span class="p">(</span><span class="n">bed_mask</span> <span class="o">==</span> <span class="mi">2</span><span class="p">)</span>
+    <span class="n">final_masked_trends</span><span class="p">[</span><span class="n">period_name</span><span class="p">]</span> <span class="o">=</span> <span class="n">slope_c</span><span class="o">.</span><span class="n">where</span><span class="p">(</span><span class="n">valid_mask</span><span class="p">)</span>
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>Computation complete! Applying masks...
+Computing metrics period by period...
+Computing 2003_2013...
+Computing 2014_2020...
+Computing 2019_2025...
+</pre></div>
+</div>
+</div>
+</div>
+<p>Next, prepare some auxilliary data for plotting:</p>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">dem_path</span> <span class="o">=</span> <span class="sa">r</span><span class="s2">&quot;/no/one/wants/to/see/my/directory/structure/gimpdem_90m_v01.1.tif&quot;</span>
+<span class="n">shp_path</span> <span class="o">=</span> <span class="sa">r</span><span class="s2">&quot;/no/one/wants/to/see/my/directory/structure/01-PROMICE-2022-IceMask-line-v3_latlon.shp&quot;</span>
+
+<span class="nb">print</span><span class="p">(</span><span class="s2">&quot;Loading DEM and preparing hillshade/contours...&quot;</span><span class="p">)</span>
+<span class="c1"># Load DEM and clip</span>
+<span class="n">dem</span> <span class="o">=</span> <span class="n">rioxarray</span><span class="o">.</span><span class="n">open_rasterio</span><span class="p">(</span><span class="n">dem_path</span><span class="p">)</span><span class="o">.</span><span class="n">squeeze</span><span class="p">()</span>
+<span class="n">dem</span> <span class="o">=</span> <span class="n">dem</span><span class="o">.</span><span class="n">rio</span><span class="o">.</span><span class="n">clip_box</span><span class="p">(</span><span class="n">minx</span><span class="o">=</span><span class="n">min_x</span><span class="p">,</span> <span class="n">miny</span><span class="o">=</span><span class="n">min_y</span><span class="p">,</span> <span class="n">maxx</span><span class="o">=</span><span class="n">max_x</span><span class="p">,</span> <span class="n">maxy</span><span class="o">=</span><span class="n">max_y</span><span class="p">)</span>
+
+<span class="c1"># Interpolate BedMachine mask to match the DEM grid resolution</span>
+<span class="n">bed_mask_dem</span> <span class="o">=</span> <span class="n">bed_ds</span><span class="p">[</span><span class="s1">&#39;mask&#39;</span><span class="p">]</span><span class="o">.</span><span class="n">interp</span><span class="p">(</span><span class="n">x</span><span class="o">=</span><span class="n">dem</span><span class="o">.</span><span class="n">x</span><span class="p">,</span> <span class="n">y</span><span class="o">=</span><span class="n">dem</span><span class="o">.</span><span class="n">y</span><span class="p">,</span> <span class="n">method</span><span class="o">=</span><span class="s1">&#39;nearest&#39;</span><span class="p">)</span><span class="o">.</span><span class="n">compute</span><span class="p">()</span>
+
+<span class="c1"># Create an on-ice DEM, to make contours</span>
+<span class="n">dem_masked_for_contours</span> <span class="o">=</span> <span class="n">dem</span><span class="o">.</span><span class="n">where</span><span class="p">((</span><span class="n">dem</span> <span class="o">&gt;</span> <span class="o">-</span><span class="mi">9000</span><span class="p">)</span> <span class="o">&amp;</span> <span class="p">(</span><span class="n">bed_mask_dem</span> <span class="o">==</span> <span class="mi">2</span><span class="p">))</span>
+
+<span class="c1"># Create a DEM for the background hillshade</span>
+<span class="n">dem_base</span> <span class="o">=</span> <span class="n">dem</span><span class="o">.</span><span class="n">where</span><span class="p">(</span><span class="n">dem</span> <span class="o">&gt;</span> <span class="o">-</span><span class="mi">9000</span><span class="p">,</span> <span class="n">np</span><span class="o">.</span><span class="n">nan</span><span class="p">)</span>
+
+<span class="nb">print</span><span class="p">(</span><span class="s2">&quot;Loading and clipping vector shapefile...&quot;</span><span class="p">)</span>
+<span class="n">ice_mask</span> <span class="o">=</span> <span class="n">gpd</span><span class="o">.</span><span class="n">read_file</span><span class="p">(</span><span class="n">shp_path</span><span class="p">)</span>
+<span class="n">ice_mask_3413</span> <span class="o">=</span> <span class="n">ice_mask</span><span class="o">.</span><span class="n">to_crs</span><span class="p">(</span><span class="n">epsg</span><span class="o">=</span><span class="mi">3413</span><span class="p">)</span>
+<span class="n">bbox_polygon</span> <span class="o">=</span> <span class="n">shapely</span><span class="o">.</span><span class="n">geometry</span><span class="o">.</span><span class="n">box</span><span class="p">(</span><span class="n">min_x</span><span class="p">,</span> <span class="n">min_y</span><span class="p">,</span> <span class="n">max_x</span><span class="p">,</span> <span class="n">max_y</span><span class="p">)</span>
+<span class="n">ice_mask_clipped</span> <span class="o">=</span> <span class="n">ice_mask_3413</span><span class="o">.</span><span class="n">clip</span><span class="p">(</span><span class="n">bbox_polygon</span><span class="p">)</span>
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>Loading DEM and preparing hillshade/contours...
+Loading and clipping vector shapefile...
+</pre></div>
+</div>
+</div>
+</div>
+<p>Finally, plot the data:</p>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="nb">print</span><span class="p">(</span><span class="s2">&quot;Generating publication-quality figure...&quot;</span><span class="p">)</span>
+<span class="n">fig</span><span class="p">,</span> <span class="n">axes</span> <span class="o">=</span> <span class="n">plt</span><span class="o">.</span><span class="n">subplots</span><span class="p">(</span><span class="mi">1</span><span class="p">,</span> <span class="mi">3</span><span class="p">,</span> <span class="n">figsize</span><span class="o">=</span><span class="p">(</span><span class="mi">18</span><span class="p">,</span> <span class="mi">7</span><span class="p">),</span> <span class="n">sharex</span><span class="o">=</span><span class="kc">True</span><span class="p">,</span> <span class="n">sharey</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span>
+
+<span class="c1"># Hillshade using base DEM</span>
+<span class="n">ls</span> <span class="o">=</span> <span class="n">LightSource</span><span class="p">(</span><span class="n">azdeg</span><span class="o">=</span><span class="mi">315</span><span class="p">,</span> <span class="n">altdeg</span><span class="o">=</span><span class="mi">45</span><span class="p">)</span>
+<span class="n">dem_filled</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">nan_to_num</span><span class="p">(</span><span class="n">dem_base</span><span class="o">.</span><span class="n">values</span><span class="p">,</span> <span class="n">nan</span><span class="o">=</span><span class="mf">0.0</span><span class="p">)</span>
+<span class="n">shaded_dem</span> <span class="o">=</span> <span class="n">ls</span><span class="o">.</span><span class="n">shade</span><span class="p">(</span><span class="n">dem_filled</span><span class="p">,</span> <span class="n">cmap</span><span class="o">=</span><span class="n">plt</span><span class="o">.</span><span class="n">cm</span><span class="o">.</span><span class="n">gray</span><span class="p">,</span> <span class="n">blend_mode</span><span class="o">=</span><span class="s1">&#39;soft&#39;</span><span class="p">,</span> <span class="n">vert_exag</span><span class="o">=</span><span class="mf">1.5</span><span class="p">)</span>
+
+<span class="c1"># Convert extent values to standard scalars for matplotlib</span>
+<span class="n">dem_extent</span> <span class="o">=</span> <span class="p">[</span>
+    <span class="n">dem_base</span><span class="o">.</span><span class="n">x</span><span class="o">.</span><span class="n">min</span><span class="p">()</span><span class="o">.</span><span class="n">item</span><span class="p">(),</span> <span class="n">dem_base</span><span class="o">.</span><span class="n">x</span><span class="o">.</span><span class="n">max</span><span class="p">()</span><span class="o">.</span><span class="n">item</span><span class="p">(),</span> 
+    <span class="n">dem_base</span><span class="o">.</span><span class="n">y</span><span class="o">.</span><span class="n">min</span><span class="p">()</span><span class="o">.</span><span class="n">item</span><span class="p">(),</span> <span class="n">dem_base</span><span class="o">.</span><span class="n">y</span><span class="o">.</span><span class="n">max</span><span class="p">()</span><span class="o">.</span><span class="n">item</span><span class="p">()</span>
+<span class="p">]</span>
+
+<span class="k">for</span> <span class="n">i</span><span class="p">,</span> <span class="p">(</span><span class="n">ax</span><span class="p">,</span> <span class="p">(</span><span class="n">period_name</span><span class="p">,</span> <span class="n">trend_data</span><span class="p">))</span> <span class="ow">in</span> <span class="nb">enumerate</span><span class="p">(</span><span class="nb">zip</span><span class="p">(</span><span class="n">axes</span><span class="p">,</span> <span class="n">final_masked_trends</span><span class="o">.</span><span class="n">items</span><span class="p">())):</span>
+    <span class="c1"># a. Plot DEM Hillshade</span>
+    <span class="n">ax</span><span class="o">.</span><span class="n">imshow</span><span class="p">(</span><span class="n">shaded_dem</span><span class="p">,</span> <span class="n">extent</span><span class="o">=</span><span class="n">dem_extent</span><span class="p">,</span> <span class="n">origin</span><span class="o">=</span><span class="s1">&#39;upper&#39;</span><span class="p">,</span> <span class="n">zorder</span><span class="o">=</span><span class="mi">1</span><span class="p">)</span>
+    
+    <span class="c1"># b. Overlay the computed trend </span>
+    <span class="n">im</span> <span class="o">=</span> <span class="n">trend_data</span><span class="o">.</span><span class="n">plot</span><span class="p">(</span>
+        <span class="n">ax</span><span class="o">=</span><span class="n">ax</span><span class="p">,</span> <span class="n">cmap</span><span class="o">=</span><span class="s1">&#39;seismic&#39;</span><span class="p">,</span> <span class="n">vmin</span><span class="o">=-</span><span class="mi">5</span><span class="p">,</span> <span class="n">vmax</span><span class="o">=</span><span class="mi">5</span><span class="p">,</span> 
+        <span class="n">add_colorbar</span><span class="o">=</span><span class="kc">False</span><span class="p">,</span> <span class="n">alpha</span><span class="o">=</span><span class="mf">0.75</span><span class="p">,</span> <span class="n">zorder</span><span class="o">=</span><span class="mi">2</span>
+    <span class="p">)</span>
+    
+    <span class="c1"># c. Plot DEM contours</span>
+    <span class="n">levels</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">arange</span><span class="p">(</span><span class="mi">0</span><span class="p">,</span> <span class="nb">int</span><span class="p">(</span><span class="n">np</span><span class="o">.</span><span class="n">nanmax</span><span class="p">(</span><span class="n">dem_masked_for_contours</span><span class="o">.</span><span class="n">values</span><span class="p">))</span> <span class="o">+</span> <span class="mi">100</span><span class="p">,</span> <span class="mi">100</span><span class="p">)</span>
+    <span class="n">cs</span> <span class="o">=</span> <span class="n">ax</span><span class="o">.</span><span class="n">contour</span><span class="p">(</span><span class="n">dem_masked_for_contours</span><span class="o">.</span><span class="n">x</span><span class="p">,</span> <span class="n">dem_masked_for_contours</span><span class="o">.</span><span class="n">y</span><span class="p">,</span> <span class="n">dem_masked_for_contours</span><span class="o">.</span><span class="n">values</span><span class="p">,</span> 
+                    <span class="n">levels</span><span class="o">=</span><span class="n">levels</span><span class="p">,</span> <span class="n">colors</span><span class="o">=</span><span class="s1">&#39;#FFB347&#39;</span><span class="p">,</span> <span class="n">linewidths</span><span class="o">=</span><span class="mf">0.5</span><span class="p">,</span> <span class="n">alpha</span><span class="o">=</span><span class="mf">0.8</span><span class="p">,</span> <span class="n">zorder</span><span class="o">=</span><span class="mi">3</span><span class="p">)</span>
+    <span class="n">ax</span><span class="o">.</span><span class="n">clabel</span><span class="p">(</span><span class="n">cs</span><span class="p">,</span> <span class="n">inline</span><span class="o">=</span><span class="kc">True</span><span class="p">,</span> <span class="n">fontsize</span><span class="o">=</span><span class="mi">7</span><span class="p">,</span> <span class="n">fmt</span><span class="o">=</span><span class="s1">&#39;</span><span class="si">%d</span><span class="s1">&#39;</span><span class="p">,</span> <span class="n">colors</span><span class="o">=</span><span class="s1">&#39;#FFB347&#39;</span><span class="p">)</span>
+    
+    <span class="c1"># d. Plot ice edge</span>
+    <span class="n">ice_mask_clipped</span><span class="o">.</span><span class="n">plot</span><span class="p">(</span><span class="n">ax</span><span class="o">=</span><span class="n">ax</span><span class="p">,</span> <span class="n">color</span><span class="o">=</span><span class="s1">&#39;none&#39;</span><span class="p">,</span> <span class="n">edgecolor</span><span class="o">=</span><span class="s1">&#39;black&#39;</span><span class="p">,</span> <span class="n">linewidth</span><span class="o">=</span><span class="mf">1.5</span><span class="p">,</span> <span class="n">zorder</span><span class="o">=</span><span class="mi">4</span><span class="p">)</span>
+    
+    <span class="c1"># e. make it pretty</span>
+    <span class="n">ax</span><span class="o">.</span><span class="n">set_title</span><span class="p">(</span><span class="n">period_labels</span><span class="p">[</span><span class="n">period_name</span><span class="p">],</span> <span class="n">fontsize</span><span class="o">=</span><span class="mi">14</span><span class="p">,</span> <span class="n">fontweight</span><span class="o">=</span><span class="s1">&#39;bold&#39;</span><span class="p">,</span> <span class="n">pad</span><span class="o">=</span><span class="mi">10</span><span class="p">)</span>
+    <span class="n">ax</span><span class="o">.</span><span class="n">set_aspect</span><span class="p">(</span><span class="s1">&#39;equal&#39;</span><span class="p">)</span>
+    <span class="n">ax</span><span class="o">.</span><span class="n">set_xlabel</span><span class="p">(</span><span class="s1">&#39;Easting (m)&#39;</span><span class="p">)</span>
+    
+    <span class="k">if</span> <span class="n">i</span> <span class="o">==</span> <span class="mi">0</span><span class="p">:</span>
+        <span class="n">ax</span><span class="o">.</span><span class="n">set_ylabel</span><span class="p">(</span><span class="s1">&#39;Northing (m)&#39;</span><span class="p">)</span>
+    <span class="k">else</span><span class="p">:</span>
+        <span class="n">ax</span><span class="o">.</span><span class="n">set_ylabel</span><span class="p">(</span><span class="s1">&#39;&#39;</span><span class="p">)</span>
+
+<span class="n">plt</span><span class="o">.</span><span class="n">tight_layout</span><span class="p">()</span>
+
+<span class="c1"># Add unified colorbar</span>
+<span class="n">cbar_ax</span> <span class="o">=</span> <span class="n">fig</span><span class="o">.</span><span class="n">add_axes</span><span class="p">([</span><span class="mf">0.15</span><span class="p">,</span> <span class="mf">0.05</span><span class="p">,</span> <span class="mf">0.7</span><span class="p">,</span> <span class="mf">0.03</span><span class="p">])</span>
+<span class="n">cbar</span> <span class="o">=</span> <span class="n">fig</span><span class="o">.</span><span class="n">colorbar</span><span class="p">(</span><span class="n">im</span><span class="p">,</span> <span class="n">cax</span><span class="o">=</span><span class="n">cbar_ax</span><span class="p">,</span> <span class="n">orientation</span><span class="o">=</span><span class="s1">&#39;horizontal&#39;</span><span class="p">,</span> <span class="n">extend</span><span class="o">=</span><span class="s1">&#39;both&#39;</span><span class="p">)</span>
+<span class="n">cbar</span><span class="o">.</span><span class="n">set_label</span><span class="p">(</span><span class="s1">&#39;Speed trend (m/yr²)&#39;</span><span class="p">,</span> <span class="n">fontsize</span><span class="o">=</span><span class="mi">13</span><span class="p">,</span> <span class="n">fontweight</span><span class="o">=</span><span class="s1">&#39;bold&#39;</span><span class="p">)</span>
+<span class="n">cbar</span><span class="o">.</span><span class="n">ax</span><span class="o">.</span><span class="n">tick_params</span><span class="p">(</span><span class="n">labelsize</span><span class="o">=</span><span class="mi">11</span><span class="p">)</span>
+
+<span class="n">plt</span><span class="o">.</span><span class="n">subplots_adjust</span><span class="p">(</span><span class="n">bottom</span><span class="o">=</span><span class="mf">0.15</span><span class="p">)</span> 
+<span class="n">plt</span><span class="o">.</span><span class="n">show</span><span class="p">()</span>
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>Generating publication-quality figure...
+</pre></div>
+</div>
+<img alt="../_images/21748c3e13e175449a92d361187116068dcb0ea2dea683fab79791bad40f1f52.png" src="../_images/21748c3e13e175449a92d361187116068dcb0ea2dea683fab79791bad40f1f52.png" />
+</div>
+</div>
+<p>Which is neat because it broadly agrees with the results of Tedstone et al. (2015) and Williams et al. (2020), showing a long-term deceleration of ice in some parts of the ablation zome of this land-terminating sector of west Greenland until around 2020, followed by a period of acceleration across the same area.</p>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">client</span><span class="o">.</span><span class="n">close</span><span class="p">()</span>
+<span class="n">cluster</span><span class="o">.</span><span class="n">close</span><span class="p">()</span>
+</pre></div>
+</div>
+</div>
+</div>
+</section>
+</section>
+</section>
+
+    <script type="text/x-thebe-config">
+    {
+        requestKernel: true,
+        binderOptions: {
+            repo: "binder-examples/jupyter-stacks-datascience",
+            ref: "master",
+        },
+        codeMirrorConfig: {
+            theme: "abcdef",
+            mode: "shiver_env"
+        },
+        kernelOptions: {
+            name: "shiver_env",
+            path: "./examples"
+        },
+        predefinedOutput: true
+    }
+    </script>
+    <script>kernelName = 'shiver_env'</script>
+
+                </article>
+              
+
+              
+              
+              
+              
+                <footer class="prev-next-footer d-print-none">
+                  
+<div class="prev-next-area">
+    <a class="left-prev"
+       href="simple_subset.html"
+       title="previous page">
+      <i class="fa-solid fa-angle-left"></i>
+      <div class="prev-next-info">
+        <p class="prev-next-subtitle">previous</p>
+        <p class="prev-next-title">Datacube subsetting</p>
+      </div>
+    </a>
+    <a class="right-next"
+       href="eof.html"
+       title="next page">
+      <div class="prev-next-info">
+        <p class="prev-next-subtitle">next</p>
+        <p class="prev-next-title">Principal Component Analysis (advanced)</p>
+      </div>
+      <i class="fa-solid fa-angle-right"></i>
+    </a>
+</div>
+                </footer>
+              
+            </div>
+            
+            
+              
+                <div class="bd-sidebar-secondary bd-toc"><div class="sidebar-secondary-items sidebar-secondary__inner">
+
+
+  <div class="sidebar-secondary-item">
+  <div class="page-toc tocsection onthispage">
+    <i class="fa-solid fa-list"></i> Contents
+  </div>
+  <nav class="bd-toc-nav page-toc">
+    <ul class="visible nav section-nav flex-column">
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#managing-the-workload-with-dask">Managing the workload with Dask</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#define-function-to-calculate-temporal-statistics">Define function to calculate temporal statistics</a><ul class="nav section-nav flex-column">
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#why-write-a-custom-pure-numpy-function">Why write a custom, pure-NumPy function?</a></li>
+</ul>
+</li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#connecting-to-the-cloud-and-subsetting-the-data">Connecting to the Cloud and subsetting the data</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#computing-metrics-using-dask">Computing metrics using Dask</a><ul class="nav section-nav flex-column">
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#how-it-works">How it works</a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#why-use-xr-apply-ufunc">Why use <code class="docutils literal notranslate"><span class="pre">xr.apply_ufunc</span></code></a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#what-are-the-alternatives">What are the alternatives</a></li>
+</ul>
+</li>
+</ul>
+  </nav></div>
+
+</div></div>
+              
+            
+          </div>
+          <footer class="bd-footer-content">
+            
+<div class="bd-footer-content__inner container">
+  
+  <div class="footer-item">
+    
+<p class="component-author">
+By Benjamin Davison
+</p>
+
+  </div>
+  
+  <div class="footer-item">
+    
+
+  <p class="copyright">
+    
+      © Copyright 2022.
+      <br/>
+    
+  </p>
+
+  </div>
+  
+  <div class="footer-item">
+    
+  </div>
+  
+  <div class="footer-item">
+    
+  </div>
+  
+</div>
+          </footer>
+        
+
+      </main>
+    </div>
+  </div>
+  
+  <!-- Scripts loaded after <body> so the DOM is not blocked -->
+  <script src="../_static/scripts/bootstrap.js?digest=dfe6caa3a7d634c4db9b"></script>
+<script src="../_static/scripts/pydata-sphinx-theme.js?digest=dfe6caa3a7d634c4db9b"></script>
+
+  <footer class="bd-footer">
+  </footer>
+  </body>
+</html>
