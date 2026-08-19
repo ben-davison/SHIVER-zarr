@@ -4,7 +4,7 @@ logo: _static/SHIVER_logo_stacked_v1_black_on_transparent_background_simplified.
 
 # Top-level repository settings
 repository:
-  url: https://github.com/ben-davison/SHIVER-build-zarr
+  url: https://github.com/shiver-ice-velocity/SHIVER-zarr
   path_to_book: docs
   branch: main
 
