@@ -35,6 +35,9 @@
     <link rel="stylesheet" type="text/css" href="../_static/copybutton.css" />
     <link rel="stylesheet" type="text/css" href="../_static/mystnb.4510f1fc1dee50b3e5859aac5469c37c29e427902b24a333a5f9fcb2f0b3ac41.css" />
     <link rel="stylesheet" type="text/css" href="../_static/sphinx-thebe.css" />
+    <link rel="stylesheet" type="text/css" href="../_static/custom.css" />
+    <link rel="stylesheet" type="text/css" href="../_static/custom.css" />
+    <link rel="stylesheet" type="text/css" href="../_static/custom.css" />
     <link rel="stylesheet" type="text/css" href="../_static/design-style.4045f2051d55cab465a707391d5b2007.min.css" />
   
   <!-- Pre-loaded scripts that we'll load fully later -->
@@ -186,7 +189,12 @@ const thebe_selector_output = ".output, .cell_output"
 <li class="toctree-l1"><a class="reference internal" href="../zarr_data/comparison.html">Comparison of Contributing Datasets</a></li>
 <li class="toctree-l1"><a class="reference internal" href="../zarr_data/zarr_structure.html">Inspecting the Zarr Structure</a></li>
 </ul>
-<p aria-level="2" class="caption" role="heading"><span class="caption-text">Examples</span></p>
+<p aria-level="2" class="caption" role="heading"><span class="caption-text">SHIVER Graphical User Interface</span></p>
+<ul class="nav bd-sidenav">
+<li class="toctree-l1"><a class="reference internal" href="../gui/timeseries_explore.html">Timeseries Explorer</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../gui/netcdf_extract.html">NetCDF Extractor</a></li>
+</ul>
+<p aria-level="2" class="caption" role="heading"><span class="caption-text">Programmatic Examples</span></p>
 <ul class="current nav bd-sidenav">
 <li class="toctree-l1"><a class="reference internal" href="simple_timeseries.html">Timeseries extraction</a></li>
 <li class="toctree-l1"><a class="reference internal" href="generating_citations.html">Generating citations for Contributing Datasets</a></li>
@@ -432,7 +440,7 @@ document.write(`
 <div id="searchbox"></div>
                 <article class="bd-article">
                   
-  <section class="tex2jax_ignore mathjax_ignore" id="principal-component-analysis-advanced">
+  <section id="principal-component-analysis-advanced">
 <h1>Principal Component Analysis (advanced)<a class="headerlink" href="#principal-component-analysis-advanced" title="Permalink to this heading">#</a></h1>
 <p>In this example, we will use the Zarr stores to examine the modes of speed variability at a glacier on the Antarctica Peninsula.</p>
 <p>It is now well known that glaciers along the west coast of the Antarctic Peninsula undergo seasonal changes in speed. This has been shown through the presentation of speed timeseries extracted in Eulerian reference frame from fixed locations relatively close (a few kilometres upstream) to glacier termini. The interpretation of the resulting timeseries is muddied somewhat because glacier terminus position also varies seasonally, which means that the distance between the fixed extraction location and the moving glacier terminus varies seasonally. On glaciers with steep gradients in speed near the terminus (i.e. most glaciers), this extraction strategy could alias speed gradients as temporal variations in ice speed - as the terminus retreats in summer, faster speeds will be recorded at the extraction location which is now closer to the terminus.</p>
@@ -440,7 +448,7 @@ document.write(`
 <p>One way to help clarify this interpretation is to examine how glacier speed changes (seasonally or over some other timescale) across the whole glacier. Perhaps the simplest way to do that is to extract speed data along a flowline - i.e. examine multiple timeseries a different distances upstream. However, with relatively complete velocity data, we can go a step further and perform a Principal Component Analysis (PCA) on the data.</p>
 <p>If you are unfamiliar with PCA and related analysis, Ashmore et al. (2021) presents a compelling example of its utility when applied to a fast-flowing glacier in west Greenland and Chad Greene produced a great introduction to Empirical Orthogonal Functions (EOFs) in MATLAB <a class="reference external" href="https://www.chadagreene.com/CDT/eof_documentation.html">here</a>.</p>
 <blockquote>
-<div><p>Ashmore, D.W., Mair, D.W., Higham, J.E., Brough, S., Lea, J.M. and Nias, I.J., 2022. Proper orthogonal decomposition of ice velocity identifies drivers of flow variability at Sermeq Kujalleq (Jakobshavn Isbræ). The Cryosphere, 16, 219-236. DOI: <a class="reference external" href="https://doi.org/10.5194/tc-16-219-2022">https://doi.org/10.5194/tc-16-219-2022</a></p>
+<div><p>Ashmore, D.W., Mair, D.W., Higham, J.E., Brough, S., Lea, J.M. and Nias, I.J., 2022. Proper orthogonal decomposition of ice velocity identifies drivers of flow variability at Sermeq Kujalleq (Jakobshavn Isbræ). The Cryosphere, 16, 219-236. DOI: https://doi.org/10.5194/tc-16-219-2022</p>
 </div></blockquote>
 <p>Let’s setup our work station to do this.</p>
 <div class="cell docutils container">

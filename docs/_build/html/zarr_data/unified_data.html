@@ -35,6 +35,9 @@
     <link rel="stylesheet" type="text/css" href="../_static/copybutton.css" />
     <link rel="stylesheet" type="text/css" href="../_static/mystnb.4510f1fc1dee50b3e5859aac5469c37c29e427902b24a333a5f9fcb2f0b3ac41.css" />
     <link rel="stylesheet" type="text/css" href="../_static/sphinx-thebe.css" />
+    <link rel="stylesheet" type="text/css" href="../_static/custom.css" />
+    <link rel="stylesheet" type="text/css" href="../_static/custom.css" />
+    <link rel="stylesheet" type="text/css" href="../_static/custom.css" />
     <link rel="stylesheet" type="text/css" href="../_static/design-style.4045f2051d55cab465a707391d5b2007.min.css" />
   
   <!-- Pre-loaded scripts that we'll load fully later -->
@@ -186,7 +189,12 @@ const thebe_selector_output = ".output, .cell_output"
 <li class="toctree-l1"><a class="reference internal" href="comparison.html">Comparison of Contributing Datasets</a></li>
 <li class="toctree-l1"><a class="reference internal" href="zarr_structure.html">Inspecting the Zarr Structure</a></li>
 </ul>
-<p aria-level="2" class="caption" role="heading"><span class="caption-text">Examples</span></p>
+<p aria-level="2" class="caption" role="heading"><span class="caption-text">SHIVER Graphical User Interface</span></p>
+<ul class="nav bd-sidenav">
+<li class="toctree-l1"><a class="reference internal" href="../gui/timeseries_explore.html">Timeseries Explorer</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../gui/netcdf_extract.html">NetCDF Extractor</a></li>
+</ul>
+<p aria-level="2" class="caption" role="heading"><span class="caption-text">Programmatic Examples</span></p>
 <ul class="nav bd-sidenav">
 <li class="toctree-l1"><a class="reference internal" href="../examples/simple_timeseries.html">Timeseries extraction</a></li>
 <li class="toctree-l1"><a class="reference internal" href="../examples/generating_citations.html">Generating citations for Contributing Datasets</a></li>
@@ -432,26 +440,26 @@ document.write(`
 <div id="searchbox"></div>
                 <article class="bd-article">
                   
-  <section class="tex2jax_ignore mathjax_ignore" id="unified-datasets">
-<h1>Unified Datasets<a class="headerlink" href="#unified-datasets" title="Permalink to this heading">#</a></h1>
+  <section id="unified-datasets">
+<span id="unified-data-top"></span><h1>Unified Datasets<a class="headerlink" href="#unified-datasets" title="Permalink to this heading">#</a></h1>
 <section id="overview">
-<h2>Overview<a class="headerlink" href="#overview" title="Permalink to this heading">#</a></h2>
+<span id="unified-data-overview"></span><h2>Overview<a class="headerlink" href="#overview" title="Permalink to this heading">#</a></h2>
 <p>To construct the Unified Dataset, we collated the Contributing Datasets for each ice sheet into a series of Zarr stores. The Figures below provide a summary of the unified data for Greenland and Antarctica.</p>
 <figure class="align-default" id="greenland-overview-fig">
 <img alt="Greenland data overview" src="../_images/greenland_data_overview.png" />
 <figcaption>
-<p><span class="caption-number">Fig. 4 </span><span class="caption-text">Summary of the Greenland Ice Sheet unified dataset. (a) Time-average mean speed, (b) mean error, (c) total number of valid (non-NaN) measurements, (d) the date of the first valid measurement and (e) date of the last valid measurement across all contributing datasets. (f) Timeline of all contributing datasets, where each black dot represents the mid-date of each measurement epoch and the width of each coloured bar represents the duration of each measurement epoch. The number of epochs is listed on the right. *Contributing dataset name has been shortened for display ? full names are in Table 1.</span><a class="headerlink" href="#greenland-overview-fig" title="Permalink to this image">#</a></p>
+<p><span class="caption-number">Fig. 38 </span><span class="caption-text">Summary of the Greenland Ice Sheet unified dataset. (a) Time-average mean speed, (b) mean error, (c) total number of valid (non-NaN) measurements, (d) the date of the first valid measurement and (e) date of the last valid measurement across all contributing datasets. (f) Timeline of all contributing datasets, where each black dot represents the mid-date of each measurement epoch and the width of each coloured bar represents the duration of each measurement epoch. The number of epochs is listed on the right. *Contributing dataset name has been shortened for display ? full names are in Table 1.</span><a class="headerlink" href="#greenland-overview-fig" title="Permalink to this image">#</a></p>
 </figcaption>
 </figure>
 <figure class="align-default" id="antarctic-overview-fig">
 <img alt="Antarctic data overview" src="../_images/antarctica_data_overview.png" />
 <figcaption>
-<p><span class="caption-number">Fig. 5 </span><span class="caption-text">Summary of Antarctic Ice Sheet unified dataset. (a) Time-average mean speed, (b) mean error, (c) total number of valid (non-NaN) measurements, (d) the date of the first valid measurement and (e) date of the last valid measurement across all contributing datasets. (f) Timeline of all contributing datasets, where each black dot represents the mid-date of each measurement epoch and the width of each coloured bar represents the duration of each measurement epoch. The number of epochs is listed on the right. *Contributing dataset name has been shortened for display ? full names are in Table 2.</span><a class="headerlink" href="#antarctic-overview-fig" title="Permalink to this image">#</a></p>
+<p><span class="caption-number">Fig. 39 </span><span class="caption-text">Summary of Antarctic Ice Sheet unified dataset. (a) Time-average mean speed, (b) mean error, (c) total number of valid (non-NaN) measurements, (d) the date of the first valid measurement and (e) date of the last valid measurement across all contributing datasets. (f) Timeline of all contributing datasets, where each black dot represents the mid-date of each measurement epoch and the width of each coloured bar represents the duration of each measurement epoch. The number of epochs is listed on the right. *Contributing dataset name has been shortened for display ? full names are in Table 2.</span><a class="headerlink" href="#antarctic-overview-fig" title="Permalink to this image">#</a></p>
 </figcaption>
 </figure>
 </section>
 <section id="zarr-chunk-definition">
-<h2>Zarr chunk definition<a class="headerlink" href="#zarr-chunk-definition" title="Permalink to this heading">#</a></h2>
+<span id="unified-zarr-chunk-def"></span><h2>Zarr chunk definition<a class="headerlink" href="#zarr-chunk-definition" title="Permalink to this heading">#</a></h2>
 <p>SHIVER provides three Zarr stores for each of Greenland and Antarctica. To support different research workflows without compromising performance, the velocity estimates (<code class="docutils literal notranslate"><span class="pre">speed</span></code>, <code class="docutils literal notranslate"><span class="pre">vx</span></code>, <code class="docutils literal notranslate"><span class="pre">vy</span></code> and their associated errors, measured in m yr<sup>-1</sup>) are provided as three Zarr V3 stores that are identical except for their chunking strategy, which are chosen to optimize common access patterns.</p>
 <br>
 <p><em>The details of the Zarr chunk definitions for our Greenland Zarr stores are:</em></p>
@@ -526,23 +534,23 @@ document.write(`
 <p>*antarctica_multisource_velocity</p>
 </section>
 <section id="ome-zarr">
-<h2>OME-Zarr<a class="headerlink" href="#ome-zarr" title="Permalink to this heading">#</a></h2>
+<span id="unified-ome-zarr"></span><h2>OME-Zarr<a class="headerlink" href="#ome-zarr" title="Permalink to this heading">#</a></h2>
 <p>Notably, our spatially-optimised Zarr store utilises the OME-Zarr format, which implements the Open Microscopy Environment Next-Generation File Formats (OME-NGFF) specification (Moore et al. 2023). This multi-level Zarr pyramid is analogous to a Cloud Optimised GeoTIFF, where the chunk shape remains fixed at 1024x1024 pixels across each level, but the spatial resolution of underlying data is successively downsampled by a factor of two at each level. The base layer (layer 0) retains the 200 x 200 m resolution, reducing to a minimum spatial resolution of 3200 x 3200 m for Greenland and 6400 x 6400 m for Antarctica.</p>
 </section>
 <section id="reprojection">
-<h2>Reprojection<a class="headerlink" href="#reprojection" title="Permalink to this heading">#</a></h2>
+<span id="unified-reprojection"></span><h2>Reprojection<a class="headerlink" href="#reprojection" title="Permalink to this heading">#</a></h2>
 <p>During ingestion, velocity fields from every Contributing Dataset (Tables 1 &amp; 2; Figures 1 &amp; 2) were reprojected and resampled to a common spatial grid using nearest-neighbour interpolation to preserve the original velocity magnitudes. The Greenland grid (EPSG:3413) is identical to that used for the ?PROMICE? Contributing Dataset, while the Antarctic grid (EPSG:3031) is identical to that used for the ?ENVEO monthly? Contributing Dataset. Both Unified Dataset grids are defined at a 200 x 200 m spatial resolution.</p>
 </section>
 <section id="timestamps">
-<h2>Timestamps<a class="headerlink" href="#timestamps" title="Permalink to this heading">#</a></h2>
+<span id="unified-timestamps"></span><h2>Timestamps<a class="headerlink" href="#timestamps" title="Permalink to this heading">#</a></h2>
 <p>The Zarr stores retain the temporal metadata of each Contributing Dataset. For every Measurement Epoch, we record the start, end and central dates of the velocity data, enabling the temporal resolution of the Measurement Epoch to be calculated. One product?the ?Joughin TSX? dataset (Table 2; (Joughin et al. 2021))?has an ambiguous temporal resolution of two to five months, so we assign a temporal resolution of 3.5 months to the relevant Measurement Epochs of that Contributing Dataset in our Unified Dataset. Furthermore, the Zarr protocol requires strictly unique temporal coordinates for start, end and central dates. To satisfy this requirement, we adjust the published timestamps by a millisecond where duplicate timestamps occur, which is negligible compared to the temporal resolution of the measurements (four days minimum). This adjustment ensures unique epoch identifiers without meaningfully altering the temporal accuracy of the metadata.</p>
 </section>
 <section id="measurement-error">
-<h2>Measurement error<a class="headerlink" href="#measurement-error" title="Permalink to this heading">#</a></h2>
+<span id="unified-error"></span><h2>Measurement error<a class="headerlink" href="#measurement-error" title="Permalink to this heading">#</a></h2>
 <p>Pixel-wise uncertainty estimates for every Measurement Epoch are included in the Unified Dataset. Where pixel-wise error estimates are provided by the Contributing Dataset, these values are preserved and incorporated directly into the Zarr stores. For datasets lacking published error estimates, we apply an assumed uniform error of 5% of the measured velocity magnitude. Additionally, while most products provide spatially variable error fields, the ?SHIFT? dataset (Davison &amp; Sole, 2026; Sole &amp; Davison, 2026; Davison et al., 2020) provides a single global error for each Measurement Epoch, derived from apparent motion over stable bedrock. For these epochs, the global error value is assigned uniformly to all valid velocity retrievals within the spatial grid.</p>
 </section>
 <section id="variables">
-<h2>Variables<a class="headerlink" href="#variables" title="Permalink to this heading">#</a></h2>
+<span id="unified-variables"></span><h2>Variables<a class="headerlink" href="#variables" title="Permalink to this heading">#</a></h2>
 <p>Each of these Zarr stores contain the same data. The variables included are:</p>
 <p><strong>Table 3. Zarr variables.</strong></p>
 <div class="pst-scrollable-table-container"><table class="table">

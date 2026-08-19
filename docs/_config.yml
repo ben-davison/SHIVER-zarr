@@ -18,7 +18,25 @@ html:
 execute:
   execute_notebooks: "off"
 
-# Enable standard Sphinx extensions
+# Enable substitutions
+parse:
+  myst_enable_extensions:
+    - substitution
+  myst_substitutions:
+    antarcticaIcon: '![AntarcticaIcon](/_static/icons/antarcticaIcon.svg)'
+    greenlandIcon: '![GreenlandIcon](/_static/icons/greenlandIcon.svg)'
+    paletteIcon: '![PaletteIcon](/_static/icons/paletteIcon.svg)'
+    uploadIcon: '![UploadIcon](/_static/icons/uploadIcon.svg)'
+    advancedIcon: '![AdvancedIcon](/_static/icons/advancedIcon.svg)'
+    layersIcon: '![LayersIcon](/_static/icons/layersIcon.svg)'
+    trendIcon: '![TrendIcon](/_static/icons/trendIcon.svg)'
+    graphIcon: '![GraphIcon](/_static/icons/graphIcon.svg)'
+    excelIcon: '![ExcelIcon](/_static/icons/excelIcon.svg)'
+
+# Sphinx settings
 sphinx:
   extra_extensions:
     - sphinx_copybutton
+  config:
+    html_static_path: ["_static"]
+    html_css_files: ["custom.css"]

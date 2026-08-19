@@ -1,0 +1,666 @@
+
+
+<!DOCTYPE html>
+
+
+<html lang="en" data-content_root="" >
+
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" /><meta name="generator" content="Docutils 0.18.1: http://docutils.sourceforge.net/" />
+
+    <title>NetCDF Extractor &#8212; SHeffield Ice Velocity ExploreR (SHIVER) - Cloud access to a unified dataset of satellite-derived ice surface velocity measurements for the Antarctica Ice Sheet and Greenland Ice Sheet</title>
+  
+  
+  
+  <script data-cfasync="false">
+    document.documentElement.dataset.mode = localStorage.getItem("mode") || "";
+    document.documentElement.dataset.theme = localStorage.getItem("theme") || "";
+  </script>
+  
+  <!-- Loaded before other Sphinx assets -->
+  <link href="../_static/styles/theme.css?digest=dfe6caa3a7d634c4db9b" rel="stylesheet" />
+<link href="../_static/styles/bootstrap.css?digest=dfe6caa3a7d634c4db9b" rel="stylesheet" />
+<link href="../_static/styles/pydata-sphinx-theme.css?digest=dfe6caa3a7d634c4db9b" rel="stylesheet" />
+
+  
+  <link href="../_static/vendor/fontawesome/6.5.2/css/all.min.css?digest=dfe6caa3a7d634c4db9b" rel="stylesheet" />
+  <link rel="preload" as="font" type="font/woff2" crossorigin href="../_static/vendor/fontawesome/6.5.2/webfonts/fa-solid-900.woff2" />
+<link rel="preload" as="font" type="font/woff2" crossorigin href="../_static/vendor/fontawesome/6.5.2/webfonts/fa-brands-400.woff2" />
+<link rel="preload" as="font" type="font/woff2" crossorigin href="../_static/vendor/fontawesome/6.5.2/webfonts/fa-regular-400.woff2" />
+
+    <link rel="stylesheet" type="text/css" href="../_static/pygments.css" />
+    <link rel="stylesheet" href="../_static/styles/sphinx-book-theme.css?digest=14f4ca6b54d191a8c7657f6c759bf11a5fb86285" type="text/css" />
+    <link rel="stylesheet" type="text/css" href="../_static/togglebutton.css" />
+    <link rel="stylesheet" type="text/css" href="../_static/copybutton.css" />
+    <link rel="stylesheet" type="text/css" href="../_static/mystnb.4510f1fc1dee50b3e5859aac5469c37c29e427902b24a333a5f9fcb2f0b3ac41.css" />
+    <link rel="stylesheet" type="text/css" href="../_static/sphinx-thebe.css" />
+    <link rel="stylesheet" type="text/css" href="../_static/custom.css" />
+    <link rel="stylesheet" type="text/css" href="../_static/custom.css" />
+    <link rel="stylesheet" type="text/css" href="../_static/custom.css" />
+    <link rel="stylesheet" type="text/css" href="../_static/design-style.4045f2051d55cab465a707391d5b2007.min.css" />
+  
+  <!-- Pre-loaded scripts that we'll load fully later -->
+  <link rel="preload" as="script" href="../_static/scripts/bootstrap.js?digest=dfe6caa3a7d634c4db9b" />
+<link rel="preload" as="script" href="../_static/scripts/pydata-sphinx-theme.js?digest=dfe6caa3a7d634c4db9b" />
+  <script src="../_static/vendor/fontawesome/6.5.2/js/all.min.js?digest=dfe6caa3a7d634c4db9b"></script>
+
+    <script data-url_root="../" id="documentation_options" src="../_static/documentation_options.js"></script>
+    <script src="../_static/jquery.js"></script>
+    <script src="../_static/underscore.js"></script>
+    <script src="../_static/_sphinx_javascript_frameworks_compat.js"></script>
+    <script src="../_static/doctools.js"></script>
+    <script src="../_static/clipboard.min.js"></script>
+    <script src="../_static/copybutton.js"></script>
+    <script src="../_static/scripts/sphinx-book-theme.js?digest=5a5c038af52cf7bc1a1ec88eea08e6366ee68824"></script>
+    <script>let toggleHintShow = 'Click to show';</script>
+    <script>let toggleHintHide = 'Click to hide';</script>
+    <script>let toggleOpenOnPrint = 'true';</script>
+    <script src="../_static/togglebutton.js"></script>
+    <script>var togglebuttonSelector = '.toggle, .admonition.dropdown';</script>
+    <script src="../_static/design-tabs.js"></script>
+    <script>const THEBE_JS_URL = "https://unpkg.com/thebe@0.8.2/lib/index.js"
+const thebe_selector = ".thebe,.cell"
+const thebe_selector_input = "pre"
+const thebe_selector_output = ".output, .cell_output"
+</script>
+    <script async="async" src="../_static/sphinx-thebe.js"></script>
+    <script>DOCUMENTATION_OPTIONS.pagename = 'gui/netcdf_extract';</script>
+    <link rel="index" title="Index" href="../genindex.html" />
+    <link rel="search" title="Search" href="../search.html" />
+    <link rel="next" title="Timeseries extraction" href="../examples/simple_timeseries.html" />
+    <link rel="prev" title="Timeseries Explorer" href="timeseries_explore.html" />
+  <meta name="viewport" content="width=device-width, initial-scale=1"/>
+  <meta name="docsearch:language" content="en"/>
+  </head>
+  
+  
+  <body data-bs-spy="scroll" data-bs-target=".bd-toc-nav" data-offset="180" data-bs-root-margin="0px 0px -60%" data-default-mode="">
+
+  
+  
+  <div id="pst-skip-link" class="skip-link d-print-none"><a href="#main-content">Skip to main content</a></div>
+  
+  <div id="pst-scroll-pixel-helper"></div>
+  
+  <button type="button" class="btn rounded-pill" id="pst-back-to-top">
+    <i class="fa-solid fa-arrow-up"></i>Back to top</button>
+
+  
+  <input type="checkbox"
+          class="sidebar-toggle"
+          id="pst-primary-sidebar-checkbox"/>
+  <label class="overlay overlay-primary" for="pst-primary-sidebar-checkbox"></label>
+  
+  <input type="checkbox"
+          class="sidebar-toggle"
+          id="pst-secondary-sidebar-checkbox"/>
+  <label class="overlay overlay-secondary" for="pst-secondary-sidebar-checkbox"></label>
+  
+  <div class="search-button__wrapper">
+    <div class="search-button__overlay"></div>
+    <div class="search-button__search-container">
+<form class="bd-search d-flex align-items-center"
+      action="../search.html"
+      method="get">
+  <i class="fa-solid fa-magnifying-glass"></i>
+  <input type="search"
+         class="form-control"
+         name="q"
+         id="search-input"
+         placeholder="Search this book..."
+         aria-label="Search this book..."
+         autocomplete="off"
+         autocorrect="off"
+         autocapitalize="off"
+         spellcheck="false"/>
+  <span class="search-button__kbd-shortcut"><kbd class="kbd-shortcut__modifier">Ctrl</kbd>+<kbd>K</kbd></span>
+</form></div>
+  </div>
+
+  <div class="pst-async-banner-revealer d-none">
+  <aside id="bd-header-version-warning" class="d-none d-print-none" aria-label="Version warning"></aside>
+</div>
+
+  
+    <header class="bd-header navbar navbar-expand-lg bd-navbar d-print-none">
+    </header>
+  
+
+  <div class="bd-container">
+    <div class="bd-container__inner bd-page-width">
+      
+      
+      
+      <div class="bd-sidebar-primary bd-sidebar">
+        
+
+  
+  <div class="sidebar-header-items sidebar-primary__section">
+    
+    
+    
+    
+  </div>
+  
+    <div class="sidebar-primary-items__start sidebar-primary__section">
+        <div class="sidebar-primary-item">
+
+  
+    
+  
+
+<a class="navbar-brand logo" href="../index.html">
+  
+  
+  
+  
+  
+    
+    
+      
+    
+    
+    <img src="../_static/SHIVER_logo_stacked_v1_black_on_transparent_background_simplified.png" class="logo__image only-light" alt="SHeffield Ice Velocity ExploreR (SHIVER) - Cloud access to a unified dataset of satellite-derived ice surface velocity measurements for the Antarctica Ice Sheet and Greenland Ice Sheet - Home"/>
+    <script>document.write(`<img src="../_static/SHIVER_logo_stacked_v1_black_on_transparent_background_simplified.png" class="logo__image only-dark" alt="SHeffield Ice Velocity ExploreR (SHIVER) - Cloud access to a unified dataset of satellite-derived ice surface velocity measurements for the Antarctica Ice Sheet and Greenland Ice Sheet - Home"/>`);</script>
+  
+  
+</a></div>
+        <div class="sidebar-primary-item"><nav class="bd-links" id="bd-docs-nav" aria-label="Main">
+    <div class="bd-toc-item navbar-nav active">
+        
+        <ul class="nav bd-sidenav bd-sidenav__home-link">
+            <li class="toctree-l1">
+                <a class="reference internal" href="../index.html">
+                    SHeffield Ice Velocity ExploreR
+                </a>
+            </li>
+        </ul>
+        <p aria-level="2" class="caption" role="heading"><span class="caption-text">Getting Started</span></p>
+<ul class="nav bd-sidenav">
+<li class="toctree-l1"><a class="reference internal" href="../getting_started/why.html">Why SHIVER?</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../getting_started/cite.html">Cite</a></li>
+</ul>
+<p aria-level="2" class="caption" role="heading"><span class="caption-text">Data</span></p>
+<ul class="nav bd-sidenav">
+<li class="toctree-l1"><a class="reference internal" href="../zarr_data/what_is_zarr.html">What is Zarr?</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../zarr_data/contributing_data.html">Contributing Datasets</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../zarr_data/unified_data.html">Unified Datasets</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../zarr_data/comparison.html">Comparison of Contributing Datasets</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../zarr_data/zarr_structure.html">Inspecting the Zarr Structure</a></li>
+</ul>
+<p aria-level="2" class="caption" role="heading"><span class="caption-text">SHIVER Graphical User Interface</span></p>
+<ul class="current nav bd-sidenav">
+<li class="toctree-l1"><a class="reference internal" href="timeseries_explore.html">Timeseries Explorer</a></li>
+<li class="toctree-l1 current active"><a class="current reference internal" href="#">NetCDF Extractor</a></li>
+</ul>
+<p aria-level="2" class="caption" role="heading"><span class="caption-text">Programmatic Examples</span></p>
+<ul class="nav bd-sidenav">
+<li class="toctree-l1"><a class="reference internal" href="../examples/simple_timeseries.html">Timeseries extraction</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../examples/generating_citations.html">Generating citations for Contributing Datasets</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../examples/simple_layers.html">Large spatial scale extraction of velocity fields</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../examples/simple_subset.html">Datacube subsetting</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../examples/trend_change.html">Ice speed trends in west Greenland (advanced)</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../examples/eof.html">Principal Component Analysis (advanced)</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../examples/strain.html">Strain across the Brunt Ice Shelf</a></li>
+</ul>
+<p aria-level="2" class="caption" role="heading"><span class="caption-text">Appendix</span></p>
+<ul class="nav bd-sidenav">
+<li class="toctree-l1"><a class="reference internal" href="../appendix/faq.html">FAQ</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../appendix/versions.html">Version Updates</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../appendix/references.html">References</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../appendix/acknowledgements.html">Acknowledgements</a></li>
+</ul>
+
+    </div>
+</nav></div>
+    </div>
+  
+  
+  <div class="sidebar-primary-items__end sidebar-primary__section">
+  </div>
+  
+  <div id="rtd-footer-container"></div>
+
+
+      </div>
+      
+      <main id="main-content" class="bd-main" role="main">
+        
+        
+
+<div class="sbt-scroll-pixel-helper"></div>
+
+          <div class="bd-content">
+            <div class="bd-article-container">
+              
+              <div class="bd-header-article d-print-none">
+<div class="header-article-items header-article__inner">
+  
+    <div class="header-article-items__start">
+      
+        <div class="header-article-item"><label class="sidebar-toggle primary-toggle btn btn-sm" for="__primary" title="Toggle primary sidebar" data-bs-placement="bottom" data-bs-toggle="tooltip">
+  <span class="fa-solid fa-bars"></span>
+</label></div>
+      
+    </div>
+  
+  
+    <div class="header-article-items__end">
+      
+        <div class="header-article-item">
+
+<div class="article-header-buttons">
+
+
+
+
+
+<div class="dropdown dropdown-source-buttons">
+  <button class="btn dropdown-toggle" type="button" data-bs-toggle="dropdown" aria-expanded="false" aria-label="Source repositories">
+    <i class="fab fa-github"></i>
+  </button>
+  <ul class="dropdown-menu">
+      
+      
+      
+      <li><a href="https://github.com/ben-davison/SHIVER-build-zarr" target="_blank"
+   class="btn btn-sm btn-source-repository-button dropdown-item"
+   title="Source repository"
+   data-bs-placement="left" data-bs-toggle="tooltip"
+>
+  
+
+<span class="btn__icon-container">
+  <i class="fab fa-github"></i>
+  </span>
+<span class="btn__text-container">Repository</span>
+</a>
+</li>
+      
+      
+      
+      
+      <li><a href="https://github.com/ben-davison/SHIVER-build-zarr/edit/main/docs/gui/netcdf_extract.md" target="_blank"
+   class="btn btn-sm btn-source-edit-button dropdown-item"
+   title="Suggest edit"
+   data-bs-placement="left" data-bs-toggle="tooltip"
+>
+  
+
+<span class="btn__icon-container">
+  <i class="fas fa-pencil-alt"></i>
+  </span>
+<span class="btn__text-container">Suggest edit</span>
+</a>
+</li>
+      
+      
+      
+      
+      <li><a href="https://github.com/ben-davison/SHIVER-build-zarr/issues/new?title=Issue%20on%20page%20%2Fgui/netcdf_extract.html&body=Your%20issue%20content%20here." target="_blank"
+   class="btn btn-sm btn-source-issues-button dropdown-item"
+   title="Open an issue"
+   data-bs-placement="left" data-bs-toggle="tooltip"
+>
+  
+
+<span class="btn__icon-container">
+  <i class="fas fa-lightbulb"></i>
+  </span>
+<span class="btn__text-container">Open issue</span>
+</a>
+</li>
+      
+  </ul>
+</div>
+
+
+
+
+
+
+<div class="dropdown dropdown-download-buttons">
+  <button class="btn dropdown-toggle" type="button" data-bs-toggle="dropdown" aria-expanded="false" aria-label="Download this page">
+    <i class="fas fa-download"></i>
+  </button>
+  <ul class="dropdown-menu">
+      
+      
+      
+      <li><a href="../_sources/gui/netcdf_extract.md" target="_blank"
+   class="btn btn-sm btn-download-source-button dropdown-item"
+   title="Download source file"
+   data-bs-placement="left" data-bs-toggle="tooltip"
+>
+  
+
+<span class="btn__icon-container">
+  <i class="fas fa-file"></i>
+  </span>
+<span class="btn__text-container">.md</span>
+</a>
+</li>
+      
+      
+      
+      
+      <li>
+<button onclick="window.print()"
+  class="btn btn-sm btn-download-pdf-button dropdown-item"
+  title="Print to PDF"
+  data-bs-placement="left" data-bs-toggle="tooltip"
+>
+  
+
+<span class="btn__icon-container">
+  <i class="fas fa-file-pdf"></i>
+  </span>
+<span class="btn__text-container">.pdf</span>
+</button>
+</li>
+      
+  </ul>
+</div>
+
+
+
+
+<button onclick="toggleFullScreen()"
+  class="btn btn-sm btn-fullscreen-button"
+  title="Fullscreen mode"
+  data-bs-placement="bottom" data-bs-toggle="tooltip"
+>
+  
+
+<span class="btn__icon-container">
+  <i class="fas fa-expand"></i>
+  </span>
+
+</button>
+
+
+
+<script>
+document.write(`
+  <button class="btn btn-sm nav-link pst-navbar-icon theme-switch-button" title="light/dark" aria-label="light/dark" data-bs-placement="bottom" data-bs-toggle="tooltip">
+    <i class="theme-switch fa-solid fa-sun fa-lg" data-mode="light"></i>
+    <i class="theme-switch fa-solid fa-moon fa-lg" data-mode="dark"></i>
+    <i class="theme-switch fa-solid fa-circle-half-stroke fa-lg" data-mode="auto"></i>
+  </button>
+`);
+</script>
+
+
+<script>
+document.write(`
+  <button class="btn btn-sm pst-navbar-icon search-button search-button__button" title="Search" aria-label="Search" data-bs-placement="bottom" data-bs-toggle="tooltip">
+    <i class="fa-solid fa-magnifying-glass fa-lg"></i>
+  </button>
+`);
+</script>
+<label class="sidebar-toggle secondary-toggle btn btn-sm" for="__secondary"title="Toggle secondary sidebar" data-bs-placement="bottom" data-bs-toggle="tooltip">
+    <span class="fa-solid fa-list"></span>
+</label>
+</div></div>
+      
+    </div>
+  
+</div>
+</div>
+              
+              
+
+<div id="jb-print-docs-body" class="onlyprint">
+    <h1>NetCDF Extractor</h1>
+    <!-- Table of contents -->
+    <div id="print-main-content">
+        <div id="jb-print-toc">
+            
+            <div>
+                <h2> Contents </h2>
+            </div>
+            <nav aria-label="Page">
+                <ul class="visible nav section-nav flex-column">
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#basic-usage">Basic Usage</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#uploading-files-uploadicon">Uploading Files </a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#navigating-interpreting-the-map">Navigating &amp; Interpreting the Map</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#output">Output</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#references">References</a></li>
+</ul>
+            </nav>
+        </div>
+    </div>
+</div>
+
+              
+                
+<div id="searchbox"></div>
+                <article class="bd-article">
+                  
+  <section id="netcdf-extractor">
+<span id="shiver-netcdf-extract"></span><h1>NetCDF Extractor<a class="headerlink" href="#netcdf-extractor" title="Permalink to this heading">#</a></h1>
+<section id="basic-usage">
+<span id="netcdf-basic-usage"></span><h2>Basic Usage<a class="headerlink" href="#basic-usage" title="Permalink to this heading">#</a></h2>
+<p>The SHIVER Data Cube Extractor lets you quickly and easily extract a ‘data cube’ of ice velocity measurements for any time period and location on the Greenland and Antarctic ice sheets. Just navigate to your glacier of interest and draw a polygon or upload a shapefile and select your time period and variables/data sources of interest then initiate the download.</p>
+<p>Your download request will be sent to the server and you will be emailed with a download link once the data cube extraction is complete.</p>
+<p>SHIVER allows you to extract ice velocity data cubes in Greenland or Antarctica. You can navigate to your preferred ice sheet by clicking the Greenland button (<img alt="GreenlandIcon" src="../_images/greenlandIcon.svg" />) or the Antarctica button (<img alt="AntarcticaIcon" src="../_images/antarcticaIcon.svg" />).</p>
+<p><strong>Data Cube limits:</strong> To reduce the load on our server, we limit individual data cube extraction volumes to a maximum of 15,000 kilometres squared and one year. If you require a larger data cube, then split your download into multiple requests or contact the SHIVER team via email (shiver&#64;sheffield.ac.uk) with your request.</p>
+</section>
+<section id="uploading-files-uploadicon">
+<span id="netcdf-file-upload"></span><h2>Uploading Files <img alt="UploadIcon" src="../_images/uploadIcon.svg" /><a class="headerlink" href="#uploading-files-uploadicon" title="Permalink to this heading">#</a></h2>
+<p>You can upload a file by clicking the <img alt="UploadIcon" src="../_images/uploadIcon.svg" /> symbol.</p>
+<p><strong>Requirements:</strong></p>
+<ul class="simple">
+<li><p><strong>Format:</strong> KMZ, KML, GeoJSON or a zipped shapefile (containing .shp, .shx, .dbf, and .prj files).</p></li>
+<li><p><strong>Projection:</strong> Must be in WGS84 (EPSG:4326).</p></li>
+<li><p><strong>Type:</strong> Point or Multipoint geometries only. Maximum of ten points.</p></li>
+</ul>
+</section>
+<section id="navigating-interpreting-the-map">
+<span id="netcdf-map-interpret"></span><h2>Navigating &amp; Interpreting the Map<a class="headerlink" href="#navigating-interpreting-the-map" title="Permalink to this heading">#</a></h2>
+<p>When you first access the SHIVER Data Cube Extractor, you will see a map of Greenland with a long-term average ice speed estimate overlain. You can switch to a map of Antarctica by clicking the Antarctica button (<img alt="AntarcticaIcon" src="../_images/antarcticaIcon.svg" />) in the top-right of the map, or switch back to Greenland by clicking the Greenland button (<img alt="GreenlandIcon" src="../_images/greenlandIcon.svg" />).</p>
+<p>You can navigate the map by using your mouse scroller and by clicking and dragging the cursor to move around.</p>
+<p><strong>Data overlays:</strong> A long-term average ice speed estimate is shown on the map by default. You can remove that layer and display other overlays by clicking the “Map Layers &amp; Analysis” button (<img alt="LayersIcon" src="../_images/layersIcon.svg" />). There are two modes of layers: “Overview” layers and “Analysis” layers.</p>
+<p><strong>Overview layers</strong></p>
+<p>The overview layers panel allows you to control the basemap and long-term average overlays of certain variables, as well as display contextual information like glacier basin outlines.</p>
+<ul class="simple">
+<li><p><em>Satellite basemap:</em> A 20 m resolution image mosaic created from true-colour Sentinel-2 imagery acquired during June 1st to August 31st in 2023, 2024 and 2025. This is only available for Greenland.</p></li>
+<li><p><em>Topography basemap:</em> A hillshaded digital elevation model of each ice sheet (Howat et al., <a class="reference external" href="https://nsidc.org/data/nsidc-0645/versions/1">2015</a>, <a class="reference external" href="https://dataverse.harvard.edu/dataset.xhtml?persistentId=doi:10.7910/DVN/EBW8UC">2022</a>).</p></li>
+<li><p><em>Speed overlay:</em> The average ice speed from all available datasets, in metres per year.</p></li>
+<li><p><em>Measurement Count overlay:</em> The number of valid speed measurements available in each location.</p></li>
+<li><p><em>Speed Trend overlay:</em> The linear trend in speed through all available measurements, in metres per year per year.</p></li>
+<li><p><em>Measurement Range overlay:</em> The median spread of speed estimates between data sources during common time periods.</p></li>
+<li><p><em>Flow direction:</em> The long term average flow direction of each ice sheet displayed using vector arrows.</p></li>
+<li><p><em>Ice Margins:</em> This uses simplified versions of the PROMICE 2022 ice mask (<a class="reference external" href="https://essd.copernicus.org/articles/18/411/2026/essd-18-411-2026.html">Luetzenburg et al., 2025</a>) for Greenland, the ADD SCAR medium resolution Antarctic coastline (<a class="reference external" href="https://data.bas.ac.uk/items/f2792d06-1e9d-4e00-a5c6-37d43bee5297/">Gerrish et al., 2025</a>) and the grounding line of <a class="reference external" href="https://tc.copernicus.org/articles/18/4723/2024/">Wallis et al. (2024)</a>.</p></li>
+<li><p><em>Basin Outlines:</em> For Greenland, the basin options are the <a class="reference external" href="https://imbie.org/">IMBIE</a> basins (<a class="reference external" href="https://datadryad.org/dataset/doi:10.7280/D1WT11">Mouginot et al., 2019</a>), the glacier catchments within each IMBIE basin (<a class="reference external" href="https://datadryad.org/dataset/doi:10.7280/D1WT11">Mouginot et al., 2019</a>) or individual glacier basins (<a class="reference external" href="https://essd.copernicus.org/articles/12/2811/2020/">Mankoff et al., 2020</a>; <a class="reference external" href="https://dataverse.geus.dk/dataset.xhtml?persistentId=doi:10.22008/FK2/XKQVL7">Mankoff, 2020</a>). For Antarctica, the basin options are those used in IMBIE (<a class="reference external" href="https://nsidc.org/data/nsidc-0709/versions/2">Mouginot et al., 2017</a>), the glacier catchments within each IMBIE basin (<a class="reference external" href="https://nsidc.org/data/nsidc-0709/versions/2">Mouginot et al., 2017</a>) or individual glacier basins on the Peninsula (<a class="reference external" href="https://doi.org/10.1017/S0954102014000200">Cook et al., 2014</a>). If you zoom in sufficiently on the Antarctic Peninsula, glacier names from the <a class="reference external" href="https://apc.antarctica.ac.uk/gazetteers/go-to-gazetteers/">British Antarctic Territory gazetteer</a> will be displayed. Note that all basins have been simplified for performance, so the outlines displayed are different to those available in the cited datasets.</p></li>
+</ul>
+<p><strong>Analysis layers</strong></p>
+<p>The analysis layers panel allows you to display and compare all ice sheet-wide maps of ice flow in our multi-source dataset. This allows you to explore maps of ice motion from any time period, as well as the long-term average maps available in the “Overview” panel. The panel also allows you to calculate and display the change in ice speed between any two maps of ice motion, so you can examine how Greenland and Antarctica have sped up and slowed down in different locations over time. The slider at the bottom of the panel allows you to adjust the colour scale, to maximise the visibility of patterns in your area of interest.</p>
+<ul class="simple">
+<li><p><em>Variable:</em> Choose “Speed”, “Speed Trend” or “Measurement Count”.</p></li>
+<li><p><em>Data Source:</em> Select which data source to analyse. See the <span class="xref myst">Greenland Data</span> and <span class="xref myst">Antarctic Data</span> documentation pages for details of each data source.</p></li>
+<li><p><em>Measurement Epoch:</em> If analysing “Speed” you can choose to display a map of speed from any measurement epoch, or the long-term average from your selected data source.</p></li>
+<li><p><em>Calculate Speed Change:</em> If analysing “Speed” you can optionally calculate and display a map of speed change compared to any other map of speed. Red areas correspond to speed-up and blue areas correspond to slow-down.</p></li>
+</ul>
+<p>When you click a point on the map an icon will appear showing the extraction location or region. The icon will usually be a square with a point in the centre: the point shows where you clicked and the square shows the region in which data were extracted. The size of this square is controlled by the Advanced Options (<img alt="AdvancedIcon" src="../_images/advancedIcon.svg" />) “Buffer” setting. The colour of the square corresponds to the site number and will change dynamically depending on the number of points selected.</p>
+</section>
+<section id="output">
+<span id="netcdf-output"></span><h2>Output<a class="headerlink" href="#output" title="Permalink to this heading">#</a></h2>
+<p>The retrieved data cubes will be in NetCDF format.</p>
+<p><strong>NetCDF naming convention:</strong></p>
+<ul class="simple">
+<li><p>IceSheet_multisource_StartTime_EndTime_RANDOM.nc e.g., <code class="docutils literal notranslate"><span class="pre">Greenland_native_2018-01-01_2018-03-31_6j48egb.nc</span></code>. Is a data cube for Greenland from the 1st of January 2018 to the 31st of March 2018.</p></li>
+</ul>
+<p><strong>Each NetCDF file contains:</strong><br />
+<em>Note: Only “x”, “y”, and “time” are exported by default. Other exported variables depend on the selected options.</em></p>
+<ul class="simple">
+<li><p><strong>x:</strong> The easting coordinates of the grid, in the local projection.</p></li>
+<li><p><strong>y:</strong> The northing coordinates of the grid, in the local projection.</p></li>
+<li><p><strong>time:</strong> The date of the measurement. This represents the mid-date of the measurement epoch.</p></li>
+<li><p><strong>speed:</strong> Horizontal ice surface velocity magnitude in metres per year.</p></li>
+<li><p><strong>vx:</strong> Horizontal ice surface easting velocity in metres per year (positive in the polar stereographic eastwards direction).</p></li>
+<li><p><strong>vy:</strong> Horizontal ice surface northing velocity in metres per year (positive in the polar stereographic northwards direction).</p></li>
+<li><p><strong>speed_error:</strong> Horizontal ice surface velocity magnitude error in metres per year. This is as provided with each of the underlying data sources or 5% of the speed if no error is provided.</p></li>
+<li><p><strong>vx_error:</strong> Horizontal ice surface easting velocity error in metres per year. This is as provided with each of the underlying data sources or 5% of the absolute easting velocity if no error is provided.</p></li>
+<li><p><strong>vy_error:</strong> Horizontal ice surface northing velocity error in metres per year. This is as provided with each of the underlying data sources or 5% of the absolute northing velocity if no error is provided.</p></li>
+<li><p><strong>data_source:</strong> The name of the data source corresponding to each row in ‘time’ i.e. each measurement epoch in ‘speed’.</p></li>
+<li><p><strong>time_separation:</strong> The number of days between the two images used to estimate ice speed. So the first image was acquired on <code class="docutils literal notranslate"><span class="pre">time-time_separation/2</span></code>, and the second image on <code class="docutils literal notranslate"><span class="pre">time+time_separation/2</span></code>.</p></li>
+</ul>
+</section>
+<section id="references">
+<span id="netcdf-references"></span><h2>References<a class="headerlink" href="#references" title="Permalink to this heading">#</a></h2>
+<blockquote>
+<div><p>Luetzenburg, Gregor; Korsgaard, Niels J.; Deichmann, Anna K.; Socher, Tobias; Gleie, Karin; Scharffenberger, Thomas; Fahrner, Dominik; Nielsen, Eva B.; How, Penelope; Bjork, Anders A.; Kjeldsen, Kristian K.; Ahlstrom, Andreas P.; Fausto, Robert S., 2025, “PROMICE-2022 Ice Mask”, https://doi.org/10.22008/FK2/O8CLRE, GEUS Dataverse, V3.</p>
+</div></blockquote>
+<blockquote>
+<div><p>Gerrish, L., Ireland, L., Fretwell, P., Cooper, P., &amp; Skachkova, A. (2025). Medium resolution vector polylines of the Antarctic coastline (Version 7.11) [Data set]. NERC EDS UK Polar Data Centre. https://doi.org/10.5285/333065a9-633d-4005-ae41-fb7ae5ae7a91.</p>
+</div></blockquote>
+<blockquote>
+<div><p>Wallis, B.J., Hogg, A.E., Zhu, Y. and Hooper, A., 2024. Change in grounding line location on the Antarctic Peninsula measured using a tidal motion offset correlation method. The Cryosphere, 18(10), pp.4723-4742. https://doi.org/10.5194/tc-18-4723-2024.</p>
+</div></blockquote>
+<blockquote>
+<div><p>Howat, Ian, et al., 2022, The Reference Elevation Model of Antarctica - Mosaics, Version 2, https://doi.org/10.7910/DVN/EBW8UC, Harvard Dataverse, V1, [16/02/2026].</p>
+</div></blockquote>
+<blockquote>
+<div><p>Howat, I., Negrete, A. &amp; Smith, B. (2015). MEaSUREs Greenland Ice Mapping Project (GIMP) Digital Elevation Model. (NSIDC-0645, Version 1). [Data Set]. Boulder, Colorado USA. NASA National Snow and Ice Data Center Distributed Active Archive Center. https://doi.org/10.5067/NV34YUIXLP9W. [describe subset used if applicable]. Date Accessed 02-16-2026.</p>
+</div></blockquote>
+<blockquote>
+<div><p>Cook AJ, Vaughan DG, Luckman AJ, Murray T. A new Antarctic Peninsula glacier basin inventory and observed area changes since the 1940s. Antarctic Science. 2014;26(6):614-624. doi:10.1017/S0954102014000200</p>
+</div></blockquote>
+<blockquote>
+<div><p>Mouginot J, Rignot E (2019). Glacier catchments/basins for the Greenland Ice Sheet [Dataset]. Dryad. DOI: 10.7280/D1WT11</p>
+</div></blockquote>
+<blockquote>
+<div><p>Mankoff, K.D., No?l, B., Fettweis, X., Ahlstr?m, A.P., Colgan, W., Kondo, K., Langley, K., Sugiyama, S., Van As, D. and Fausto, R.S., 2020. Greenland liquid water discharge from 1958 through 2019. Earth System Science Data, 12(4), pp.2811-2841. DOI: https://doi.org/10.5194/essd-12-2811-2020.</p>
+</div></blockquote>
+<blockquote>
+<div><p>Mankoff, K. D.: Freshwater runoff, GEUS Dataverse, https://doi.org/10.22008/promice/freshwater, 2020.</p>
+</div></blockquote>
+</section>
+</section>
+
+    <script type="text/x-thebe-config">
+    {
+        requestKernel: true,
+        binderOptions: {
+            repo: "binder-examples/jupyter-stacks-datascience",
+            ref: "master",
+        },
+        codeMirrorConfig: {
+            theme: "abcdef",
+            mode: "python"
+        },
+        kernelOptions: {
+            name: "python3",
+            path: "./gui"
+        },
+        predefinedOutput: true
+    }
+    </script>
+    <script>kernelName = 'python3'</script>
+
+                </article>
+              
+
+              
+              
+              
+              
+                <footer class="prev-next-footer d-print-none">
+                  
+<div class="prev-next-area">
+    <a class="left-prev"
+       href="timeseries_explore.html"
+       title="previous page">
+      <i class="fa-solid fa-angle-left"></i>
+      <div class="prev-next-info">
+        <p class="prev-next-subtitle">previous</p>
+        <p class="prev-next-title">Timeseries Explorer</p>
+      </div>
+    </a>
+    <a class="right-next"
+       href="../examples/simple_timeseries.html"
+       title="next page">
+      <div class="prev-next-info">
+        <p class="prev-next-subtitle">next</p>
+        <p class="prev-next-title">Timeseries extraction</p>
+      </div>
+      <i class="fa-solid fa-angle-right"></i>
+    </a>
+</div>
+                </footer>
+              
+            </div>
+            
+            
+              
+                <div class="bd-sidebar-secondary bd-toc"><div class="sidebar-secondary-items sidebar-secondary__inner">
+
+
+  <div class="sidebar-secondary-item">
+  <div class="page-toc tocsection onthispage">
+    <i class="fa-solid fa-list"></i> Contents
+  </div>
+  <nav class="bd-toc-nav page-toc">
+    <ul class="visible nav section-nav flex-column">
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#basic-usage">Basic Usage</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#uploading-files-uploadicon">Uploading Files </a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#navigating-interpreting-the-map">Navigating &amp; Interpreting the Map</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#output">Output</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#references">References</a></li>
+</ul>
+  </nav></div>
+
+</div></div>
+              
+            
+          </div>
+          <footer class="bd-footer-content">
+            
+<div class="bd-footer-content__inner container">
+  
+  <div class="footer-item">
+    
+<p class="component-author">
+By Benjamin Davison
+</p>
+
+  </div>
+  
+  <div class="footer-item">
+    
+
+  <p class="copyright">
+    
+      © Copyright 2022.
+      <br/>
+    
+  </p>
+
+  </div>
+  
+  <div class="footer-item">
+    
+  </div>
+  
+  <div class="footer-item">
+    
+  </div>
+  
+</div>
+          </footer>
+        
+
+      </main>
+    </div>
+  </div>
+  
+  <!-- Scripts loaded after <body> so the DOM is not blocked -->
+  <script src="../_static/scripts/bootstrap.js?digest=dfe6caa3a7d634c4db9b"></script>
+<script src="../_static/scripts/pydata-sphinx-theme.js?digest=dfe6caa3a7d634c4db9b"></script>
+
+  <footer class="bd-footer">
+  </footer>
+  </body>
+</html>

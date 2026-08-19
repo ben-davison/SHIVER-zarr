@@ -1,10 +1,11 @@
-﻿# Comparison of Contributing Datasets
+﻿(comparison-top)=
+# Comparison of Contributing Datasets
 
 Discrepancies between ice velocity products can arise from a range of methodological choices, including, but not limited to: 
 1. The image patch size used in offset tracking procedures (Lei et al. 2022).
 2. The displacement calculation algorithms, particularly those used for determining the centre of the cross-correlation peak with sub-pixel accuracy (Guizar-Sicairos et al. 2008).
 3. The choice of Digital Elevation Model (DEM) for orthorectification and three-dimensional velocity calculations (Chudley et al. 2022; Joughin et al. 2018b).
-4. Mmage pair co-registration procedures (Rosenau et al. 2015; Merryman Boncori et al. 2018).
+4. Image pair co-registration procedures (Rosenau et al. 2015; Merryman Boncori et al. 2018).
 5. Outlier detection, gap-filling, and smoothing algorithms (Joughin et al. 2018a; Lüttig et al. 2017). Furthermore, apparent velocity differences can emerge due to variations in satellite mission spatial resolutions, as well as the specific temporal baselines over which individual velocity fields were measured or averaged to form a composite product. 
 
 To ensure fair comparisons that account for differing temporal resolutions, we evaluated the discrepancies between Contributing Datasets incorporated into the Unified Dataset using two procedures. We performed these comparisons using the Unified Dataset itself (i.e. after interpolation to a common grid). 

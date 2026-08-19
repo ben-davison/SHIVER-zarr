@@ -1,5 +1,7 @@
+(unified-data-top)=
 # Unified Datasets
 
+(unified-data-overview)=
 ## Overview
 To construct the Unified Dataset, we collated the Contributing Datasets for each ice sheet into a series of Zarr stores. The Figures below provide a summary of the unified data for Greenland and Antarctica. 
 
@@ -19,6 +21,7 @@ alt: Antarctic data overview
 Summary of Antarctic Ice Sheet unified dataset. (a) Time-average mean speed, (b) mean error, (c) total number of valid (non-NaN) measurements, (d) the date of the first valid measurement and (e) date of the last valid measurement across all contributing datasets. (f) Timeline of all contributing datasets, where each black dot represents the mid-date of each measurement epoch and the width of each coloured bar represents the duration of each measurement epoch. The number of epochs is listed on the right. *Contributing dataset name has been shortened for display – full names are in Table 2. 
 ```
 
+(unified-zarr-chunk-def)=
 ## Zarr chunk definition
 
 SHIVER provides three Zarr stores for each of Greenland and Antarctica. To support different research workflows without compromising performance, the velocity estimates (`speed`, `vx`, `vy` and their associated errors, measured in m yr<sup>-1</sup>) are provided as three Zarr V3 stores that are identical except for their chunking strategy, which are chosen to optimize common access patterns. 
@@ -51,18 +54,23 @@ _Whilst the Antarctic Zarr stores are chunked with these definitions:_
 *antarctica_multisource_velocity
 
 
+(unified-ome-zarr)=
 ## OME-Zarr
 Notably, our spatially-optimised Zarr store utilises the OME-Zarr format, which implements the Open Microscopy Environment Next-Generation File Formats (OME-NGFF) specification (Moore et al. 2023). This multi-level Zarr pyramid is analogous to a Cloud Optimised GeoTIFF, where the chunk shape remains fixed at 1024x1024 pixels across each level, but the spatial resolution of underlying data is successively downsampled by a factor of two at each level. The base layer (layer 0) retains the 200 x 200 m resolution, reducing to a minimum spatial resolution of 3200 x 3200 m for Greenland and 6400 x 6400 m for Antarctica.
 
+(unified-reprojection)=
 ## Reprojection
 During ingestion, velocity fields from every Contributing Dataset (Tables 1 & 2; Figures 1 & 2) were reprojected and resampled to a common spatial grid using nearest-neighbour interpolation to preserve the original velocity magnitudes. The Greenland grid (EPSG:3413) is identical to that used for the “PROMICE” Contributing Dataset, while the Antarctic grid (EPSG:3031) is identical to that used for the “ENVEO monthly” Contributing Dataset. Both Unified Dataset grids are defined at a 200 x 200 m spatial resolution.
 
+(unified-timestamps)=
 ## Timestamps
 The Zarr stores retain the temporal metadata of each Contributing Dataset. For every Measurement Epoch, we record the start, end and central dates of the velocity data, enabling the temporal resolution of the Measurement Epoch to be calculated. One product—the “Joughin TSX” dataset (Table 2; (Joughin et al. 2021))—has an ambiguous temporal resolution of two to five months, so we assign a temporal resolution of 3.5 months to the relevant Measurement Epochs of that Contributing Dataset in our Unified Dataset. Furthermore, the Zarr protocol requires strictly unique temporal coordinates for start, end and central dates. To satisfy this requirement, we adjust the published timestamps by a millisecond where duplicate timestamps occur, which is negligible compared to the temporal resolution of the measurements (four days minimum). This adjustment ensures unique epoch identifiers without meaningfully altering the temporal accuracy of the metadata.
 
+(unified-error)=
 ## Measurement error
 Pixel-wise uncertainty estimates for every Measurement Epoch are included in the Unified Dataset. Where pixel-wise error estimates are provided by the Contributing Dataset, these values are preserved and incorporated directly into the Zarr stores. For datasets lacking published error estimates, we apply an assumed uniform error of 5% of the measured velocity magnitude. Additionally, while most products provide spatially variable error fields, the “SHIFT” dataset (Davison & Sole, 2026; Sole & Davison, 2026; Davison et al., 2020) provides a single global error for each Measurement Epoch, derived from apparent motion over stable bedrock. For these epochs, the global error value is assigned uniformly to all valid velocity retrievals within the spatial grid.
 
+(unified-variables)=
 ## Variables
 Each of these Zarr stores contain the same data. The variables included are:
 

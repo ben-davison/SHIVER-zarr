@@ -14,7 +14,12 @@ parts:
       - file: zarr_data/comparison
       - file: zarr_data/zarr_structure
 
-  - caption: Examples
+  - caption: SHIVER Graphical User Interface
+    chapters:
+      - file: gui/timeseries_explore
+      - file: gui/netcdf_extract
+
+  - caption: Programmatic Examples
     chapters:
       - file: examples/simple_timeseries
       - file: examples/generating_citations

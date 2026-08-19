@@ -1,3 +1,4 @@
+(what-is-zarr)=
 # What is Zarr?
 
 ```{figure} ../_static/what-is-zarr.gif
@@ -29,7 +30,7 @@ alt: Zarr chunk
 ---
 Zarr chunk cartoon.
 ```
-
+(working-with-zarr)=
 ## Working with Zarr
 A growing ecosystem of tools is developing alongside Zarr that make it easier to work with large datasets.
 

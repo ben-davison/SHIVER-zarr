@@ -35,6 +35,9 @@
     <link rel="stylesheet" type="text/css" href="../_static/copybutton.css" />
     <link rel="stylesheet" type="text/css" href="../_static/mystnb.4510f1fc1dee50b3e5859aac5469c37c29e427902b24a333a5f9fcb2f0b3ac41.css" />
     <link rel="stylesheet" type="text/css" href="../_static/sphinx-thebe.css" />
+    <link rel="stylesheet" type="text/css" href="../_static/custom.css" />
+    <link rel="stylesheet" type="text/css" href="../_static/custom.css" />
+    <link rel="stylesheet" type="text/css" href="../_static/custom.css" />
     <link rel="stylesheet" type="text/css" href="../_static/design-style.4045f2051d55cab465a707391d5b2007.min.css" />
   
   <!-- Pre-loaded scripts that we'll load fully later -->
@@ -62,8 +65,6 @@ const thebe_selector_input = "pre"
 const thebe_selector_output = ".output, .cell_output"
 </script>
     <script async="async" src="../_static/sphinx-thebe.js"></script>
-    <script>window.MathJax = {"options": {"processHtmlClass": "tex2jax_process|mathjax_process|math|output_area"}}</script>
-    <script defer="defer" src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-mml-chtml.js"></script>
     <script>DOCUMENTATION_OPTIONS.pagename = 'examples/strain';</script>
     <link rel="index" title="Index" href="../genindex.html" />
     <link rel="search" title="Search" href="../search.html" />
@@ -188,7 +189,12 @@ const thebe_selector_output = ".output, .cell_output"
 <li class="toctree-l1"><a class="reference internal" href="../zarr_data/comparison.html">Comparison of Contributing Datasets</a></li>
 <li class="toctree-l1"><a class="reference internal" href="../zarr_data/zarr_structure.html">Inspecting the Zarr Structure</a></li>
 </ul>
-<p aria-level="2" class="caption" role="heading"><span class="caption-text">Examples</span></p>
+<p aria-level="2" class="caption" role="heading"><span class="caption-text">SHIVER Graphical User Interface</span></p>
+<ul class="nav bd-sidenav">
+<li class="toctree-l1"><a class="reference internal" href="../gui/timeseries_explore.html">Timeseries Explorer</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../gui/netcdf_extract.html">NetCDF Extractor</a></li>
+</ul>
+<p aria-level="2" class="caption" role="heading"><span class="caption-text">Programmatic Examples</span></p>
 <ul class="current nav bd-sidenav">
 <li class="toctree-l1"><a class="reference internal" href="simple_timeseries.html">Timeseries extraction</a></li>
 <li class="toctree-l1"><a class="reference internal" href="generating_citations.html">Generating citations for Contributing Datasets</a></li>
@@ -433,7 +439,7 @@ document.write(`
 <div id="searchbox"></div>
                 <article class="bd-article">
                   
-  <section class="tex2jax_ignore mathjax_ignore" id="strain-across-the-brunt-ice-shelf">
+  <section id="strain-across-the-brunt-ice-shelf">
 <h1>Strain across the Brunt Ice Shelf<a class="headerlink" href="#strain-across-the-brunt-ice-shelf" title="Permalink to this heading">#</a></h1>
 <p>In this example, we will explore how strain rates have changed across the Brunt Ice Shelf from 2016 through 2025. Strain rates can be a useful indicator of where rifts are growing, so can help us to understand how Antarctica’s ice shelves are changing and may provide useful laboratories for studying rift propagation through ice in general.</p>
 <p>This analysis will require us to utilise ice speeds over a moderately large area and time period, so we will use the <em>cubed</em> Antarctica velocity zarr store, which has the optimium chunk definition for this. We will use <strong>Dask</strong> to parallelize our computations and <strong>Xarray</strong> to handle lazy loading.</p>
@@ -578,7 +584,7 @@ Hosting the HTTP server on port 52390 instead
 <section id="applying-the-function-with-dask">
 <h2>4. Applying the function with Dask<a class="headerlink" href="#applying-the-function-with-dask" title="Permalink to this heading">#</a></h2>
 <p>To apply our custom NumPy function across our massive Xarray dataset, we use <code class="docutils literal notranslate"><span class="pre">xr.apply_ufunc</span></code>. This is a powerful Xarray feature that maps standard NumPy functions across chunked Dask arrays.</p>
-<p>By setting <code class="docutils literal notranslate"><span class="pre">dask='parallelized'</span></code>, we tell Dask to distribute this winter-mean calculation across all the workers we spun up in Step 1. After calculating the means for both our <span class="math notranslate nohighlight">\(vx\)</span> and <span class="math notranslate nohighlight">\(vy\)</span> velocities, we assign the <code class="docutils literal notranslate"><span class="pre">year</span></code> coordinate back to the outputs and slice out our Chasm-1 zoomed area.</p>
+<p>By setting <code class="docutils literal notranslate"><span class="pre">dask='parallelized'</span></code>, we tell Dask to distribute this winter-mean calculation across all the workers we spun up in Step 1. After calculating the means for both our $vx$ and $vy$ velocities, we assign the <code class="docutils literal notranslate"><span class="pre">year</span></code> coordinate back to the outputs and slice out our Chasm-1 zoomed area.</p>
 <p><em>Note: Because Xarray is lazy, no computation actually happens here yet. We are simply building the Dask task graph.</em></p>
 <div class="cell docutils container">
 <div class="cell_input docutils container">
@@ -625,7 +631,7 @@ Hosting the HTTP server on port 52390 instead
 <section id="calculating-and-plotting-strain-rates">
 <h2>5. Calculating and plotting strain rates<a class="headerlink" href="#calculating-and-plotting-strain-rates" title="Permalink to this heading">#</a></h2>
 <p>Now we bring it all together. For each year, we call <code class="docutils literal notranslate"><span class="pre">.compute()</span></code> to trigger Dask to execute the graph, download the cropped winter means into local memory, and pass them to <code class="docutils literal notranslate"><span class="pre">strain_tools</span></code>.</p>
-<p>We are specifically calculating the <strong>first principal strain rate</strong> (<span class="math notranslate nohighlight">\(e_1\)</span>). Positive values of <span class="math notranslate nohighlight">\(e_1\)</span> (shown in red) represent extending strain, which highlights areas where the ice shelf is pulling apart. We also apply a <code class="docutils literal notranslate"><span class="pre">length_scale</span></code> (in meters) to smooth the velocity gradients, which helps prevent small-scale noise from creating artificial spikes in our strain calculations.</p>
+<p>We are specifically calculating the <strong>first principal strain rate</strong> ($e_1$). Positive values of $e_1$ (shown in red) represent extending strain, which highlights areas where the ice shelf is pulling apart. We also apply a <code class="docutils literal notranslate"><span class="pre">length_scale</span></code> (in meters) to smooth the velocity gradients, which helps prevent small-scale noise from creating artificial spikes in our strain calculations.</p>
 <div class="cell docutils container">
 <div class="cell_input docutils container">
 <div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="c1"># calculate and plot strain rates</span>

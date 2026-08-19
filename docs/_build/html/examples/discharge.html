@@ -35,6 +35,9 @@
     <link rel="stylesheet" type="text/css" href="../_static/copybutton.css" />
     <link rel="stylesheet" type="text/css" href="../_static/mystnb.4510f1fc1dee50b3e5859aac5469c37c29e427902b24a333a5f9fcb2f0b3ac41.css" />
     <link rel="stylesheet" type="text/css" href="../_static/sphinx-thebe.css" />
+    <link rel="stylesheet" type="text/css" href="../_static/custom.css" />
+    <link rel="stylesheet" type="text/css" href="../_static/custom.css" />
+    <link rel="stylesheet" type="text/css" href="../_static/custom.css" />
     <link rel="stylesheet" type="text/css" href="../_static/design-style.4045f2051d55cab465a707391d5b2007.min.css" />
   
   <!-- Pre-loaded scripts that we'll load fully later -->
@@ -62,8 +65,6 @@ const thebe_selector_input = "pre"
 const thebe_selector_output = ".output, .cell_output"
 </script>
     <script async="async" src="../_static/sphinx-thebe.js"></script>
-    <script>window.MathJax = {"options": {"processHtmlClass": "tex2jax_process|mathjax_process|math|output_area"}}</script>
-    <script defer="defer" src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-mml-chtml.js"></script>
     <script>DOCUMENTATION_OPTIONS.pagename = 'examples/discharge';</script>
     <link rel="index" title="Index" href="../genindex.html" />
     <link rel="search" title="Search" href="../search.html" />
@@ -188,7 +189,12 @@ const thebe_selector_output = ".output, .cell_output"
 <li class="toctree-l1"><a class="reference internal" href="../zarr_data/comparison.html">Comparison of Contributing Datasets</a></li>
 <li class="toctree-l1"><a class="reference internal" href="../zarr_data/zarr_structure.html">Inspecting the Zarr Structure</a></li>
 </ul>
-<p aria-level="2" class="caption" role="heading"><span class="caption-text">Examples</span></p>
+<p aria-level="2" class="caption" role="heading"><span class="caption-text">SHIVER Graphical User Interface</span></p>
+<ul class="nav bd-sidenav">
+<li class="toctree-l1"><a class="reference internal" href="../gui/timeseries_explore.html">Timeseries Explorer</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../gui/netcdf_extract.html">NetCDF Extractor</a></li>
+</ul>
+<p aria-level="2" class="caption" role="heading"><span class="caption-text">Programmatic Examples</span></p>
 <ul class="nav bd-sidenav">
 <li class="toctree-l1"><a class="reference internal" href="simple_timeseries.html">Timeseries extraction</a></li>
 <li class="toctree-l1"><a class="reference internal" href="generating_citations.html">Generating citations for Contributing Datasets</a></li>
@@ -433,7 +439,7 @@ document.write(`
 <div id="searchbox"></div>
                 <article class="bd-article">
                   
-  <section class="tex2jax_ignore mathjax_ignore" id="grounding-line-discharge-advanced">
+  <section id="grounding-line-discharge-advanced">
 <h1>Grounding line discharge (advanced)<a class="headerlink" href="#grounding-line-discharge-advanced" title="Permalink to this heading">#</a></h1>
 <p>This notebook demonstrates how to process cloud-hosted ice velocity Zarr stores (Greenland and Antarctica) alongside local ice thickness and flux gate datasets. It calculates the time-varying grounding line discharge using Dask for out-of-core computation.</p>
 <p>For the actual computation, we will only focus on a single outlet in west Greenland, so that this runs quickly on a PC. It could of course be scaled up to the entirety of both ice sheets, but that would take longer to compute.</p>
@@ -625,11 +631,11 @@ document.write(`
 <p>Next, we pre-process the velocity data (extraction, gap filling, smoothing, calculation of cross-gate velocity) and error data.</p>
 <p>The discharge equations are implemented as follows:</p>
 <ul class="simple">
-<li><p>Cross-gate velocity: <span class="math notranslate nohighlight">\(V_{\perp} = \vert{}V_x \sin(\theta) - V_y \cos(\theta)\vert{}\)</span></p></li>
-<li><p>Pixel-wise discharge: <span class="math notranslate nohighlight">\(Q_i = V_{\perp i} \times H_i \times W\)</span></p></li>
-<li><p>Pixel error (quadrature): <span class="math notranslate nohighlight">\(\delta Q_i = Q_i \times \sqrt{0.1^2 + 0.1^2}\)</span></p></li>
-<li><p>Total discharge: <span class="math notranslate nohighlight">\(Q = \sum Q_i\)</span></p></li>
-<li><p>Total error (RSS): <span class="math notranslate nohighlight">\(\delta Q = \sqrt{\sum (\delta Q_i)^2}\)</span></p></li>
+<li><p>Cross-gate velocity: $V_{\perp} = \vert{}V_x \sin(\theta) - V_y \cos(\theta)\vert{}$</p></li>
+<li><p>Pixel-wise discharge: $Q_i = V_{\perp i} \times H_i \times W$</p></li>
+<li><p>Pixel error (quadrature): $\delta Q_i = Q_i \times \sqrt{0.1^2 + 0.1^2}$</p></li>
+<li><p>Total discharge: $Q = \sum Q_i$</p></li>
+<li><p>Total error (RSS): $\delta Q = \sqrt{\sum (\delta Q_i)^2}$</p></li>
 </ul>
 <div class="cell docutils container">
 <div class="cell_input docutils container">

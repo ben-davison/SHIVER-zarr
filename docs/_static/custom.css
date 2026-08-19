@@ -1,0 +1,43 @@
+/* 1. BASE RULES: Apply to all icons for proper inline text alignment */
+img[alt="AntarcticaIcon"],
+img[alt="GreenlandIcon"],
+img[alt="PaletteIcon"],
+img[alt="UploadIcon"],
+img[alt="AdvancedIcon"],
+img[alt="LayersIcon"],
+img[alt="TrendIcon"],
+img[alt="GraphIcon"],
+img[alt="ExcelIcon"] {
+    display: inline-block;
+    width: auto;
+    margin: 0 0.15em;
+}
+
+/* 2. DEFAULT SIZE: */
+img[alt="UploadIcon"],
+img[alt="AdvancedIcon"],
+img[alt="TrendIcon"] {
+    height: 0.8em;
+    vertical-align: 0.1em;
+}
+
+/* 3. SIZE 1: */
+img[alt="LayersIcon"],
+img[alt="PaletteIcon"] {
+    height: 2.0em;
+    vertical-align: -0.5em; 
+}
+
+/* 4. SIZE 2 */
+img[alt="AntarcticaIcon"],
+img[alt="GreenlandIcon"] {
+    height: 2.4em;
+    vertical-align: -0.8em; 
+}
+
+/* 5. SIZE 3: */
+img[alt="GraphIcon"],
+img[alt="ExcelIcon"] {
+    height: 2.4em;
+    vertical-align: -0.8em;
+}

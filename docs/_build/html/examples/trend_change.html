@@ -35,6 +35,9 @@
     <link rel="stylesheet" type="text/css" href="../_static/copybutton.css" />
     <link rel="stylesheet" type="text/css" href="../_static/mystnb.4510f1fc1dee50b3e5859aac5469c37c29e427902b24a333a5f9fcb2f0b3ac41.css" />
     <link rel="stylesheet" type="text/css" href="../_static/sphinx-thebe.css" />
+    <link rel="stylesheet" type="text/css" href="../_static/custom.css" />
+    <link rel="stylesheet" type="text/css" href="../_static/custom.css" />
+    <link rel="stylesheet" type="text/css" href="../_static/custom.css" />
     <link rel="stylesheet" type="text/css" href="../_static/design-style.4045f2051d55cab465a707391d5b2007.min.css" />
   
   <!-- Pre-loaded scripts that we'll load fully later -->
@@ -62,8 +65,6 @@ const thebe_selector_input = "pre"
 const thebe_selector_output = ".output, .cell_output"
 </script>
     <script async="async" src="../_static/sphinx-thebe.js"></script>
-    <script>window.MathJax = {"options": {"processHtmlClass": "tex2jax_process|mathjax_process|math|output_area"}}</script>
-    <script defer="defer" src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-mml-chtml.js"></script>
     <script>DOCUMENTATION_OPTIONS.pagename = 'examples/trend_change';</script>
     <link rel="index" title="Index" href="../genindex.html" />
     <link rel="search" title="Search" href="../search.html" />
@@ -188,7 +189,12 @@ const thebe_selector_output = ".output, .cell_output"
 <li class="toctree-l1"><a class="reference internal" href="../zarr_data/comparison.html">Comparison of Contributing Datasets</a></li>
 <li class="toctree-l1"><a class="reference internal" href="../zarr_data/zarr_structure.html">Inspecting the Zarr Structure</a></li>
 </ul>
-<p aria-level="2" class="caption" role="heading"><span class="caption-text">Examples</span></p>
+<p aria-level="2" class="caption" role="heading"><span class="caption-text">SHIVER Graphical User Interface</span></p>
+<ul class="nav bd-sidenav">
+<li class="toctree-l1"><a class="reference internal" href="../gui/timeseries_explore.html">Timeseries Explorer</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../gui/netcdf_extract.html">NetCDF Extractor</a></li>
+</ul>
+<p aria-level="2" class="caption" role="heading"><span class="caption-text">Programmatic Examples</span></p>
 <ul class="current nav bd-sidenav">
 <li class="toctree-l1"><a class="reference internal" href="simple_timeseries.html">Timeseries extraction</a></li>
 <li class="toctree-l1"><a class="reference internal" href="generating_citations.html">Generating citations for Contributing Datasets</a></li>
@@ -439,7 +445,7 @@ document.write(`
 <div id="searchbox"></div>
                 <article class="bd-article">
                   
-  <section class="tex2jax_ignore mathjax_ignore" id="ice-speed-trends-in-west-greenland-advanced">
+  <section id="ice-speed-trends-in-west-greenland-advanced">
 <h1>Ice speed trends in west Greenland (advanced)<a class="headerlink" href="#ice-speed-trends-in-west-greenland-advanced" title="Permalink to this heading">#</a></h1>
 <p>In this example, we move beyond basic data extraction and compute temporal statistics (such as the linear trend in ice speed and its statistical significance (p-value)) on a pixel-by-pixel basis. Analyzing these time-series allows us to identify where glaciers are actively accelerating or slowing down, which is critical for understanding broader ice sheet dynamics.</p>
 <p>While we will focus on a moderately sized area in West Greenland, which has been the focus of many investigations, to ensure this notebook runs relatively quickly. The workflow is explicitly designed to scale up, where sufficient resources are available.</p>
@@ -638,7 +644,7 @@ Hosting the HTTP server on port 52182 instead
 <section id="how-it-works">
 <h3>How it works<a class="headerlink" href="#how-it-works" title="Permalink to this heading">#</a></h3>
 <ol class="arabic simple">
-<li><p><strong>Prepare the Data:</strong> We first calculate time in decimal years to ensure our trend (slope) is returned in physical units (<span class="math notranslate nohighlight">\(m/yr^2\)</span>). We then ensure our core dimension (time) is in a single contiguous chunk using <code class="docutils literal notranslate"><span class="pre">.chunk({'time':</span> <span class="pre">-1})</span></code>.</p></li>
+<li><p><strong>Prepare the Data:</strong> We first calculate time in decimal years to ensure our trend (slope) is returned in physical units ($m/yr^2$). We then ensure our core dimension (time) is in a single contiguous chunk using <code class="docutils literal notranslate"><span class="pre">.chunk({'time':</span> <span class="pre">-1})</span></code>.</p></li>
 <li><p><strong>Apply the Universal Function:</strong> <code class="docutils literal notranslate"><span class="pre">xr.apply_ufunc</span></code> acts as a bridge. It unwraps our Xarray DataArrays, passes the raw, chunked underlying Dask arrays to our pure NumPy function (_calc_stats_numpy) and then re-wraps the results back into Xarray objects with all coordinates and metadata intact.</p></li>
 <li><p><strong>Compute:</strong> By setting <code class="docutils literal notranslate"><span class="pre">dask=&quot;parallelized&quot;</span></code>, Dask knows to map our NumPy function across all spatial chunks independently. The math happens instantly at the C-level inside NumPy on a per-chunk basis.</p></li>
 </ol>

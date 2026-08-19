@@ -35,6 +35,9 @@
     <link rel="stylesheet" type="text/css" href="../_static/copybutton.css" />
     <link rel="stylesheet" type="text/css" href="../_static/mystnb.4510f1fc1dee50b3e5859aac5469c37c29e427902b24a333a5f9fcb2f0b3ac41.css" />
     <link rel="stylesheet" type="text/css" href="../_static/sphinx-thebe.css" />
+    <link rel="stylesheet" type="text/css" href="../_static/custom.css" />
+    <link rel="stylesheet" type="text/css" href="../_static/custom.css" />
+    <link rel="stylesheet" type="text/css" href="../_static/custom.css" />
     <link rel="stylesheet" type="text/css" href="../_static/design-style.4045f2051d55cab465a707391d5b2007.min.css" />
   
   <!-- Pre-loaded scripts that we'll load fully later -->
@@ -186,7 +189,12 @@ const thebe_selector_output = ".output, .cell_output"
 <li class="toctree-l1"><a class="reference internal" href="../zarr_data/comparison.html">Comparison of Contributing Datasets</a></li>
 <li class="toctree-l1"><a class="reference internal" href="../zarr_data/zarr_structure.html">Inspecting the Zarr Structure</a></li>
 </ul>
-<p aria-level="2" class="caption" role="heading"><span class="caption-text">Examples</span></p>
+<p aria-level="2" class="caption" role="heading"><span class="caption-text">SHIVER Graphical User Interface</span></p>
+<ul class="nav bd-sidenav">
+<li class="toctree-l1"><a class="reference internal" href="../gui/timeseries_explore.html">Timeseries Explorer</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../gui/netcdf_extract.html">NetCDF Extractor</a></li>
+</ul>
+<p aria-level="2" class="caption" role="heading"><span class="caption-text">Programmatic Examples</span></p>
 <ul class="nav bd-sidenav">
 <li class="toctree-l1"><a class="reference internal" href="../examples/simple_timeseries.html">Timeseries extraction</a></li>
 <li class="toctree-l1"><a class="reference internal" href="../examples/generating_citations.html">Generating citations for Contributing Datasets</a></li>
@@ -416,21 +424,27 @@ document.write(`
 <div id="searchbox"></div>
                 <article class="bd-article">
                   
-  <section class="tex2jax_ignore mathjax_ignore" id="cite">
+  <section id="cite">
 <h1>Cite<a class="headerlink" href="#cite" title="Permalink to this heading">#</a></h1>
-<p>A dataset description paper for SHIVER is in preparation. The citation for that paper will be something like:</p>
+<p>The recommended approach to citing these data in your work is:</p>
 <blockquote>
-<div><p>Davison, B. J. et al. (in prep). The SHeffield Ice Velocity ExploreR (SHIVER): an online tool for low latency exploration, analysis and sub-setting of unified satellite-derived ice velocity data for Earth’s ice sheets. [specify journal]. <a class="reference external" href="https://doi.org/10.xxxx/XXXXXXX">https://doi.org/10.xxxx/XXXXXXX</a></p>
+<div><p>“Ice velocity data were extracted using the Sheffield Ice Velocity ExploreR (SHIVER; Davison, 2026a,b; Davison et al., 2026) and included the data products detailed in Table X.”</p>
 </div></blockquote>
-<p>The dataset itself should also be cited like this:</p>
+<p>Where Davison et al. 2026 is a dataset description paper for SHIVER (in preparation). The citation for that paper will be something like:</p>
 <blockquote>
-<div><p>Davison, B. J. (2026). SHeffield Ice Velocity ExploreR (SHIVER): A unified satellite-derived ice velocity dataset for Earth’s ice sheets (Version v[specify version number]) [Data set]. Zenodo. <a class="reference external" href="https://doi.org/10.5281/zenodo.21375859">https://doi.org/10.5281/zenodo.21375859</a></p>
+<div><p>Davison, B. J. et al. (in prep). The SHeffield Ice Velocity ExploreR (SHIVER): an online tool for low latency exploration, analysis and sub-setting of unified satellite-derived ice velocity data for Earth’s ice sheets. [specify journal]. https://doi.org/10.xxxx/XXXXXXX</p>
 </div></blockquote>
-<p>Or if your outputs relied on the SHIVER interactive application, then you should cite the application like this:</p>
+<p>And Davison (2026a) is the citation for the dataset itself:</p>
 <blockquote>
-<div><p>Davison, B. J. (2026). SHeffield Ice Velocity ExploreR (SHIVER): an online tool for low latency exploration, analysis and sub-setting of unified satellite-derived ice velocity data for Earth’s ice sheets (Version v[specify version number]) [Computer software]. Zenodo. <a class="reference external" href="https://doi.org/10.5281/zenodo.21378057">https://doi.org/10.5281/zenodo.21378057</a></p>
+<div><p>Davison, B. J. (2026a). The SHeffield Ice Velocity ExploreR (SHIVER): A unified satellite-derived ice velocity dataset for Earth’s ice sheets (Version v[specify version number]) [Data set]. Zenodo. https://doi.org/10.5281/zenodo.21375859</p>
 </div></blockquote>
-<p>The SHIVER dataset is a compilation of many published velocity datasets and so would not have been possible without those. Therefore, those contributing datasets should also be cited. Specifically, you should cite all contributing datasets that your specific query intersected. If you are using the SHIVER application, all exports will contain citation details for the relevant contributing datasets. If you are extracting data programmatically, please see our notebook describing how you can generate the correct citations for your query.</p>
+<p>Davison (2026b) should only be cited if your outputs relied on the SHIVER interactive application:</p>
+<blockquote>
+<div><p>Davison, B. J. (2026b). The SHeffield Ice Velocity ExploreR (SHIVER): an online tool for low latency exploration, analysis and sub-setting of unified satellite-derived ice velocity data for Earth’s ice sheets (Version v[specify version number]) [Computer software]. Zenodo. https://doi.org/10.5281/zenodo.21378057</p>
+</div></blockquote>
+<p>The SHIVER dataset is a compilation of many published velocity datasets and so would not have been possible without those. Therefore, those contributing datasets should also be cited. Specifically, you should cite all contributing datasets that your specific query intersected. If you are extracting data programmatically, please see our notebook describing how you can generate the correct citations for your query.</p>
+<p>If instead you are using the SHIVER application, all exports will contain citation details for the relevant contributing datasets. This will include a table (<strong>citations_summary.csv</strong>) summarising the required citations and a text file (<strong>citations_and_usage.txt</strong>) with descriptive details.</p>
+<p><em>Note: The ESA_CCI_Sentinel-1, ESA_CCI_Sentinel-2 and ESA_CCI_ERS1-2_Envisat over selected glacier sites in Greenland require separate citations for each glacier site. Our dataset compilation method combines all of those glacier sites into one datasource. Our automated citation generator will therefore provide the citation information for all glacier sites even if only one is intersected. You should remove the unnecessary citations when incorporating them into your work.</em></p>
 </section>
 
     <script type="text/x-thebe-config">

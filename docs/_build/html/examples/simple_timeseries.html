@@ -35,6 +35,9 @@
     <link rel="stylesheet" type="text/css" href="../_static/copybutton.css" />
     <link rel="stylesheet" type="text/css" href="../_static/mystnb.4510f1fc1dee50b3e5859aac5469c37c29e427902b24a333a5f9fcb2f0b3ac41.css" />
     <link rel="stylesheet" type="text/css" href="../_static/sphinx-thebe.css" />
+    <link rel="stylesheet" type="text/css" href="../_static/custom.css" />
+    <link rel="stylesheet" type="text/css" href="../_static/custom.css" />
+    <link rel="stylesheet" type="text/css" href="../_static/custom.css" />
     <link rel="stylesheet" type="text/css" href="../_static/design-style.4045f2051d55cab465a707391d5b2007.min.css" />
   
   <!-- Pre-loaded scripts that we'll load fully later -->
@@ -66,7 +69,7 @@ const thebe_selector_output = ".output, .cell_output"
     <link rel="index" title="Index" href="../genindex.html" />
     <link rel="search" title="Search" href="../search.html" />
     <link rel="next" title="Generating citations for Contributing Datasets" href="generating_citations.html" />
-    <link rel="prev" title="Inspecting the Zarr Structure" href="../zarr_data/zarr_structure.html" />
+    <link rel="prev" title="NetCDF Extractor" href="../gui/netcdf_extract.html" />
   <meta name="viewport" content="width=device-width, initial-scale=1"/>
   <meta name="docsearch:language" content="en"/>
   </head>
@@ -186,7 +189,12 @@ const thebe_selector_output = ".output, .cell_output"
 <li class="toctree-l1"><a class="reference internal" href="../zarr_data/comparison.html">Comparison of Contributing Datasets</a></li>
 <li class="toctree-l1"><a class="reference internal" href="../zarr_data/zarr_structure.html">Inspecting the Zarr Structure</a></li>
 </ul>
-<p aria-level="2" class="caption" role="heading"><span class="caption-text">Examples</span></p>
+<p aria-level="2" class="caption" role="heading"><span class="caption-text">SHIVER Graphical User Interface</span></p>
+<ul class="nav bd-sidenav">
+<li class="toctree-l1"><a class="reference internal" href="../gui/timeseries_explore.html">Timeseries Explorer</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../gui/netcdf_extract.html">NetCDF Extractor</a></li>
+</ul>
+<p aria-level="2" class="caption" role="heading"><span class="caption-text">Programmatic Examples</span></p>
 <ul class="current nav bd-sidenav">
 <li class="toctree-l1 current active"><a class="current reference internal" href="#">Timeseries extraction</a></li>
 <li class="toctree-l1"><a class="reference internal" href="generating_citations.html">Generating citations for Contributing Datasets</a></li>
@@ -416,7 +424,7 @@ document.write(`
 <div id="searchbox"></div>
                 <article class="bd-article">
                   
-  <section class="tex2jax_ignore mathjax_ignore" id="timeseries-extraction">
+  <section id="timeseries-extraction">
 <h1>Timeseries extraction<a class="headerlink" href="#timeseries-extraction" title="Permalink to this heading">#</a></h1>
 <p>SHIVER provides easy access to timeseries of ice velocity through the data publishing utility <a class="reference external" href="https://source.coop/"><strong>Source Cooperative</strong></a>.</p>
 <p>To extract a timeseries, it makes sense to use the Zarr store optimized for timeseries extraction. By doing so, we will likely only need to load one chunk of velocity data (&lt;100 MB). If your query location happens to land on a chunk boundary or several boundaries, we may need to load up to four chunks for a single timeseries extracted within a typical area (less than few kilometres). Regardless, this operation will require a remarkably small amount of memory and file reads to generate a timeseries of ice velocity anywhere on Greenland or Antarctica.</p>
@@ -775,12 +783,12 @@ document.write(`
                   
 <div class="prev-next-area">
     <a class="left-prev"
-       href="../zarr_data/zarr_structure.html"
+       href="../gui/netcdf_extract.html"
        title="previous page">
       <i class="fa-solid fa-angle-left"></i>
       <div class="prev-next-info">
         <p class="prev-next-subtitle">previous</p>
-        <p class="prev-next-title">Inspecting the Zarr Structure</p>
+        <p class="prev-next-title">NetCDF Extractor</p>
       </div>
     </a>
     <a class="right-next"

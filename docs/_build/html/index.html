@@ -35,6 +35,9 @@
     <link rel="stylesheet" type="text/css" href="_static/copybutton.css" />
     <link rel="stylesheet" type="text/css" href="_static/mystnb.4510f1fc1dee50b3e5859aac5469c37c29e427902b24a333a5f9fcb2f0b3ac41.css" />
     <link rel="stylesheet" type="text/css" href="_static/sphinx-thebe.css" />
+    <link rel="stylesheet" type="text/css" href="_static/custom.css" />
+    <link rel="stylesheet" type="text/css" href="_static/custom.css" />
+    <link rel="stylesheet" type="text/css" href="_static/custom.css" />
     <link rel="stylesheet" type="text/css" href="_static/design-style.4045f2051d55cab465a707391d5b2007.min.css" />
   
   <!-- Pre-loaded scripts that we'll load fully later -->
@@ -187,7 +190,12 @@ const thebe_selector_output = ".output, .cell_output"
 <li class="toctree-l1"><a class="reference internal" href="zarr_data/comparison.html">Comparison of Contributing Datasets</a></li>
 <li class="toctree-l1"><a class="reference internal" href="zarr_data/zarr_structure.html">Inspecting the Zarr Structure</a></li>
 </ul>
-<p aria-level="2" class="caption" role="heading"><span class="caption-text">Examples</span></p>
+<p aria-level="2" class="caption" role="heading"><span class="caption-text">SHIVER Graphical User Interface</span></p>
+<ul class="nav bd-sidenav">
+<li class="toctree-l1"><a class="reference internal" href="gui/timeseries_explore.html">Timeseries Explorer</a></li>
+<li class="toctree-l1"><a class="reference internal" href="gui/netcdf_extract.html">NetCDF Extractor</a></li>
+</ul>
+<p aria-level="2" class="caption" role="heading"><span class="caption-text">Programmatic Examples</span></p>
 <ul class="nav bd-sidenav">
 <li class="toctree-l1"><a class="reference internal" href="examples/simple_timeseries.html">Timeseries extraction</a></li>
 <li class="toctree-l1"><a class="reference internal" href="examples/generating_citations.html">Generating citations for Contributing Datasets</a></li>
@@ -416,7 +424,6 @@ document.write(`
             <nav aria-label="Page">
                 <ul class="visible nav section-nav flex-column">
 <li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#easily-explore-subset-and-analyse-ice-velocity-data-for-earth-s-ice-sheets">Easily explore, subset and analyse ice velocity data for Earth’s ice sheets</a></li>
-<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#cite-shiver">Cite SHIVER</a></li>
 </ul>
             </nav>
         </div>
@@ -428,7 +435,7 @@ document.write(`
 <div id="searchbox"></div>
                 <article class="bd-article">
                   
-  <section class="tex2jax_ignore mathjax_ignore" id="sheffield-ice-velocity-explorer">
+  <section id="sheffield-ice-velocity-explorer">
 <h1>SHeffield Ice Velocity ExploreR<a class="headerlink" href="#sheffield-ice-velocity-explorer" title="Permalink to this heading">#</a></h1>
 <section id="easily-explore-subset-and-analyse-ice-velocity-data-for-earth-s-ice-sheets">
 <h2>Easily explore, subset and analyse ice velocity data for Earth’s ice sheets<a class="headerlink" href="#easily-explore-subset-and-analyse-ice-velocity-data-for-earth-s-ice-sheets" title="Permalink to this heading">#</a></h2>
@@ -436,23 +443,13 @@ document.write(`
 <p><strong>SHIVER</strong> provides interactive and programmatic access to a compilation of satellite-derived ice velocity data for the Greenland Ice Sheet and Antarctic Ice Sheet.</p>
 <p>The primary aim of SHIVER is to maximise access to ice velocity measurements of Earth’s ice sheets whilst minimising researcher and educator time spent on data curation, allowing them to focus on discovery. To achieve this aim, we have compiled many existing satellite-derived velocity datasets into a ‘Unified Dataset’ of ice velocity for each ice sheet. Access to these data are provided in two ways:</p>
 <ul class="simple">
-<li><p><strong>Interactive access via the SHIVER web application:</strong> <a class="reference external" href="https://ben-davison.github.io/SHIVER/">https://ben-davison.github.io/SHIVER/</a></p></li>
-<li><p><strong>Programmatic access via Source Cooperative:</strong> <a class="reference external" href="https://source.coop/uos-shiver">https://source.coop/uos-shiver</a></p></li>
+<li><p><strong>Interactive access via the SHIVER web application:</strong> https://ben-davison.github.io/SHIVER/</p></li>
+<li><p><strong>Programmatic access via Source Cooperative:</strong> https://source.coop/uos-shiver</p></li>
 </ul>
 <p>These notebooks provide our motivation for producing SHIVER and a series of examples documenting programmatic access to the data.</p>
 </section>
-<section id="cite-shiver">
-<h2>Cite SHIVER<a class="headerlink" href="#cite-shiver" title="Permalink to this heading">#</a></h2>
-<blockquote>
-<div><p>Davison, B. J. et al. (in prep). The SHeffield Ice Velocity ExploreR (SHIVER): an online tool for low latency exploration, analysis and sub-setting of unified satellite-derived ice velocity data for Earth’s ice sheets. [specify journal]. <a class="reference external" href="https://doi.org/10.xxxx/XXXXXXX">https://doi.org/10.xxxx/XXXXXXX</a></p>
-</div></blockquote>
-<blockquote>
-<div><p>B. J. (2026). SHeffield Ice Velocity ExploreR (SHIVER): initial release of Zarr creation code (Version [specify version number]) [Computer software]. Zenodo. <a class="reference external" href="https://doi.org/10.5281/zenodo.21375859">https://doi.org/10.5281/zenodo.21375859</a></p>
-</div></blockquote>
-<blockquote>
-<div><p>Davison, B. J. (2026). SHeffield Ice Velocity ExploreR (SHIVER): initial release (Version v1.0.0) [Computer software]. Zenodo. <a class="reference external" href="https://doi.org/10.5281/zenodo.21378057">https://doi.org/10.5281/zenodo.21378057</a></p>
-</div></blockquote>
-</section>
+<div class="toctree-wrapper compound">
+</div>
 <div class="toctree-wrapper compound">
 </div>
 <div class="toctree-wrapper compound">
@@ -519,7 +516,6 @@ document.write(`
   <nav class="bd-toc-nav page-toc">
     <ul class="visible nav section-nav flex-column">
 <li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#easily-explore-subset-and-analyse-ice-velocity-data-for-earth-s-ice-sheets">Easily explore, subset and analyse ice velocity data for Earth’s ice sheets</a></li>
-<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#cite-shiver">Cite SHIVER</a></li>
 </ul>
   </nav></div>
 

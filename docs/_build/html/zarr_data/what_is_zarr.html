@@ -35,6 +35,9 @@
     <link rel="stylesheet" type="text/css" href="../_static/copybutton.css" />
     <link rel="stylesheet" type="text/css" href="../_static/mystnb.4510f1fc1dee50b3e5859aac5469c37c29e427902b24a333a5f9fcb2f0b3ac41.css" />
     <link rel="stylesheet" type="text/css" href="../_static/sphinx-thebe.css" />
+    <link rel="stylesheet" type="text/css" href="../_static/custom.css" />
+    <link rel="stylesheet" type="text/css" href="../_static/custom.css" />
+    <link rel="stylesheet" type="text/css" href="../_static/custom.css" />
     <link rel="stylesheet" type="text/css" href="../_static/design-style.4045f2051d55cab465a707391d5b2007.min.css" />
   
   <!-- Pre-loaded scripts that we'll load fully later -->
@@ -186,7 +189,12 @@ const thebe_selector_output = ".output, .cell_output"
 <li class="toctree-l1"><a class="reference internal" href="comparison.html">Comparison of Contributing Datasets</a></li>
 <li class="toctree-l1"><a class="reference internal" href="zarr_structure.html">Inspecting the Zarr Structure</a></li>
 </ul>
-<p aria-level="2" class="caption" role="heading"><span class="caption-text">Examples</span></p>
+<p aria-level="2" class="caption" role="heading"><span class="caption-text">SHIVER Graphical User Interface</span></p>
+<ul class="nav bd-sidenav">
+<li class="toctree-l1"><a class="reference internal" href="../gui/timeseries_explore.html">Timeseries Explorer</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../gui/netcdf_extract.html">NetCDF Extractor</a></li>
+</ul>
+<p aria-level="2" class="caption" role="heading"><span class="caption-text">Programmatic Examples</span></p>
 <ul class="nav bd-sidenav">
 <li class="toctree-l1"><a class="reference internal" href="../examples/simple_timeseries.html">Timeseries extraction</a></li>
 <li class="toctree-l1"><a class="reference internal" href="../examples/generating_citations.html">Generating citations for Contributing Datasets</a></li>
@@ -426,12 +434,12 @@ document.write(`
 <div id="searchbox"></div>
                 <article class="bd-article">
                   
-  <section class="tex2jax_ignore mathjax_ignore" id="what-is-zarr">
-<h1>What is Zarr?<a class="headerlink" href="#what-is-zarr" title="Permalink to this heading">#</a></h1>
+  <section id="what-is-zarr">
+<span id="id1"></span><h1>What is Zarr?<a class="headerlink" href="#what-is-zarr" title="Permalink to this heading">#</a></h1>
 <figure class="align-default" id="zarr-gif-fig">
 <img alt="Zarr gif" src="../_images/what-is-zarr.gif" />
 <figcaption>
-<p><span class="caption-number">Fig. 1 </span><span class="caption-text">Credit: <a class="reference external" href="https://www.earthmover.io/blog/what-is-zarr">https://www.earthmover.io/blog/what-is-zarr</a>.</span><a class="headerlink" href="#zarr-gif-fig" title="Permalink to this image">#</a></p>
+<p><span class="caption-number">Fig. 1 </span><span class="caption-text">Credit: https://www.earthmover.io/blog/what-is-zarr.</span><a class="headerlink" href="#zarr-gif-fig" title="Permalink to this image">#</a></p>
 </figcaption>
 </figure>
 <p>Much of the following text is based on more comprehensive descriptions of Zarr in <span class="xref myst">zarr.dev</span> and <span class="xref myst">earthmover.io</span>.</p>
@@ -450,7 +458,7 @@ document.write(`
 </figcaption>
 </figure>
 <section id="working-with-zarr">
-<h2>Working with Zarr<a class="headerlink" href="#working-with-zarr" title="Permalink to this heading">#</a></h2>
+<span id="id2"></span><h2>Working with Zarr<a class="headerlink" href="#working-with-zarr" title="Permalink to this heading">#</a></h2>
 <p>A growing ecosystem of tools is developing alongside Zarr that make it easier to work with large datasets.</p>
 <p><code class="docutils literal notranslate"><span class="pre">Xarray</span></code> provides a high-level, labelled array interface that works seamlessly with Zarr. Where Zarr focuses on how data are stored, Xarray focuses on how it is accessed. It enhances raw Zarr arrays by adding coordinate labels, metadata and powerful slicing capabilities, which together make it ideal for many scientific datasets. Xarray also enables lazy loading of Zarr data, where only the metadata is read into memory along with small portions of the actual data as needed. This makes it ideal for working with arrays that would be too large to load into memory.</p>
 <p><code class="docutils literal notranslate"><span class="pre">Dask</span></code> brings parallelism and scalability to Zarr. Dask is a parallel and distributed computing library. In cloud computing or HPC environments, it allows maximization of computing resources to work on many Zarr chunks in parallel because it manages how chunks are distributed between workers.</p>
