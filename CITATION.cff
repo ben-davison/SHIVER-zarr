@@ -6,9 +6,6 @@ title: >-
   The Sheffield Ice Velocity ExploreR (SHIVER): A unified
   satellite-derived ice velocity dataset for Earth's ice
   sheets
-message: >-
-  If you use this dataset, please cite it using the metadata
-  from this file.
 type: dataset
 authors:
   - given-names: Benjamin Joseph
