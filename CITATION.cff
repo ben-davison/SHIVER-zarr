@@ -1,0 +1,45 @@
+# This CITATION.cff file was generated with cffinit.
+# Visit https://bit.ly/cffinit to generate yours today!
+
+cff-version: 1.2.0
+title: >-
+  The Sheffield Ice Velocity ExploreR (SHIVER): A unified
+  satellite-derived ice velocity dataset for Earth's ice
+  sheets
+message: >-
+  If you use this dataset, please cite it using the metadata
+  from this file.
+type: dataset
+authors:
+  - given-names: Benjamin Joseph
+    family-names: Davison
+    email: b.j.davison@sheffield.ac.uk
+    affiliation: University of Sheffield
+    orcid: 'https://orcid.org/0000-0001-9483-2956'
+identifiers:
+  - type: doi
+    value: 10.5281/zenodo.21375859
+    description: >-
+      This DOI represents all versions of the dataset, and
+      will always resolve to the latest one.
+repository-code: 'https://github.com/shiver-ice-velocity/SHIVER-zarr'
+abstract: >-
+  This repository contains: (1) The scripts used to generate
+  the dataset described in the manuscript in preparation:
+  "The Sheffield Ice Velocity ExploreR (SHIVER): an online
+  tool for low latency exploration, analysis and sub-setting
+  of unified satellite-derived ice velocity data for Earth's
+  ice sheets". (2) Everything required to produce the SHIVER
+  readthedocs website (https://shiver-zarr.readthedocs.io/),
+  which describes how to access cloud-hosted Zarr stores of
+  the SHIVER data. Note: This repository only contains the
+  code to generate the dataset. The resulting dataset is
+  hosted by Source Cooperative at
+  https://source.coop/uos-shiver.
+keywords:
+  - ice velocity
+  - Greenland Ice Sheet
+  - Antarctic Ice Sheet
+  - Earth Observation
+  - SHIVER
+license: CC-BY-4.0
