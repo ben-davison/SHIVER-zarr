@@ -856,7 +856,7 @@ def catalog_enveo_alos(base_dir):
             mid_dt = start_dt + (end_dt - start_dt) / 2
             t = np.datetime64(mid_dt)
             tb = np.array([np.datetime64(start_dt), np.datetime64(end_dt)])
-            epochs.append({'time': t, 'time_bnds': tb, 'source': 'ENVEO_ALOS', 'path': tif})
+            epochs.append({'time': t, 'time_bnds': tb, 'source': 'ENVEO_PALSAR', 'path': tif})
     return epochs
 
 def preprocess_enveo_alos(file_path, master_x, master_y):
@@ -915,7 +915,7 @@ def preprocess_enveo_alos(file_path, master_x, master_y):
         'speed_error': (['time', 'y', 'x'], np.expand_dims(speed_error_vals, axis=0), {'units': 'm/year'}),
         'vx_error': (['time', 'y', 'x'], np.expand_dims(vx_error_vals, axis=0), {'units': 'm/year'}),
         'vy_error': (['time', 'y', 'x'], np.expand_dims(vy_error_vals, axis=0), {'units': 'm/year'}),
-        'data_source': (['time'], np.array(["ENVEO_ALOS"], dtype="<U50"))
+        'data_source': (['time'], np.array(["ENVEO_PALSAR"], dtype="<U50"))
     }, coords={'y': (['y'], master_y.values), 'x': (['x'], master_x.values)})
     
     return ds
@@ -1438,7 +1438,7 @@ def process_worker(target_source, batch_start=None, batch_end=None):
         elif ep['source'] == 'ENVEO_Sentinel-1_PIG': ds_slice = preprocess_enveo_s1_pig(ep['path'], master_x, master_y)
         elif ep['source'] == 'ENVEO_ERS': ds_slice = preprocess_enveo_ers(ep['path'], master_x, master_y)
         elif ep['source'] == 'ENVEO_TSX': ds_slice = preprocess_enveo_tsx(ep['path'], master_x, master_y)
-        elif ep['source'] == 'ENVEO_ALOS': ds_slice = preprocess_enveo_alos(ep['path'], master_x, master_y)
+        elif ep['source'] == 'ENVEO_PALSAR': ds_slice = preprocess_enveo_alos(ep['path'], master_x, master_y)
         elif ep['source'] == 'ENVEO_TSX_Sentinel-1': ds_slice = preprocess_enveo_tsx_s1(ep['path'], master_x, master_y)
         elif ep['source'] == 'ENVEO_TSX_PALSAR': ds_slice = preprocess_enveo_tsx_palsar(ep['path'], master_x, master_y)
         elif ep['source'] == 'SHIFT': ds_slice = preprocess_shift(ep['path'], ep['epoch_dir'], ep['date_str'], master_x, master_y)

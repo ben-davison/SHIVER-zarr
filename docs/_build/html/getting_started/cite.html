@@ -191,6 +191,7 @@ const thebe_selector_output = ".output, .cell_output"
 </ul>
 <p aria-level="2" class="caption" role="heading"><span class="caption-text">SHIVER Graphical User Interface</span></p>
 <ul class="nav bd-sidenav">
+<li class="toctree-l1"><a class="reference internal" href="../gui/overview.html">Overview of the SHeffield Ice Velocity ExploreR application</a></li>
 <li class="toctree-l1"><a class="reference internal" href="../gui/timeseries_explore.html">Timeseries Explorer</a></li>
 <li class="toctree-l1"><a class="reference internal" href="../gui/netcdf_extract.html">NetCDF Extractor</a></li>
 </ul>
@@ -202,7 +203,7 @@ const thebe_selector_output = ".output, .cell_output"
 <li class="toctree-l1"><a class="reference internal" href="../examples/simple_subset.html">Datacube subsetting</a></li>
 <li class="toctree-l1"><a class="reference internal" href="../examples/trend_change.html">Ice speed trends in west Greenland (advanced)</a></li>
 <li class="toctree-l1"><a class="reference internal" href="../examples/eof.html">Principal Component Analysis (advanced)</a></li>
-<li class="toctree-l1"><a class="reference internal" href="../examples/strain.html">Strain across the Brunt Ice Shelf</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../examples/strain.html">Strain across the Brunt Ice Shelf (advanced)</a></li>
 </ul>
 <p aria-level="2" class="caption" role="heading"><span class="caption-text">Appendix</span></p>
 <ul class="nav bd-sidenav">
@@ -264,7 +265,7 @@ const thebe_selector_output = ".output, .cell_output"
       
       
       
-      <li><a href="https://github.com/ben-davison/SHIVER-build-zarr" target="_blank"
+      <li><a href="https://github.com/shiver-ice-velocity/SHIVER-zarr" target="_blank"
    class="btn btn-sm btn-source-repository-button dropdown-item"
    title="Source repository"
    data-bs-placement="left" data-bs-toggle="tooltip"
@@ -281,7 +282,7 @@ const thebe_selector_output = ".output, .cell_output"
       
       
       
-      <li><a href="https://github.com/ben-davison/SHIVER-build-zarr/edit/main/docs/getting_started/cite.md" target="_blank"
+      <li><a href="https://github.com/shiver-ice-velocity/SHIVER-zarr/edit/main/docs/getting_started/cite.md" target="_blank"
    class="btn btn-sm btn-source-edit-button dropdown-item"
    title="Suggest edit"
    data-bs-placement="left" data-bs-toggle="tooltip"
@@ -298,7 +299,7 @@ const thebe_selector_output = ".output, .cell_output"
       
       
       
-      <li><a href="https://github.com/ben-davison/SHIVER-build-zarr/issues/new?title=Issue%20on%20page%20%2Fgetting_started/cite.html&body=Your%20issue%20content%20here." target="_blank"
+      <li><a href="https://github.com/shiver-ice-velocity/SHIVER-zarr/issues/new?title=Issue%20on%20page%20%2Fgetting_started/cite.html&body=Your%20issue%20content%20here." target="_blank"
    class="btn btn-sm btn-source-issues-button dropdown-item"
    title="Open an issue"
    data-bs-placement="left" data-bs-toggle="tooltip"
@@ -428,19 +429,15 @@ document.write(`
 <h1>Cite<a class="headerlink" href="#cite" title="Permalink to this heading">#</a></h1>
 <p>The recommended approach to citing these data in your work is:</p>
 <blockquote>
-<div><p>“Ice velocity data were extracted using the Sheffield Ice Velocity ExploreR (SHIVER; Davison, 2026a,b; Davison et al., 2026) and included the data products detailed in Table X.”</p>
+<div><p>“Ice velocity estimates were extracted from the Sheffield Ice Velocity ExploreR (SHIVER) unified dataset (Davison, 2026; Davison et al., 2026) and included the contributing datasets detailed in Table X.”</p>
 </div></blockquote>
 <p>Where Davison et al. 2026 is a dataset description paper for SHIVER (in preparation). The citation for that paper will be something like:</p>
 <blockquote>
 <div><p>Davison, B. J. et al. (in prep). The SHeffield Ice Velocity ExploreR (SHIVER): an online tool for low latency exploration, analysis and sub-setting of unified satellite-derived ice velocity data for Earth’s ice sheets. [specify journal]. https://doi.org/10.xxxx/XXXXXXX</p>
 </div></blockquote>
-<p>And Davison (2026a) is the citation for the dataset itself:</p>
+<p>And Davison (2026) is the citation for the dataset itself:</p>
 <blockquote>
 <div><p>Davison, B. J. (2026a). The SHeffield Ice Velocity ExploreR (SHIVER): A unified satellite-derived ice velocity dataset for Earth’s ice sheets (Version v[specify version number]) [Data set]. Zenodo. https://doi.org/10.5281/zenodo.21375859</p>
-</div></blockquote>
-<p>Davison (2026b) should only be cited if your outputs relied on the SHIVER interactive application:</p>
-<blockquote>
-<div><p>Davison, B. J. (2026b). The SHeffield Ice Velocity ExploreR (SHIVER): an online tool for low latency exploration, analysis and sub-setting of unified satellite-derived ice velocity data for Earth’s ice sheets (Version v[specify version number]) [Computer software]. Zenodo. https://doi.org/10.5281/zenodo.21378057</p>
 </div></blockquote>
 <p>The SHIVER dataset is a compilation of many published velocity datasets and so would not have been possible without those. Therefore, those contributing datasets should also be cited. Specifically, you should cite all contributing datasets that your specific query intersected. If you are extracting data programmatically, please see our notebook describing how you can generate the correct citations for your query.</p>
 <p>If instead you are using the SHIVER application, all exports will contain citation details for the relevant contributing datasets. This will include a table (<strong>citations_summary.csv</strong>) summarising the required citations and a text file (<strong>citations_and_usage.txt</strong>) with descriptive details.</p>

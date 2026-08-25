@@ -191,6 +191,7 @@ const thebe_selector_output = ".output, .cell_output"
 </ul>
 <p aria-level="2" class="caption" role="heading"><span class="caption-text">SHIVER Graphical User Interface</span></p>
 <ul class="nav bd-sidenav">
+<li class="toctree-l1"><a class="reference internal" href="../gui/overview.html">Overview of the SHeffield Ice Velocity ExploreR application</a></li>
 <li class="toctree-l1"><a class="reference internal" href="../gui/timeseries_explore.html">Timeseries Explorer</a></li>
 <li class="toctree-l1"><a class="reference internal" href="../gui/netcdf_extract.html">NetCDF Extractor</a></li>
 </ul>
@@ -202,7 +203,7 @@ const thebe_selector_output = ".output, .cell_output"
 <li class="toctree-l1"><a class="reference internal" href="../examples/simple_subset.html">Datacube subsetting</a></li>
 <li class="toctree-l1"><a class="reference internal" href="../examples/trend_change.html">Ice speed trends in west Greenland (advanced)</a></li>
 <li class="toctree-l1"><a class="reference internal" href="../examples/eof.html">Principal Component Analysis (advanced)</a></li>
-<li class="toctree-l1"><a class="reference internal" href="../examples/strain.html">Strain across the Brunt Ice Shelf</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../examples/strain.html">Strain across the Brunt Ice Shelf (advanced)</a></li>
 </ul>
 <p aria-level="2" class="caption" role="heading"><span class="caption-text">Appendix</span></p>
 <ul class="nav bd-sidenav">
@@ -264,7 +265,7 @@ const thebe_selector_output = ".output, .cell_output"
       
       
       
-      <li><a href="https://github.com/ben-davison/SHIVER-build-zarr" target="_blank"
+      <li><a href="https://github.com/shiver-ice-velocity/SHIVER-zarr" target="_blank"
    class="btn btn-sm btn-source-repository-button dropdown-item"
    title="Source repository"
    data-bs-placement="left" data-bs-toggle="tooltip"
@@ -281,7 +282,7 @@ const thebe_selector_output = ".output, .cell_output"
       
       
       
-      <li><a href="https://github.com/ben-davison/SHIVER-build-zarr/edit/main/docs/getting_started/why.md" target="_blank"
+      <li><a href="https://github.com/shiver-ice-velocity/SHIVER-zarr/edit/main/docs/getting_started/why.md" target="_blank"
    class="btn btn-sm btn-source-edit-button dropdown-item"
    title="Suggest edit"
    data-bs-placement="left" data-bs-toggle="tooltip"
@@ -298,7 +299,7 @@ const thebe_selector_output = ".output, .cell_output"
       
       
       
-      <li><a href="https://github.com/ben-davison/SHIVER-build-zarr/issues/new?title=Issue%20on%20page%20%2Fgetting_started/why.html&body=Your%20issue%20content%20here." target="_blank"
+      <li><a href="https://github.com/shiver-ice-velocity/SHIVER-zarr/issues/new?title=Issue%20on%20page%20%2Fgetting_started/why.html&body=Your%20issue%20content%20here." target="_blank"
    class="btn btn-sm btn-source-issues-button dropdown-item"
    title="Open an issue"
    data-bs-placement="left" data-bs-toggle="tooltip"
@@ -427,9 +428,9 @@ document.write(`
   <section id="why-shiver">
 <h1>Why SHIVER?<a class="headerlink" href="#why-shiver" title="Permalink to this heading">#</a></h1>
 <p>Measurements of ice sheet surface velocity are fundamental in many aspects of glaciological studies. They are a key variable in calculations of grounding line discharge (e.g. Davison et al. 2025; Mankoff et al. 2020), which in turn is a critical component in estimations of ice sheet contributions to global sea-level rise (Otosaka et al. 2023). Furthermore, ice surface velocity is a key parameter for ice sheet models  (for example during initialisation and validation stages, or to invert for basal conditions and ice thickness (e.g. Seroussi et al. 2019; Goelzer et al. 2018; Morlighem et al. 2020)) enabling robust projections of future sea-level contributions and process-based investigations. Crucially, resolving temporal changes in ice velocity has underpinned many recent advances in our understanding of how ice sheets respond to changing environmental forcings.</p>
-<p>Ice velocity measurements derived from satellite image pairs have become increasingly abundant (Greene and Gardner 2025; Millan et al. 2022), driven by the proliferation of open-access satellite imagery (e.g. Tatem et al. 2008) and growing computational resources (Kov?cs et al. 2026). Simultaneously, the ability to retrieve robust velocity fields from these image pairs has improved through incremental advances in image processing and feature-tracking algorithms (Strozzi et al. 2002; Joughin et al. 1998; Joughin 2002; Joughin et al. 2018a; Rosenau et al. 2015; Fahnestock et al. 2016; Andersen et al. 2020). Recognising the immense value of large-scale, temporally resolved ice velocity records, numerous groups and funding bodies have devoted considerable resources to developing comprehensive ice sheet-scale or regional-scale velocity products for the Greenland and Antarctic ice sheets at various temporal baselines and spatial resolutions (Solgaard et al. 2021).</p>
+<p>Ice velocity measurements derived from satellite image pairs have become increasingly abundant (Greene and Gardner 2025; Millan et al. 2022), driven by the proliferation of open-access satellite imagery (e.g. Tatem et al. 2008) and growing computational resources (Kovács et al. 2026). Simultaneously, the ability to retrieve robust velocity fields from these image pairs has improved through incremental advances in image processing and feature-tracking algorithms (Strozzi et al. 2002; Joughin et al. 1998; Joughin 2002; Joughin et al. 2018a; Rosenau et al. 2015; Fahnestock et al. 2016; Andersen et al. 2020). Recognising the immense value of large-scale, temporally resolved ice velocity records, numerous groups and funding bodies have devoted considerable resources to developing comprehensive ice sheet-scale or regional-scale velocity products for the Greenland and Antarctic ice sheets at various temporal baselines and spatial resolutions (Solgaard et al. 2021).</p>
 <p>Despite this abundance of data, the majority of free-to-use ice sheet velocity products still require researchers to download large, cumbersome local copies to explore and analyse the recorded speed change. Recently, the ITS_LIVE project revolutionised community access by making their global velocity observations available via cloud servers and a graphical user interface, enabling programmatic and point-and-click exploration of ice velocity time series (Gardner et al. 2025). However, numerous other valuable ice motion datasets are not hosted in a similarly accessible manner, precluding rapid exploration without the download of vast volumes of data. Consequently, researchers typically restrict their analysis to just one or a few of the many available products, meaning a considerable wealth of information regarding spatial and temporal variations in ice sheet motion remains underutilised.</p>
-<p>To address this gap, we present a comprehensive compilation of existing ice velocity datasets into a single harmonised dataset for the each of the Greenland and Antarctic ice sheets. We also provide a dedicated web application: the ?Sheffield Ice Velocity ExploreR? (SHIVER), which provides interactive, low-latency access to the unified velocity datasets. In this manuscript, we first outline the contributing datasets and detail the protocols and methods used to combine them into a unified, cloud-optimised data format. We then describe the architecture, functionality and performance of the SHIVER tool itself, demonstrating how it facilitates rapid exploration, analysis and sub-setting of these unified velocity stores.</p>
+<p>To address this gap, we present a comprehensive compilation of existing ice velocity datasets into a single harmonised dataset for the each of the Greenland and Antarctic ice sheets. We also provide a dedicated web application: the “Sheffield Ice Velocity ExploreR” (SHIVER), which provides interactive, low-latency access to the unified velocity datasets. This documentation details the SHIVER datasets and the options to query the dataset.</p>
 </section>
 
     <script type="text/x-thebe-config">

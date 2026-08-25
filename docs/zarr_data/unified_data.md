@@ -1,4 +1,4 @@
-(unified-data-top)=
+ï»¿(unified-data-top)=
 # Unified Datasets
 
 (unified-data-overview)=
@@ -10,7 +10,7 @@ To construct the Unified Dataset, we collated the Contributing Datasets for each
 name: greenland-overview-fig
 alt: Greenland data overview
 ---
-Summary of the Greenland Ice Sheet unified dataset. (a) Time-average mean speed, (b) mean error, (c) total number of valid (non-NaN) measurements, (d) the date of the first valid measurement and (e) date of the last valid measurement across all contributing datasets. (f) Timeline of all contributing datasets, where each black dot represents the mid-date of each measurement epoch and the width of each coloured bar represents the duration of each measurement epoch. The number of epochs is listed on the right. *Contributing dataset name has been shortened for display – full names are in Table 1. 
+Summary of the Greenland Ice Sheet unified dataset. (a) Time-average mean speed, (b) mean error, (c) total number of valid (non-NaN) measurements, (d) the date of the first valid measurement and (e) date of the last valid measurement across all contributing datasets. (f) Timeline of all contributing datasets, where each black dot represents the mid-date of each measurement epoch and the width of each coloured bar represents the duration of each measurement epoch. The number of epochs is listed on the right. *Contributing dataset name has been shortened for display - full names are in Table 1. 
 ```
 
 ```{figure} ../_static/antarctica_data_overview.png
@@ -18,7 +18,7 @@ Summary of the Greenland Ice Sheet unified dataset. (a) Time-average mean speed,
 name: antarctic-overview-fig
 alt: Antarctic data overview
 ---
-Summary of Antarctic Ice Sheet unified dataset. (a) Time-average mean speed, (b) mean error, (c) total number of valid (non-NaN) measurements, (d) the date of the first valid measurement and (e) date of the last valid measurement across all contributing datasets. (f) Timeline of all contributing datasets, where each black dot represents the mid-date of each measurement epoch and the width of each coloured bar represents the duration of each measurement epoch. The number of epochs is listed on the right. *Contributing dataset name has been shortened for display – full names are in Table 2. 
+Summary of Antarctic Ice Sheet unified dataset. (a) Time-average mean speed, (b) mean error, (c) total number of valid (non-NaN) measurements, (d) the date of the first valid measurement and (e) date of the last valid measurement across all contributing datasets. (f) Timeline of all contributing datasets, where each black dot represents the mid-date of each measurement epoch and the width of each coloured bar represents the duration of each measurement epoch. The number of epochs is listed on the right. *Contributing dataset name has been shortened for display - full names are in Table 2. 
 ```
 
 (unified-zarr-chunk-def)=
@@ -60,15 +60,15 @@ Notably, our spatially-optimised Zarr store utilises the OME-Zarr format, which 
 
 (unified-reprojection)=
 ## Reprojection
-During ingestion, velocity fields from every Contributing Dataset (Tables 1 & 2; Figures 1 & 2) were reprojected and resampled to a common spatial grid using nearest-neighbour interpolation to preserve the original velocity magnitudes. The Greenland grid (EPSG:3413) is identical to that used for the “PROMICE” Contributing Dataset, while the Antarctic grid (EPSG:3031) is identical to that used for the “ENVEO monthly” Contributing Dataset. Both Unified Dataset grids are defined at a 200 x 200 m spatial resolution.
+During ingestion, velocity fields from every Contributing Dataset (Tables 1 & 2; Figures 1 & 2) were reprojected and resampled to a common spatial grid using nearest-neighbour interpolation to preserve the original velocity magnitudes. The Greenland grid (EPSG:3413) is identical to that used for the "PROMICE" Contributing Dataset, while the Antarctic grid (EPSG:3031) is identical to that used for the "ENVEO monthly" Contributing Dataset. Both Unified Dataset grids are defined at a 200 x 200 m spatial resolution.
 
 (unified-timestamps)=
 ## Timestamps
-The Zarr stores retain the temporal metadata of each Contributing Dataset. For every Measurement Epoch, we record the start, end and central dates of the velocity data, enabling the temporal resolution of the Measurement Epoch to be calculated. One product—the “Joughin TSX” dataset (Table 2; (Joughin et al. 2021))—has an ambiguous temporal resolution of two to five months, so we assign a temporal resolution of 3.5 months to the relevant Measurement Epochs of that Contributing Dataset in our Unified Dataset. Furthermore, the Zarr protocol requires strictly unique temporal coordinates for start, end and central dates. To satisfy this requirement, we adjust the published timestamps by a millisecond where duplicate timestamps occur, which is negligible compared to the temporal resolution of the measurements (four days minimum). This adjustment ensures unique epoch identifiers without meaningfully altering the temporal accuracy of the metadata.
+The Zarr stores retain the temporal metadata of each Contributing Dataset. For every Measurement Epoch, we record the start, end and central dates of the velocity data, enabling the temporal resolution of the Measurement Epoch to be calculated. One productâ€”the "Joughin TSX" dataset (Table 2; (Joughin et al. 2021))â€”has an ambiguous temporal resolution of two to five months, so we assign a temporal resolution of 3.5 months to the relevant Measurement Epochs of that Contributing Dataset in our Unified Dataset. Furthermore, the Zarr protocol requires strictly unique temporal coordinates for start, end and central dates. To satisfy this requirement, we adjust the published timestamps by a millisecond where duplicate timestamps occur, which is negligible compared to the temporal resolution of the measurements (four days minimum). This adjustment ensures unique epoch identifiers without meaningfully altering the temporal accuracy of the metadata.
 
 (unified-error)=
 ## Measurement error
-Pixel-wise uncertainty estimates for every Measurement Epoch are included in the Unified Dataset. Where pixel-wise error estimates are provided by the Contributing Dataset, these values are preserved and incorporated directly into the Zarr stores. For datasets lacking published error estimates, we apply an assumed uniform error of 5% of the measured velocity magnitude. Additionally, while most products provide spatially variable error fields, the “SHIFT” dataset (Davison & Sole, 2026; Sole & Davison, 2026; Davison et al., 2020) provides a single global error for each Measurement Epoch, derived from apparent motion over stable bedrock. For these epochs, the global error value is assigned uniformly to all valid velocity retrievals within the spatial grid.
+Pixel-wise uncertainty estimates for every Measurement Epoch are included in the Unified Dataset. Where pixel-wise error estimates are provided by the Contributing Dataset, these values are preserved and incorporated directly into the Zarr stores. For datasets lacking published error estimates, we apply an assumed uniform error of 5% of the measured velocity magnitude. Additionally, while most products provide spatially variable error fields, the "SHIFT" dataset (Davison & Sole, 2026; Sole & Davison, 2026; Davison et al., 2020) provides a single global error for each Measurement Epoch, derived from apparent motion over stable bedrock. For these epochs, the global error value is assigned uniformly to all valid velocity retrievals within the spatial grid.
 
 (unified-variables)=
 ## Variables

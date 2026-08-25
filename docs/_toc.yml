@@ -16,6 +16,7 @@ parts:
 
   - caption: SHIVER Graphical User Interface
     chapters:
+      - file: gui/overview
       - file: gui/timeseries_explore
       - file: gui/netcdf_extract
 

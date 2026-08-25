@@ -9,7 +9,7 @@
     <meta charset="utf-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" /><meta name="generator" content="Docutils 0.18.1: http://docutils.sourceforge.net/" />
 
-    <title>What is Zarr? &#8212; SHeffield Ice Velocity ExploreR (SHIVER) - Cloud access to a unified dataset of satellite-derived ice surface velocity measurements for the Antarctica Ice Sheet and Greenland Ice Sheet</title>
+    <title>Overview of the SHeffield Ice Velocity ExploreR application &#8212; SHeffield Ice Velocity ExploreR (SHIVER) - Cloud access to a unified dataset of satellite-derived ice surface velocity measurements for the Antarctica Ice Sheet and Greenland Ice Sheet</title>
   
   
   
@@ -65,11 +65,11 @@ const thebe_selector_input = "pre"
 const thebe_selector_output = ".output, .cell_output"
 </script>
     <script async="async" src="../_static/sphinx-thebe.js"></script>
-    <script>DOCUMENTATION_OPTIONS.pagename = 'zarr_data/what_is_zarr';</script>
+    <script>DOCUMENTATION_OPTIONS.pagename = 'gui/overview';</script>
     <link rel="index" title="Index" href="../genindex.html" />
     <link rel="search" title="Search" href="../search.html" />
-    <link rel="next" title="Contributing Datasets" href="contributing_data.html" />
-    <link rel="prev" title="Cite" href="../getting_started/cite.html" />
+    <link rel="next" title="Timeseries Explorer" href="timeseries_explore.html" />
+    <link rel="prev" title="Inspecting the Zarr Structure" href="../zarr_data/zarr_structure.html" />
   <meta name="viewport" content="width=device-width, initial-scale=1"/>
   <meta name="docsearch:language" content="en"/>
   </head>
@@ -182,18 +182,18 @@ const thebe_selector_output = ".output, .cell_output"
 <li class="toctree-l1"><a class="reference internal" href="../getting_started/cite.html">Cite</a></li>
 </ul>
 <p aria-level="2" class="caption" role="heading"><span class="caption-text">Data</span></p>
-<ul class="current nav bd-sidenav">
-<li class="toctree-l1 current active"><a class="current reference internal" href="#">What is Zarr?</a></li>
-<li class="toctree-l1"><a class="reference internal" href="contributing_data.html">Contributing Datasets</a></li>
-<li class="toctree-l1"><a class="reference internal" href="unified_data.html">Unified Datasets</a></li>
-<li class="toctree-l1"><a class="reference internal" href="comparison.html">Comparison of Contributing Datasets</a></li>
-<li class="toctree-l1"><a class="reference internal" href="zarr_structure.html">Inspecting the Zarr Structure</a></li>
+<ul class="nav bd-sidenav">
+<li class="toctree-l1"><a class="reference internal" href="../zarr_data/what_is_zarr.html">What is Zarr?</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../zarr_data/contributing_data.html">Contributing Datasets</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../zarr_data/unified_data.html">Unified Datasets</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../zarr_data/comparison.html">Comparison of Contributing Datasets</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../zarr_data/zarr_structure.html">Inspecting the Zarr Structure</a></li>
 </ul>
 <p aria-level="2" class="caption" role="heading"><span class="caption-text">SHIVER Graphical User Interface</span></p>
-<ul class="nav bd-sidenav">
-<li class="toctree-l1"><a class="reference internal" href="../gui/overview.html">Overview of the SHeffield Ice Velocity ExploreR application</a></li>
-<li class="toctree-l1"><a class="reference internal" href="../gui/timeseries_explore.html">Timeseries Explorer</a></li>
-<li class="toctree-l1"><a class="reference internal" href="../gui/netcdf_extract.html">NetCDF Extractor</a></li>
+<ul class="current nav bd-sidenav">
+<li class="toctree-l1 current active"><a class="current reference internal" href="#">Overview of the SHeffield Ice Velocity ExploreR application</a></li>
+<li class="toctree-l1"><a class="reference internal" href="timeseries_explore.html">Timeseries Explorer</a></li>
+<li class="toctree-l1"><a class="reference internal" href="netcdf_extract.html">NetCDF Extractor</a></li>
 </ul>
 <p aria-level="2" class="caption" role="heading"><span class="caption-text">Programmatic Examples</span></p>
 <ul class="nav bd-sidenav">
@@ -282,7 +282,7 @@ const thebe_selector_output = ".output, .cell_output"
       
       
       
-      <li><a href="https://github.com/shiver-ice-velocity/SHIVER-zarr/edit/main/docs/zarr_data/what_is_zarr.md" target="_blank"
+      <li><a href="https://github.com/shiver-ice-velocity/SHIVER-zarr/edit/main/docs/gui/overview.md" target="_blank"
    class="btn btn-sm btn-source-edit-button dropdown-item"
    title="Suggest edit"
    data-bs-placement="left" data-bs-toggle="tooltip"
@@ -299,7 +299,7 @@ const thebe_selector_output = ".output, .cell_output"
       
       
       
-      <li><a href="https://github.com/shiver-ice-velocity/SHIVER-zarr/issues/new?title=Issue%20on%20page%20%2Fzarr_data/what_is_zarr.html&body=Your%20issue%20content%20here." target="_blank"
+      <li><a href="https://github.com/shiver-ice-velocity/SHIVER-zarr/issues/new?title=Issue%20on%20page%20%2Fgui/overview.html&body=Your%20issue%20content%20here." target="_blank"
    class="btn btn-sm btn-source-issues-button dropdown-item"
    title="Open an issue"
    data-bs-placement="left" data-bs-toggle="tooltip"
@@ -329,7 +329,7 @@ const thebe_selector_output = ".output, .cell_output"
       
       
       
-      <li><a href="../_sources/zarr_data/what_is_zarr.md" target="_blank"
+      <li><a href="../_sources/gui/overview.md" target="_blank"
    class="btn btn-sm btn-download-source-button dropdown-item"
    title="Download source file"
    data-bs-placement="left" data-bs-toggle="tooltip"
@@ -400,9 +400,7 @@ document.write(`
   </button>
 `);
 </script>
-<label class="sidebar-toggle secondary-toggle btn btn-sm" for="__secondary"title="Toggle secondary sidebar" data-bs-placement="bottom" data-bs-toggle="tooltip">
-    <span class="fa-solid fa-list"></span>
-</label>
+
 </div></div>
       
     </div>
@@ -413,19 +411,11 @@ document.write(`
               
 
 <div id="jb-print-docs-body" class="onlyprint">
-    <h1>What is Zarr?</h1>
+    <h1>Overview of the SHeffield Ice Velocity ExploreR application</h1>
     <!-- Table of contents -->
     <div id="print-main-content">
         <div id="jb-print-toc">
             
-            <div>
-                <h2> Contents </h2>
-            </div>
-            <nav aria-label="Page">
-                <ul class="visible nav section-nav flex-column">
-<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#working-with-zarr">Working with Zarr</a></li>
-</ul>
-            </nav>
         </div>
     </div>
 </div>
@@ -435,35 +425,15 @@ document.write(`
 <div id="searchbox"></div>
                 <article class="bd-article">
                   
-  <section id="what-is-zarr">
-<span id="id1"></span><h1>What is Zarr?<a class="headerlink" href="#what-is-zarr" title="Permalink to this heading">#</a></h1>
-<figure class="align-default" id="zarr-gif-fig">
-<img alt="Zarr gif" src="../_images/what-is-zarr.gif" />
-<figcaption>
-<p><span class="caption-number">Fig. 1 </span><span class="caption-text">Credit: https://www.earthmover.io/blog/what-is-zarr.</span><a class="headerlink" href="#zarr-gif-fig" title="Permalink to this image">#</a></p>
-</figcaption>
-</figure>
-<p>Much of the following text is based on more comprehensive descriptions of Zarr in <span class="xref myst">zarr.dev</span> and <span class="xref myst">earthmover.io</span>.</p>
-<p><strong>Zarr</strong> is a powerful open-source, cloud-native protocol for storing chunked, compressed N-dimensional arrays (Miles et al. 2026). It is designed for performance, interoperability and cloud computing or other parallel computing application. It enables high-throughput distributed I/O, allows concurrent read/write from multiple threads or processes. In a world where data is abundant, traditional data formats can become a bottleneck in a workflow - zarr removes that bottleneck.</p>
-<figure class="align-default" id="zarr-logo-fig">
-<img alt="Zarr logo" src="../_images/zarr_logo.png" />
-<figcaption>
-<p><span class="caption-number">Fig. 2 </span><span class="caption-text">Zarr logo.</span><a class="headerlink" href="#zarr-logo-fig" title="Permalink to this image">#</a></p>
-</figcaption>
-</figure>
-<p>Zarr is specifically designed for tensor data (a.k.a multi-dimensional arrays) rather than tabular data. In a Zarr, structured data are stored in a compact binary columnar (or chunked) layout, with encoding and compression appled to each chunk separately. In this way, it eliminates all possible redundant information and is an ‘array-native’ data system. These chunks are small, manageable pieces of a large array or arrays that can be read and written independently. Crucially, Zarr chunks must be uniform, fixed-size blocks and the user must choose how large chunks should be in each dimension. The chunk size definition strongly influences the performance of the Zarr for certain tasks - for time-series extraction, one would choose chunks that resemble towers (i.e. spanning many elements in the time-dimension but few in the horizontal dimensions), whereas if the aim is to optimise spatial operations, flatter chunks would be more performant. Each chunk is saved as a separate binary file and is organized using a nested directory structure depending on the chunk position. Zarr also uses structured metadata that enables rapid identification of the required chunk(s) and lazy loading of datasets.</p>
-<figure class="align-default" id="zarr-chunk-fig">
-<img alt="Zarr chunk" src="../_images/zarr_chunk.png" />
-<figcaption>
-<p><span class="caption-number">Fig. 3 </span><span class="caption-text">Zarr chunk cartoon.</span><a class="headerlink" href="#zarr-chunk-fig" title="Permalink to this image">#</a></p>
-</figcaption>
-</figure>
-<section id="working-with-zarr">
-<span id="id2"></span><h2>Working with Zarr<a class="headerlink" href="#working-with-zarr" title="Permalink to this heading">#</a></h2>
-<p>A growing ecosystem of tools is developing alongside Zarr that make it easier to work with large datasets.</p>
-<p><code class="docutils literal notranslate"><span class="pre">Xarray</span></code> provides a high-level, labelled array interface that works seamlessly with Zarr. Where Zarr focuses on how data are stored, Xarray focuses on how it is accessed. It enhances raw Zarr arrays by adding coordinate labels, metadata and powerful slicing capabilities, which together make it ideal for many scientific datasets. Xarray also enables lazy loading of Zarr data, where only the metadata is read into memory along with small portions of the actual data as needed. This makes it ideal for working with arrays that would be too large to load into memory.</p>
-<p><code class="docutils literal notranslate"><span class="pre">Dask</span></code> brings parallelism and scalability to Zarr. Dask is a parallel and distributed computing library. In cloud computing or HPC environments, it allows maximization of computing resources to work on many Zarr chunks in parallel because it manages how chunks are distributed between workers.</p>
-</section>
+  <section id="overview-of-the-sheffield-ice-velocity-explorer-application">
+<span id="shiver-app-overview"></span><h1>Overview of the SHeffield Ice Velocity ExploreR application<a class="headerlink" href="#overview-of-the-sheffield-ice-velocity-explorer-application" title="Permalink to this heading">#</a></h1>
+<p>The <a class="reference external" href="https://shiver-ice-velocity.github.io/SHIVER/">SHIVER application</a> is a tool that allows interactive exploration and extraction of ice velocity data from the Unified Dataset. It is designed to be useable for non-specialists whilst still providing sufficient flexibility and robustness to support scientific applications. Of course, no single set of filters are perfect for every application, so the data presented in the application are not entirely free of outliers. So if you want to use the Unified Dataset for your science, we would encourage you to design your own routines that ingest the SHIVER output and perform filtering and analysis suitable for your investigation.</p>
+<p>The SHIVER application provides two ways to query the Unified Dataset, both based on an interactive map of Greenland and Antarctica.</p>
+<ol class="arabic simple">
+<li><p><strong>The Timeseries Explorer</strong>: simply click on the map to extract a timeseries. This tool is designed to support data exploration and is suitable for teaching.</p></li>
+<li><p><strong>The Data Cube Extractor</strong>: simply draw a polygon on the map and choose your parameters to extract a NetCDF of velocity data. This tool is designed for scientists who want to conduct their own analysis on a subset of the Unified Dataset without requiring access to the Cloud.</p></li>
+</ol>
+<p>The following pages provide detailed documentation of these two Graphical User Interfaces for the data.</p>
 </section>
 
     <script type="text/x-thebe-config">
@@ -479,7 +449,7 @@ document.write(`
         },
         kernelOptions: {
             name: "python3",
-            path: "./zarr_data"
+            path: "./gui"
         },
         predefinedOutput: true
     }
@@ -497,20 +467,20 @@ document.write(`
                   
 <div class="prev-next-area">
     <a class="left-prev"
-       href="../getting_started/cite.html"
+       href="../zarr_data/zarr_structure.html"
        title="previous page">
       <i class="fa-solid fa-angle-left"></i>
       <div class="prev-next-info">
         <p class="prev-next-subtitle">previous</p>
-        <p class="prev-next-title">Cite</p>
+        <p class="prev-next-title">Inspecting the Zarr Structure</p>
       </div>
     </a>
     <a class="right-next"
-       href="contributing_data.html"
+       href="timeseries_explore.html"
        title="next page">
       <div class="prev-next-info">
         <p class="prev-next-subtitle">next</p>
-        <p class="prev-next-title">Contributing Datasets</p>
+        <p class="prev-next-title">Timeseries Explorer</p>
       </div>
       <i class="fa-solid fa-angle-right"></i>
     </a>
@@ -520,21 +490,6 @@ document.write(`
             </div>
             
             
-              
-                <div class="bd-sidebar-secondary bd-toc"><div class="sidebar-secondary-items sidebar-secondary__inner">
-
-
-  <div class="sidebar-secondary-item">
-  <div class="page-toc tocsection onthispage">
-    <i class="fa-solid fa-list"></i> Contents
-  </div>
-  <nav class="bd-toc-nav page-toc">
-    <ul class="visible nav section-nav flex-column">
-<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#working-with-zarr">Working with Zarr</a></li>
-</ul>
-  </nav></div>
-
-</div></div>
               
             
           </div>

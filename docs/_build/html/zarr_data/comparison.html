@@ -191,6 +191,7 @@ const thebe_selector_output = ".output, .cell_output"
 </ul>
 <p aria-level="2" class="caption" role="heading"><span class="caption-text">SHIVER Graphical User Interface</span></p>
 <ul class="nav bd-sidenav">
+<li class="toctree-l1"><a class="reference internal" href="../gui/overview.html">Overview of the SHeffield Ice Velocity ExploreR application</a></li>
 <li class="toctree-l1"><a class="reference internal" href="../gui/timeseries_explore.html">Timeseries Explorer</a></li>
 <li class="toctree-l1"><a class="reference internal" href="../gui/netcdf_extract.html">NetCDF Extractor</a></li>
 </ul>
@@ -202,7 +203,7 @@ const thebe_selector_output = ".output, .cell_output"
 <li class="toctree-l1"><a class="reference internal" href="../examples/simple_subset.html">Datacube subsetting</a></li>
 <li class="toctree-l1"><a class="reference internal" href="../examples/trend_change.html">Ice speed trends in west Greenland (advanced)</a></li>
 <li class="toctree-l1"><a class="reference internal" href="../examples/eof.html">Principal Component Analysis (advanced)</a></li>
-<li class="toctree-l1"><a class="reference internal" href="../examples/strain.html">Strain across the Brunt Ice Shelf</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../examples/strain.html">Strain across the Brunt Ice Shelf (advanced)</a></li>
 </ul>
 <p aria-level="2" class="caption" role="heading"><span class="caption-text">Appendix</span></p>
 <ul class="nav bd-sidenav">
@@ -264,7 +265,7 @@ const thebe_selector_output = ".output, .cell_output"
       
       
       
-      <li><a href="https://github.com/ben-davison/SHIVER-build-zarr" target="_blank"
+      <li><a href="https://github.com/shiver-ice-velocity/SHIVER-zarr" target="_blank"
    class="btn btn-sm btn-source-repository-button dropdown-item"
    title="Source repository"
    data-bs-placement="left" data-bs-toggle="tooltip"
@@ -281,7 +282,7 @@ const thebe_selector_output = ".output, .cell_output"
       
       
       
-      <li><a href="https://github.com/ben-davison/SHIVER-build-zarr/edit/main/docs/zarr_data/comparison.md" target="_blank"
+      <li><a href="https://github.com/shiver-ice-velocity/SHIVER-zarr/edit/main/docs/zarr_data/comparison.md" target="_blank"
    class="btn btn-sm btn-source-edit-button dropdown-item"
    title="Suggest edit"
    data-bs-placement="left" data-bs-toggle="tooltip"
@@ -298,7 +299,7 @@ const thebe_selector_output = ".output, .cell_output"
       
       
       
-      <li><a href="https://github.com/ben-davison/SHIVER-build-zarr/issues/new?title=Issue%20on%20page%20%2Fzarr_data/comparison.html&body=Your%20issue%20content%20here." target="_blank"
+      <li><a href="https://github.com/shiver-ice-velocity/SHIVER-zarr/issues/new?title=Issue%20on%20page%20%2Fzarr_data/comparison.html&body=Your%20issue%20content%20here." target="_blank"
    class="btn btn-sm btn-source-issues-button dropdown-item"
    title="Open an issue"
    data-bs-placement="left" data-bs-toggle="tooltip"
@@ -435,15 +436,15 @@ document.write(`
 <li><p>Outlier detection, gap-filling, and smoothing algorithms (Joughin et al. 2018a; Lüttig et al. 2017). Furthermore, apparent velocity differences can emerge due to variations in satellite mission spatial resolutions, as well as the specific temporal baselines over which individual velocity fields were measured or averaged to form a composite product.</p></li>
 </ol>
 <p>To ensure fair comparisons that account for differing temporal resolutions, we evaluated the discrepancies between Contributing Datasets incorporated into the Unified Dataset using two procedures. We performed these comparisons using the Unified Dataset itself (i.e. after interpolation to a common grid).</p>
-<p>First, within each spatial cell, we estimated the median velocity range among all Contributing Datasets during common annual periods (Figure 6).</p>
-<p>Second, we examined the differences between specific pairs of Contributing Datasets that share significant temporal overlap (Figures 7 and 8). For the latter, we calculated the time-averaged ice velocity in each spatial cell during the overlapping period. We truncated these periods to focus on times of maximum data density; for example, while the true overlapping period of the “Mouginot annual” and “ITS_LIVE annual” Greenland datasets spans 1985 to 2017, we restricted our comparison to 1993-2017 to avoid the high frequency of Not-a-Number (NaN) values in the earlier part of the record. During these overlaps, time averages were only calculated for spatial cells containing successful (non-NaN) velocity retrievals for at least 70% of the period, ensuring a representative average speed.</p>
+<p>First, within each spatial cell, we estimated the median velocity range among all Contributing Datasets during common annual periods.</p>
+<p>Second, we examined the differences between specific pairs of Contributing Datasets that share significant temporal overlap. For the latter, we calculated the time-averaged ice velocity in each spatial cell during the overlapping period. We truncated these periods to focus on times of maximum data density; for example, while the true overlapping period of the “Mouginot annual” and “ITS_LIVE annual” Greenland datasets spans 1985 to 2017, we restricted our comparison to 1993-2017 to avoid the high frequency of Not-a-Number (NaN) values in the earlier part of the record. During these overlaps, time averages were only calculated for spatial cells containing successful (non-NaN) velocity retrievals for at least 70% of the period, ensuring a representative average speed.</p>
 <figure class="align-default" id="overall-spread-fig">
 <img alt="Overall spread in data" src="../_images/data_overall_spread.png" />
 <figcaption>
 <p><span class="caption-number">Fig. 40 </span><span class="caption-text">The median spread in measured ice speed amongst all contributing datasets, calculated across all annual periods with more than one contributing dataset.</span><a class="headerlink" href="#overall-spread-fig" title="Permalink to this image">#</a></p>
 </figcaption>
 </figure>
-<p>Overall, the Contributing Datasets compare very well (Figures 6-8). The velocity spread among all datasets is typically less than 100 m/yr and differences are greater in faster-flowing regions than in slower-flowing regions (Figure 6). The root-mean-square error (RMSE) between pairs of Contributing Datasets varies from 14.0 to 106.2 m/yr (Figures 7 and 8), which generally falls within the formal error margins of the individual datasets. However, notable systematic differences occasionally exceed these formal errors. For instance, in the Unified Dataset for Antarctica, the “ITS_LIVE annual” Contributing Dataset frequently overestimates ice speed in slower-flowing areas (&lt;1000 m/yr) and underestimates it in faster-flowing regions (&gt;2000 m/yr) when compared to the “MEaSUREs annual” Contributing Dataset during the period 2000 to 2025 (Figure 8d). We note that a six-month offset exists between the annual Measurement Epochs of these two products, meaning some discrepancies may result from the aliasing of seasonal flow variations (Tuckett et al. 2019; Wallis et al. 2023; Boxall et al. 2022). Similarly, the Antarctic “ITS_LIVE annual” Contributing Dataset tends to indicate faster flow speeds than the “ENVEO monthly” Contributing Dataset in regions exceeding 3000 m/yr. We note that there is a significant caveat to these comparisons: for Contributing Datasets created by mosaicking multiple satellite image pairs over differing time periods (i.e., all datasets except “SHIFT”), there is typically incomplete metadata regarding the temporal distribution of velocity observations within each averaging period. Therefore, despite our best efforts to ensure fair comparisons between Contributing Datasets, these comparisons should be interpreted cautiously.</p>
+<p>Overall, the Contributing Datasets compare very well. The velocity spread among all datasets is typically less than 100 m/yr and differences are greater in faster-flowing regions than in slower-flowing regions. The root-mean-square error (RMSE) between pairs of Contributing Datasets varies from 14.0 to 106.2 m/yr, which generally falls within the formal error margins of the individual datasets. However, notable systematic differences occasionally exceed these formal errors. For instance, in the Unified Dataset for Antarctica, the “ITS_LIVE annual” Contributing Dataset frequently overestimates ice speed in slower-flowing areas (&lt;1000 m/yr) and underestimates it in faster-flowing regions (&gt;2000 m/yr) when compared to the “MEaSUREs annual” Contributing Dataset during the period 2000 to 2025. We note that a six-month offset exists between the annual Measurement Epochs of these two products, meaning some discrepancies may result from the aliasing of seasonal flow variations (Tuckett et al. 2019; Wallis et al. 2023; Boxall et al. 2022). Similarly, the Antarctic “ITS_LIVE annual” Contributing Dataset tends to indicate faster flow speeds than the “ENVEO monthly” Contributing Dataset in regions exceeding 3000 m/yr. We note that there is a significant caveat to these comparisons: for Contributing Datasets created by mosaicking multiple satellite image pairs over differing time periods (i.e., all datasets except “SHIFT”), there is typically incomplete metadata regarding the temporal distribution of velocity observations within each averaging period. Therefore, despite our best efforts to ensure fair comparisons between Contributing Datasets, these comparisons should be interpreted cautiously.</p>
 <figure class="align-default" id="greenland-scatter-fig">
 <img alt="Scatter plots of Greenland contributing datasets" src="../_images/greenland_scatter.png" />
 <figcaption>

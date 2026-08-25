@@ -9,7 +9,7 @@
     <meta charset="utf-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" /><meta name="generator" content="Docutils 0.18.1: http://docutils.sourceforge.net/" />
 
-    <title>Strain across the Brunt Ice Shelf &#8212; SHeffield Ice Velocity ExploreR (SHIVER) - Cloud access to a unified dataset of satellite-derived ice surface velocity measurements for the Antarctica Ice Sheet and Greenland Ice Sheet</title>
+    <title>Strain across the Brunt Ice Shelf (advanced) &#8212; SHeffield Ice Velocity ExploreR (SHIVER) - Cloud access to a unified dataset of satellite-derived ice surface velocity measurements for the Antarctica Ice Sheet and Greenland Ice Sheet</title>
   
   
   
@@ -191,6 +191,7 @@ const thebe_selector_output = ".output, .cell_output"
 </ul>
 <p aria-level="2" class="caption" role="heading"><span class="caption-text">SHIVER Graphical User Interface</span></p>
 <ul class="nav bd-sidenav">
+<li class="toctree-l1"><a class="reference internal" href="../gui/overview.html">Overview of the SHeffield Ice Velocity ExploreR application</a></li>
 <li class="toctree-l1"><a class="reference internal" href="../gui/timeseries_explore.html">Timeseries Explorer</a></li>
 <li class="toctree-l1"><a class="reference internal" href="../gui/netcdf_extract.html">NetCDF Extractor</a></li>
 </ul>
@@ -202,7 +203,7 @@ const thebe_selector_output = ".output, .cell_output"
 <li class="toctree-l1"><a class="reference internal" href="simple_subset.html">Datacube subsetting</a></li>
 <li class="toctree-l1"><a class="reference internal" href="trend_change.html">Ice speed trends in west Greenland (advanced)</a></li>
 <li class="toctree-l1"><a class="reference internal" href="eof.html">Principal Component Analysis (advanced)</a></li>
-<li class="toctree-l1 current active"><a class="current reference internal" href="#">Strain across the Brunt Ice Shelf</a></li>
+<li class="toctree-l1 current active"><a class="current reference internal" href="#">Strain across the Brunt Ice Shelf (advanced)</a></li>
 </ul>
 <p aria-level="2" class="caption" role="heading"><span class="caption-text">Appendix</span></p>
 <ul class="nav bd-sidenav">
@@ -264,7 +265,7 @@ const thebe_selector_output = ".output, .cell_output"
       
       
       
-      <li><a href="https://github.com/ben-davison/SHIVER-build-zarr" target="_blank"
+      <li><a href="https://github.com/shiver-ice-velocity/SHIVER-zarr" target="_blank"
    class="btn btn-sm btn-source-repository-button dropdown-item"
    title="Source repository"
    data-bs-placement="left" data-bs-toggle="tooltip"
@@ -281,7 +282,7 @@ const thebe_selector_output = ".output, .cell_output"
       
       
       
-      <li><a href="https://github.com/ben-davison/SHIVER-build-zarr/edit/main/docs/examples/strain.ipynb" target="_blank"
+      <li><a href="https://github.com/shiver-ice-velocity/SHIVER-zarr/edit/main/docs/examples/strain.ipynb" target="_blank"
    class="btn btn-sm btn-source-edit-button dropdown-item"
    title="Suggest edit"
    data-bs-placement="left" data-bs-toggle="tooltip"
@@ -298,7 +299,7 @@ const thebe_selector_output = ".output, .cell_output"
       
       
       
-      <li><a href="https://github.com/ben-davison/SHIVER-build-zarr/issues/new?title=Issue%20on%20page%20%2Fexamples/strain.html&body=Your%20issue%20content%20here." target="_blank"
+      <li><a href="https://github.com/shiver-ice-velocity/SHIVER-zarr/issues/new?title=Issue%20on%20page%20%2Fexamples/strain.html&body=Your%20issue%20content%20here." target="_blank"
    class="btn btn-sm btn-source-issues-button dropdown-item"
    title="Open an issue"
    data-bs-placement="left" data-bs-toggle="tooltip"
@@ -412,7 +413,7 @@ document.write(`
               
 
 <div id="jb-print-docs-body" class="onlyprint">
-    <h1>Strain across the Brunt Ice Shelf</h1>
+    <h1>Strain across the Brunt Ice Shelf (advanced)</h1>
     <!-- Table of contents -->
     <div id="print-main-content">
         <div id="jb-print-toc">
@@ -439,8 +440,8 @@ document.write(`
 <div id="searchbox"></div>
                 <article class="bd-article">
                   
-  <section id="strain-across-the-brunt-ice-shelf">
-<h1>Strain across the Brunt Ice Shelf<a class="headerlink" href="#strain-across-the-brunt-ice-shelf" title="Permalink to this heading">#</a></h1>
+  <section id="strain-across-the-brunt-ice-shelf-advanced">
+<h1>Strain across the Brunt Ice Shelf (advanced)<a class="headerlink" href="#strain-across-the-brunt-ice-shelf-advanced" title="Permalink to this heading">#</a></h1>
 <p>In this example, we will explore how strain rates have changed across the Brunt Ice Shelf from 2016 through 2025. Strain rates can be a useful indicator of where rifts are growing, so can help us to understand how Antarctica’s ice shelves are changing and may provide useful laboratories for studying rift propagation through ice in general.</p>
 <p>This analysis will require us to utilise ice speeds over a moderately large area and time period, so we will use the <em>cubed</em> Antarctica velocity zarr store, which has the optimium chunk definition for this. We will use <strong>Dask</strong> to parallelize our computations and <strong>Xarray</strong> to handle lazy loading.</p>
 <p>Finally, we will calculate the strain rates using Tom Chudley’s excellent <code class="docutils literal notranslate"><span class="pre">strain_tools</span></code> Python package (Chudley et al. 2026), which is documented in detail <a class="reference external" href="https://glacier-strain-tools.readthedocs.io/">here</a>.</p>
