@@ -11,7 +11,7 @@ _There are 17 Contributing Datasets for Greenland, which are summarised in this 
 **Table 1. Datasets contributing to the Greenland Ice Sheet unified dataset. _Valid as of 30th July 2026_**
 | Source Dataset | Start Date | End Date | Epochs | Sep. (days) | Resolution (m) | Citation |
 | :--- | :--- | :--- | ---: | ---: | ---: | ---: |
-| ENVEO annual | 01/10/2014 | 30/09/2020 | 6 | 364 | 250 | [1] |
+| C3S annual | 01/10/2014 | 30/09/2020 | 6 | 364 | 250 | [1] |
 | ESA CCI CSK | 02/06/2012 | 25/12/2014 | 13 | 4 | 250 | [2] |
 | ESA CCI ERS1 1991-1992 | 29/12/1991 | 22/03/1992 | 1 | 84 | 500 | [3] |
 | ESA CCI ERS1-2 Envisat | 01/08/1991 | 07/02/2011 | 1877 | 35 | 90 | [4-11] |
@@ -180,17 +180,17 @@ Overview of the Greenland Mouginot annual data.
 
 > Mouginot, J., Rignot, E., Scheuchl, B. and Millan, R., 2017. Comprehensive annual ice sheet velocity mapping using Landsat-8, Sentinel-1, and RADARSAT-2 data. Remote Sensing, 9(4), p.364. DOI: https://doi.org/10.3390/rs9040364.
 
-(greenland_enveo_annual)=
-### ENVEO Annual
+(greenland_c3s_annual)=
+### C3S Annual
 
-The ENVEO annual data provide annual (October through September) averages of ice speed over Greenland derived from a combination of SAR interferometry and intensity and coherence tracking applied to Sentinel-1 image pairs acquired during 2014 to 2020. The velocity processing pipeline used to produce the mosaics is described in [Wuite et al. (2026)](https://www.sciencedirect.com/science/article/pii/S0034425725004961) and the mosaics can be accessed [here](https://cds.climate.copernicus.eu/datasets/satellite-greenland-ice-sheet-velocity?tab=download).
+The Copernicus Climate Change Service (C3S) annual data provide annual (October through September) averages of ice speed over Greenland derived from a combination of SAR interferometry and intensity and coherence tracking applied to Sentinel-1 image pairs acquired during 2014 to 2020. The velocity processing pipeline used to produce the mosaics is described in [Wuite et al. (2026)](https://www.sciencedirect.com/science/article/pii/S0034425725004961) and the mosaics can be accessed [here](https://cds.climate.copernicus.eu/datasets/satellite-greenland-ice-sheet-velocity?tab=download).
 
 ```{figure} ../_static/greenland/verification_maps_ENVEO_annual.png
 ---
 name: verification-maps-enveo-annual-fig
-alt: ENVEO annual data overview
+alt: C3S annual data overview
 ---
-Overview of the Greenland ENVEO annual data.
+Overview of the Greenland C3S annual data.
 ```
 
 > Copernicus Climate Change Service, Climate Data Store (2020): Ice sheet velocity for Antarctica and Greenland derived from satellite observations. Copernicus Climate Change Service (C3S) Climate Data Store (CDS), DOI: 10.24381/cds.0b96b838 (Accessed on 26-Apr-2026).
@@ -369,14 +369,14 @@ _There are 17 Contributing Datasets for Antarctica, which are summarised in this
 **Table 2. Datasets contributing to the Antarctic Ice Sheet unified dataset. _Valid as of 30th July 2026_**
 | Source Dataset | Start Date | End Date | Epochs | Sep. (days) | Resolution (m) | Citation |
 | :--- | :--- | :--- | ---: | ---: | ---: | ---: |
-| ENVEO ALOS<sup>a</sup> | 29/09/2009 | 17/02/2011 | 2 | 47 | 50 | [1] |
+| ENVEO PALSAR<sup>a</sup> | 29/09/2009 | 17/02/2011 | 2 | 47 | 50 | [1] |
 | ENVEO ERS<sup>a</sup> | 11/01/1992 | 10/11/1999 | 13 | 2 | 500 | [2, 3] |
 | ENVEO Sentinel-1 PIG<sup>a</sup> | 10/10/2014 | 21/08/2019 | 402 | 13 | 200 | [4] |
 | ENVEO TSX<sup>a</sup> | 26/06/2007 | 11/12/2016 | 125 | 12 | 50 | [1] |
 | ENVEO TSX PALSAR<sup>a</sup> | 02/07/2010 | 09/03/2012 | 1 | 617 | 50 | [1] |
 | ENVEO TSX Sentinel-1<sup>a</sup> | 31/10/2015 | 11/12/2016 | 1 | 408 | 50 | [1] |
 | ENVEO monthly | 01/10/2014 | 31/12/2021 | 87 | 30 | 200 | [4] |
-| ESA CCI annual | 01/04/2021 | 31/03/2024 | 3 | 365 | 200 | [5] |
+| C3S annual | 01/04/2021 | 31/03/2024 | 3 | 365 | 200 | [5] |
 | ITS LIVE annual | 01/01/1985 | 31/12/2024 | 40 | 365 | 120 | [6, 7] |
 | Joughin Sentinel-1<sup>a</sup> | 01/04/2015 | 29/09/2020 | 22 | 90 | 500 | [8] |
 | Joughin TSX<sup>a</sup> | 06/02/2009 | 24/12/2015 | 13 | 106 | 500 | [8] |
@@ -587,20 +587,20 @@ Overview of the Antarctica ITS_LIVE annual data.
 
 > Gardner, A. S., Fahnestock, M. & Scambos, T. (2022). MEaSUREs ITS_LIVE Regional Glacier and Ice Sheet Surface Velocities. (NSIDC-0776, Version 1). [Data Set]. Boulder, Colorado USA. NASA National Snow and Ice Data Center Distributed Active Archive Center. https://doi.org/10.5067/6II6VW8LLWJ7. Date Accessed 08-17-2026.
 
-(antarctica-esa-annual)=
-### ESA CCI Annual
+(antarctica-c3s-annual)=
+### C3S Annual
 
-The ESA CCI Annual data provide annual (April through March) averages of ice speed over Antarctica derived from Sentinel-1 image pairs acquired during 2021 to 2024. The mosaics can be accessed through the [Copernicus Climate Data Store](https://cds.climate.copernicus.eu/datasets/satellite-greenland-ice-sheet-velocity?).
+The Copernicus Climate Change Service (C3S) Annual data provide annual (April through March) averages of ice speed over Antarctica derived from Sentinel-1 image pairs acquired during 2021 to 2024. The mosaics can be accessed through the [Copernicus Climate Data Store](https://cds.climate.copernicus.eu/datasets/satellite-greenland-ice-sheet-velocity?).
 
 ```{figure} ../_static/antarctica/verification_maps_ESA_CCI_annual.png
 ---
 name: verification-maps-esa-cci-annual-fig
-alt: ESA CCI annual data overview
+alt: C3S annual data overview
 ---
-Overview of the ESA CCI annual data.
+Overview of the C3S annual data.
 ```
 
-> Wuite, J., (2026): Ice sheet velocity for Antarctica and Greenland derived from satellite observations. Copernicus Climate Change Service (C3S) Climate Data Store (CDS), DOI: 10.24381/cds.0b96b838 (Accessed on 26-Apr-2026)
+> Copernicus Climate Change Service, Climate Data Store (2020): Ice sheet velocity for Antarctica and Greenland derived from satellite observations. Copernicus Climate Change Service (C3S) Climate Data Store (CDS), DOI: 10.24381/cds.0b96b838.
 
 (antarctica-sid-annual)=
 ### SID Annual
