@@ -76,7 +76,7 @@
                 "ENVEO monthly method: Wuite, J., Nagler, T., Hetzenecker, M. and Rott, H., 2026. Ten years of polar ice velocity mapping using Copernicus Sentinel-1. Remote Sensing of Environment, 332, p.115092. DOI: https://doi.org/10.1016/j.rse.2025.115092."
             ]
         },
-        "ESA_CCI_annual": {
+        "C3S_annual": {
             "start_date": "2021-04-01",
             "end_date": "2024-03-31",
             "epochs": 3,

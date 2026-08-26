@@ -12,7 +12,7 @@
         "SHIVER method paper: Davison, B. J. et al. (in prep). The SHeffield Ice Velocity ExploreR (SHIVER): an online tool for low latency exploration, analysis and sub-setting of unified satellite-derived ice velocity data for Earth's ice sheets. [specify journal]. https://doi.org/10.xxxx/xxxx.XXXXXXX"
     ],
     "sources": {
-        "ESA_CCI_annual": {
+        "C3S_annual": {
             "start_date": "2014-10-01",
             "end_date": "2020-09-30",
             "epochs": 6,

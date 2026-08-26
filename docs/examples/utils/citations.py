@@ -14,8 +14,8 @@ CITATIONS_CONFIG = {
 				"SHIFT method: Davison, B.J., Sole, A.J., Cowton, T.R., Lea, J.M., Slater, D.A., Fahrner, D. and Nienow, P.W., 2020. Subglacial drainage evolution modulates seasonal ice flow variability of three tidewater glaciers in southwest Greenland. Journal of Geophysical Research: Earth Surface, 125(9), p.e2019JF005492. DOI: https://doi.org/10.1029/2019JF005492."
 		  ],
 		  "PROMICE": [
-				"PROMICE data: Solgaard, A. M., Kusk, A., 2026, Greenland Ice Velocity from Sentinel-1 Edition 5, https://doi.org/10.22008/FK2/K70OPK, GEUS Dataverse, V6",
-				"PROMICE method: Solgaard, A. M., Kusk, A., Merryman Boncori, J.P., Dall, J., Mankoff, K.D., Ahlstrøm, A.P., Andersen, S.B., Citterio, M., Karlsson, N.B., Kjeldsen, K.K. and Korsgaard, N.J., 2021. Greenland ice velocity maps from the PROMICE project. Earth System Science Data, 13(7), pp.3491-3512. DOI: https://doi.org/10.5194/essd-13-3491-2021.",
+				"PROMICE data: Solgaard, Anne Munck; Kusk, Anders, 2026, Greenland Ice Velocity from Sentinel-1 Edition 5, https://doi.org/10.22008/FK2/K70OPK, GEUS Dataverse, V6",
+				"PROMICE method: Solgaard, A., Kusk, A., Merryman Boncori, J.P., Dall, J., Mankoff, K.D., Ahlstrøm, A.P., Andersen, S.B., Citterio, M., Karlsson, N.B., Kjeldsen, K.K. and Korsgaard, N.J., 2021. Greenland ice velocity maps from the PROMICE project. Earth System Science Data, 13(7), pp.3491-3512. DOI: https://doi.org/10.5194/essd-13-3491-2021.",
 		  ],
           "MEaSUREs_monthly": [
 				"MEaSUREs monthly data: Joughin, I. (2023). MEaSUREs Greenland Monthly Ice Sheet Velocity Mosaics from SAR and Landsat. (NSIDC-0731, Version 5). [Data Set]. Boulder, Colorado USA. NASA National Snow and Ice Data Center Distributed Active Archive Center. https://doi.org/10.5067/EGKZX6FXXM4P.",
@@ -44,8 +44,8 @@ CITATIONS_CONFIG = {
 		  "Mouginot_annual": [
 				"Mouginot annual method: Mouginot, J., Rignot, E., Scheuchl, B. and Millan, R., 2017. Comprehensive annual ice sheet velocity mapping using Landsat-8, Sentinel-1, and RADARSAT-2 data. Remote Sensing, 9(4), p.364. DOI: https://doi.org/10.3390/rs9040364."
 		  ],
-          "ESA_CCI_annual": [
-				"ESA CCI annual data: Copernicus Climate Change Service, Climate Data Store (2020): Ice sheet velocity for Antarctica and Greenland derived from satellite observations. Copernicus Climate Change Service (C3S) Climate Data Store (CDS), DOI: 10.24381/cds.0b96b838."
+          "C3S_annual": [
+				"C3S annual data: Copernicus Climate Change Service, Climate Data Store (2020): Ice sheet velocity for Antarctica and Greenland derived from satellite observations. Copernicus Climate Change Service (C3S) Climate Data Store (CDS), DOI: 10.24381/cds.0b96b838."
 		  ],
 		  "ESA_CCI_winter": [
 				"ESA CCI winter data: ESA Greenland Ice Sheet CCI project team (2018): ESA Greenland Ice Sheet Climate Change Initiative (Greenland_Ice_Sheet_cci): Greenland Ice Velocity Map, Winter 2017-2018, v1.0. Centre for Environmental Data Analysis, 16/04/2026. https://catalogue.ceda.ac.uk/uuid/eaed9fba86c44e9c854dfbdec9d16b99."
@@ -139,11 +139,11 @@ CITATIONS_CONFIG = {
                 "ITS_LIVE data: Gardner, A. S., Fahnestock, M. & Scambos, T. (2022). MEaSUREs ITS_LIVE Regional Glacier and Ice Sheet Surface Velocities. (NSIDC-0776, Version 1). [Data Set]. Boulder, Colorado USA. NASA National Snow and Ice Data Center Distributed Active Archive Center. https://doi.org/10.5067/6II6VW8LLWJ7."
 		    ],
 			"SID_annual": [
-				"SID data: Hogg, A.E., Davison, B.J., Rigby, R., Wallis, B.J., Slater, R.A.W. (2025): EOCIS: Ice Sheet Velocity, V1. NERC EDS Centre for Environmental Data Analysis, 17 April 2025. doi:10.5285/c0b464b3da9845758cd33591e57c4abf. https://dx.doi.org/10.5285/c0b464b3da9845758cd33591e57c4abf",
+				"SID data: Hogg, A.E.; Davison, B.J.; Rigby, R.; Wallis, B.J.; Slater, R.A.W. (2025): EOCIS: Ice Sheet Velocity, V1. NERC EDS Centre for Environmental Data Analysis, 17 April 2025. doi:10.5285/c0b464b3da9845758cd33591e57c4abf. https://dx.doi.org/10.5285/c0b464b3da9845758cd33591e57c4abf",
 				"SID method: Davison, B.J., Hogg, A.E., Rigby, R., Veldhuijsen, S., van Wessem, J.M., van den Broeke, M.R., Holland, P.R., Selley, H.L. and Dutrieux, P., 2023. Sea level rise from West Antarctic mass loss significantly modified by large snowfall anomalies. Nature Communications, 14(1), p.1479. DOI: https://doi.org/10.1038/s41467-023-36990-3."
 			],
-			"ESA_CCI_annual": [
-				"ESA CCI annual data: Copernicus Climate Change Service, Climate Data Store (2020): Ice sheet velocity for Antarctica and Greenland derived from satellite observations. Copernicus Climate Change Service (C3S) Climate Data Store (CDS), DOI: 10.24381/cds.0b96b838."
+			"C3S_annual": [
+				"C3S annual data: Copernicus Climate Change Service, Climate Data Store (2020): Ice sheet velocity for Antarctica and Greenland derived from satellite observations. Copernicus Climate Change Service (C3S) Climate Data Store (CDS), DOI: 10.24381/cds.0b96b838."
 			],
             "Joughin_Sentinel-1": [
 				"Joughin Sentinel-1 (quarterly) method: Joughin, I., Shapero, D., Smith, B., Dutrieux, P. and Barham, M., 2021. Ice-shelf retreat drives recent Pine Island Glacier speedup. Science Advances, 7(24), p.eabg3080. DOI: 10.1126/sciadv.abg3080."

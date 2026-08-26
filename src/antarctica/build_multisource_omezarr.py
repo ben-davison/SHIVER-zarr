@@ -430,7 +430,7 @@ def preprocess_esacci_annual(file_path, master_x, master_y):
         'speed_error': (['time', 'y', 'x'], np.expand_dims(speed_error_vals, axis=0), {'units': 'm/year'}),
         'vx_error': (['time', 'y', 'x'], np.expand_dims(vx_error_vals, axis=0), {'units': 'm/year'}),
         'vy_error': (['time', 'y', 'x'], np.expand_dims(vy_error_vals, axis=0), {'units': 'm/year'}),
-        'data_source': (['time'], np.array(["ESA_CCI_annual"], dtype="<U50"))
+        'data_source': (['time'], np.array(["C3S_annual"], dtype="<U50"))
     }, coords={'y': (['y'], master_y.values), 'x': (['x'], master_x.values)})
     
     return ds
@@ -1280,7 +1280,7 @@ def build_catalog_and_skeleton():
     # 7. ESA CCI Annual
     for f in sorted(glob.glob(os.path.join(ESA_CCI_ANNUAL_DIR, "*.nc"))):
         t, tb = parse_esacci_annual_time(f)
-        epochs.append({'time': t, 'time_bnds': tb, 'source': 'ESA_CCI_annual', 'path': f})
+        epochs.append({'time': t, 'time_bnds': tb, 'source': 'C3S_annual', 'path': f})
     # 8. Joughin Sentinel-1
     for f in sorted(glob.glob(os.path.join(JOUGHIN_DIR, "VelPIG.S1Quarterly.*.vx.tif"))):
         t, tb = parse_joughin_s1_time(f)
@@ -1438,7 +1438,7 @@ def process_worker(target_source, batch_start=None, batch_end=None):
         elif ep['source'] == 'MEaSUREs_multiyear': ds_slice = preprocess_measures_multiyear(ep['path'], master_x, master_y)
         elif ep['source'] == 'MEaSUREs_ASE': ds_slice = preprocess_measures_ase(ep['path'], ep['year'], master_x, master_y)
         elif ep['source'] == 'SID_annual': ds_slice = preprocess_sid_annual(ep['path'], master_x, master_y)
-        elif ep['source'] == 'ESA_CCI_annual': ds_slice = preprocess_esacci_annual(ep['path'], master_x, master_y)
+        elif ep['source'] == 'C3S_annual': ds_slice = preprocess_esacci_annual(ep['path'], master_x, master_y)
         elif ep['source'] == 'Joughin_Sentinel-1': ds_slice = preprocess_joughin_s1(ep['path'], master_x, master_y)
         elif ep['source'] == 'Joughin_TSX': ds_slice = preprocess_joughin_tsx(ep['path'], master_x, master_y)
         elif ep['source'] == 'Li_Totten': ds_slice = preprocess_li_totten(ep['path'], master_x, master_y)

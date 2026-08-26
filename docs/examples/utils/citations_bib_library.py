@@ -155,7 +155,7 @@ CITATIONS_DB = {
         "url": "https://catalogue.ceda.ac.uk/uuid/eaed9fba86c44e9c854dfbdec9d16b99",
         "howpublished": "Dataset"
     },
-    "esa_cci_annual_2020": {
+    "c3s_annual_2020": {
         "type": "misc",
         "author": "{Copernicus Climate Change Service, Climate Data Store}",
         "year": "2020",
@@ -600,7 +600,7 @@ GREENLAND_SOURCE_MAPPING = {
     "ESA_CCI_winter": ["esa_cci_winter_2018"],
     "ITS_LIVE_annual": ["its_live_method_2025", "its_live_data_2022"],
     "Mouginot_annual": ["mouginot_annual_method_2017"],
-    "ESA_CCI_annual": ["esa_cci_annual_2020"],
+    "C3S_annual": ["c3s_annual_2020"],
     "ESA_CCI_ERS1_1991-1992": ["esa_cci_ers1_1991_1992"],
     "ESA_CCI_ERS2_1995-1996": ["esa_cci_ers2_1995_1996"],
     "ESA_CCI_PALSAR": ["esa_cci_palsar_2016"],
@@ -655,7 +655,7 @@ ANTARCTICA_SOURCE_MAPPING = {
     "MEaSUREs_ASE": ["rignot_measures_ase_2014", "mouginot_antarctica_2014"],
     "ITS_LIVE_annual": ["its_live_method_2025", "its_live_data_2022"],       
     "SID_annual": ["hogg_sid_antarctica_2025", "davison_2023"],
-    "ESA_CCI_annual": ["esa_cci_annual_2020"],                              
+    "C3S_annual": ["c3s_annual_2020"],                              
     "Joughin_Sentinel-1": ["joughin_pig_2021"],
     "Joughin_TSX": ["joughin_pig_2021"],
     "Li_Totten": ["li_totten_2023"]

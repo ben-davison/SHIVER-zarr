@@ -653,7 +653,7 @@ def preprocess_enveo_tiff(mag_file, master_x, master_y):
         'speed_error': (['time', 'y', 'x'], np.expand_dims(speed_error_vals, axis=0), {'units': 'm/year', 'grid_mapping': 'spatial_ref'}),
         'vx_error': (['time', 'y', 'x'], np.expand_dims(vx_error_vals, axis=0), {'units': 'm/year', 'grid_mapping': 'spatial_ref'}),
         'vy_error': (['time', 'y', 'x'], np.expand_dims(vy_error_vals, axis=0), {'units': 'm/year', 'grid_mapping': 'spatial_ref'}),
-        'data_source': (['time'], np.array(["ESA_CCI_annual"], dtype="<U50"))
+        'data_source': (['time'], np.array(["C3S_annual"], dtype="<U50"))
     }, coords={
         'y': (['y'], master_y.values), 'x': (['x'], master_x.values),
     })
@@ -690,7 +690,7 @@ def preprocess_enveo_nc(file_path, master_x, master_y):
         'speed_error': (['time', 'y', 'x'], np.expand_dims(speed_error_vals, axis=0), {'units': 'm/year', 'grid_mapping': 'spatial_ref'}),
         'vx_error': (['time', 'y', 'x'], np.expand_dims(vx_error_vals, axis=0), {'units': 'm/year', 'grid_mapping': 'spatial_ref'}),
         'vy_error': (['time', 'y', 'x'], np.expand_dims(vy_error_vals, axis=0), {'units': 'm/year', 'grid_mapping': 'spatial_ref'}),
-        'data_source': (['time'], np.array(["ESA_CCI_annual"], dtype="<U50"))
+        'data_source': (['time'], np.array(["C3S_annual"], dtype="<U50"))
     }, coords={
         'y': (['y'], master_y.values), 'x': (['x'], master_x.values),
     })
@@ -903,10 +903,10 @@ def build_catalog_and_skeleton():
     # 9. ENVEO
     for f in sorted(glob.glob(os.path.join(enveo_dir, "*", "*_mag.tif"))) + sorted(glob.glob(os.path.join(enveo_dir, "*_mag.tif"))):
         t, tb = parse_enveo_time(f)
-        epochs.append({'time': t, 'time_bnds': tb, 'source': 'ESA_CCI_annual', 'path': f})
+        epochs.append({'time': t, 'time_bnds': tb, 'source': 'C3S_annual', 'path': f})
     for f in sorted(glob.glob(os.path.join(enveo_dir, "*", "C3S_GrIS_IV_250m_S1_*.nc"))) + sorted(glob.glob(os.path.join(enveo_dir, "C3S_GrIS_IV_250m_S1_*.nc"))):
         t, tb = parse_enveo_time(f)
-        epochs.append({'time': t, 'time_bnds': tb, 'source': 'ESA_CCI_annual', 'path': f})
+        epochs.append({'time': t, 'time_bnds': tb, 'source': 'C3S_annual', 'path': f})
 
     # 10. SHIFT
     for d in sorted(glob.glob(os.path.join(shift_dir, "*_*"))):
@@ -1033,7 +1033,7 @@ def process_worker(target_source):
         elif ep['source'] == 'ITS_LIVE_annual': ds_slice = preprocess_itslive(ep['path'], master_x, master_y)
         elif ep['source'] == 'ESA_CCI_winter': ds_slice = preprocess_esacci_winter(ep['path'], master_x, master_y)
         elif ep['source'] == 'SHIFT': ds_slice = preprocess_shift(ep['path'], master_x, master_y)
-        elif ep['source'] == 'ESA_CCI_annual': 
+        elif ep['source'] == 'C3S_annual': 
             if ep['path'].endswith('.tif'): ds_slice = preprocess_enveo_tiff(ep['path'], master_x, master_y)
             else: ds_slice = preprocess_enveo_nc(ep['path'], master_x, master_y)
         elif ep['source'] == 'ESA_CCI_Sentinel-1': ds_slice = preprocess_esacci_s1(ep['path'], ep['idx'], master_x, master_y)
