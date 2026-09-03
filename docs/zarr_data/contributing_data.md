@@ -637,7 +637,7 @@ Overview of the Joughin Sentinel-1 data over Pine Island Glacier.
 (antarctica-joughin-tsx)=
 ### Joughin TSX (Pine Island)
 
-The TerraSAR-X velocity estimates of Pine Island Glacier ice speed are available from 15th January 2009 to 15th January 2016 (dates are approximate). The time period over which the measurements were made was not provided with the data but described as a "range of several months", so we have assumed a 6-month range here. These measurements are described in [Joughin et al. (2021)](https://www.science.org/doi/10.1126/sciadv.abg3080) and the data are available from the supplementary information of that paper.
+The TerraSAR-X velocity estimates of Pine Island Glacier ice speed are available from 15th January 2009 to 15th January 2016 (dates are approximate). These data have an ambiguous temporal resolution of two to five months, so we assign a temporal resolution of 3.5 months. These measurements are described in [Joughin et al. (2021)](https://www.science.org/doi/10.1126/sciadv.abg3080) and the data are available from the supplementary information of that paper.
 
 ```{figure} ../_static/antarctica/verification_maps_Joughin_TSX.png
 ---
